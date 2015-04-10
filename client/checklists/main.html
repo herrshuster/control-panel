@@ -1,0 +1,53 @@
+<template name="checklist">
+	<h1>{{title}}</h1>
+	<h2><a href="/site/{{site.slug}}">{{site.url}}</a></h2>
+	{{#each items}}
+		<section class="checklistItem" id="{{id}}">
+			<input type="checkbox">
+			<h3>{{title}}</h3>
+			<p>{{description}}</p>
+		</section>
+	{{/each}}
+
+	<a href='#' id='new_item'>New Checklist Item</a>
+</template>
+
+<template name="newChecklist">
+	<h1>New {{type}} checklist for {{siteName}}</h1>
+	<input type="text" placeholder="Checklist title">
+	{{#each items}}
+		<section class="checklistItem" id="{{checklistItemId}}">
+		{{#each events}}
+			{{date}}
+			{{type}}
+		{{/each}}
+		<h2>{{title}}</h2>
+		<p>{{description}}</p>
+
+		</section>
+	{{/each}}
+	<button type="submit">Approve</button>
+
+	{{approveLink}}
+	<!-- This when mousedowned, this link should insert the checklist document, when mouseupped, should route to it -->
+<!-- checklist gets how it was called, and associates the instance it is about to create with that site or client. if called directly, prompts to select type of checklist-->
+<!-- Should instantiate new checklist with ID, so that new checklist items can be added directly. -->
+<!-- This should have a save button that insantiates it and saves it to the database, and then loads the permanent URL for the checklist instead of the querystring one -->
+
+</template>
+
+<template name="newChecklistItem">
+<!-- 	{{#autoForm collection="ChecklistItems" id="insertChecklistItem" type="insert" template="plain"}}
+		{{> afQuickField name='checklistType' options=ChecklistTypes}}
+		{{> afQuickField name='default'}}
+		{{> afQuickField name='revisions'}}
+		<button type="submit">Add</button>
+	{{/autoForm}} -->
+	<form id="insertChecklistItem">
+		<input type="text" name="title" placeholder="Title">
+		<input type="textarea" name="description" placeholder="Item description">
+		<input type="submit" value="Add Item">
+		<!-- Add control to exit out of adding checklist item -->
+	</form>
+
+</template>

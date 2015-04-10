@@ -1,0 +1,80 @@
+<template name="site">
+	<h1>{{site.url}}</h1>
+	<section id="checklists">
+		<h2>Checklists</h2>
+		{{#each checklists}}
+			<h3><a href="/checklist/{{_id}}">{{title}}</a></h3>
+		{{/each}}
+		New {{{checklistTypes}}} Checklist
+	</section>
+	<section id="client">
+		{{#if client}}
+			<h2>Associated Client</h2>
+			{{#with client}}
+				<a href="/client/{{slug}}">{{name}}</a>
+			{{/with}}
+		{{/if}}
+	</section>
+	<h2>Site Information</h2>
+	{{#with site}}
+		{{#autoForm collection="Sites" doc=this id="edit_site" type="update" template="plain"}}
+			{{> afQuickField name='url'}}
+			{{> afQuickField name='secure'}}
+			{{> afQuickField name='dubdub'}}
+			{{> afQuickField name='organization_name'}}
+			{{> afQuickField name='billing_cycle'}}
+			{{> afQuickField name='addresses'}}
+			{{> afQuickField name='email_addresses'}}
+			{{> afQuickField name='phone_numbers'}}
+			{{> afQuickField name='services'}}
+			{{> afQuickField name='products'}}
+			{{> afQuickField name='locations'}}
+			{{> afQuickField name='board'}}
+			{{> afQuickField name='people'}}
+			{{> afQuickField name='services_provided'}}
+			{{> afQuickField name='status'}}
+			<button type="submit">Update</button>
+		{{/autoForm}}
+	{{/with}}
+
+
+</template>
+
+
+
+<template name="newSite">
+	<h1>Add a New Site</h1>
+	{{#autoForm collection="Sites" id="add_site" type="insert" template="plain"}}
+		{{> afQuickField name='client' options=allClients}}
+		{{> afQuickField name='url'}}
+		{{> afQuickField name='slug'}}
+		{{> afQuickField name='secure'}}
+		{{> afQuickField name='organization_name'}}<!--should autofill from client-->
+		{{> afQuickField name='billing_cycle'}}
+		{{> afQuickField name='addresses'}}
+		{{> afQuickField name='email_addresses'}}
+		{{> afQuickField name='phone_numbers'}}
+		{{> afQuickField name='services_offered'}}
+		{{> afQuickField name='products_offered'}}
+		{{> afQuickField name='locations'}}
+		{{> afQuickField name='board'}}
+		<!--{{> afQuickField name='people'}}-->
+		{{> afQuickField name='services_provided' options='allowed'}}
+		{{> afQuickField name='status' options='allowed'}}
+		{{> afQuickField name='services_used'}}
+		{{> afQuickField name='file_access'}}
+		<button type="submit">Add</button>
+	{{/autoForm}}
+	
+
+</template>
+
+<template name="allSites">
+	<h2>All Sites</h2>
+	{{#each sites}}
+		<section class="site">
+			<h3><a href="/site/{{slug}}">{{url}}</a></h3>
+			<span class="client"><a href="/client/{{clientSlug}}">Client: {{clientName}}</a></span>
+		</section>
+	{{/each}}
+</template>

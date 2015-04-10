@@ -1,0 +1,54 @@
+<template name="clientInfo">
+	<h1>{{client.name}}</h1>
+	{{#if sites}}
+		<h2>Sites</h2>
+		{{#each sites}}
+			<a href="/site/{{slug}}">{{url}}</a>
+		{{/each}}
+	{{/if}}
+	<h2>Client Information</h2>
+	{{#with client}}
+		{{#autoForm collection="Clients" doc=this id="edit_client" type="update" template="plain"}}
+			{{> afQuickField name='name'}}
+			{{> afQuickField name='address'}}
+			{{> afQuickField name='email_addresses'}}
+			{{> afQuickField name='phone_numbers'}}
+			{{> afQuickField name='people'}}
+			{{> afQuickField name='referral'}}
+			{{> afQuickField name='note'}}
+			<button type="submit">Update</button>
+		{{/autoForm}}
+	{{/with}}
+</template>
+
+
+
+
+
+<template name="newClient">
+	<h1>Add a New Client</h1>
+	{{#autoForm collection="Clients" id="client" type="insert" template="plain"}}
+		{{> afQuickField name='name'}}
+		{{> afQuickField name='slug'}}
+		{{> afQuickField name='address'}}
+		{{> afQuickField name='email_addresses'}}
+		{{> afQuickField name='phone_numbers'}}
+		{{> afQuickField name='people'}}
+		{{> afQuickField name='referral'}}
+		{{> afQuickField name='note'}}
+		<button type="submit">Add</button>
+	{{/autoForm}}
+
+</template>
+
+<template name="allClients">
+	<h2>All Clients</h2>
+	{{#each clients}}
+		<section class="client">
+			<a href="/client/{{slug}}"><h3>{{name}}</h3></a>
+			{{#each sites}}
+				<a href="/site/{{slug}}">{{url}}</a>
+			{{/each}}
+		</section>
+	{{/each}}
+</template>
