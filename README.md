@@ -1,0 +1,2 @@
+#Control Panel
+Version 1 of the control panel software. Previous work has been done to implement this software on the WordPress platform. This implemenation will be the first official release and created using the Meteor framework.
