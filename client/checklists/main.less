@@ -1,0 +1,30 @@
+.checklistItem {
+	width: 100%;
+	float: left;
+	padding: 0.5rem;
+	&:nth-of-type(even) {
+		background-color: #eee;
+	}
+	h3 {
+		margin-top: 0;
+	}
+	input[type=checkbox] {
+		float: right;
+		width: 2rem;
+		height: 2rem;
+	}
+}
+form#insertChecklistItem {
+	input {
+		&[name=title] {
+			float: left;
+		}
+		&[name=description] {
+			float: left;
+			clear: left;
+		}
+		&[type=submit] {
+			float: right;
+		}
+	}
+}

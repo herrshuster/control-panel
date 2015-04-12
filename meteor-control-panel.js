@@ -198,3 +198,20 @@ Router.route('/user/:_id', function(){
 	name: 'user.show'
 });
 
+// Router.route('/users/', function(){
+// 	this.render(
+// 		'user',
+// 		{
+// 			data: function(){
+// 				var user = Users.findOne({_id:this.params._id});
+
+// 				console.log(user);
+
+// 				return user;
+// 			}
+// 		}
+// 	);
+// }, {
+// 	name: 'user.show'
+// });
+

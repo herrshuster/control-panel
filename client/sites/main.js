@@ -11,6 +11,7 @@ Template.newSite.helpers({
 });
 Template.newSite.onRendered(function(){
 	$('input[name="slug"]').prop('readonly',true);
+	//change this to a live-updaing field instead of an input, which is insecure
 });
 AutoForm.addHooks(
 	'add_site',
@@ -32,7 +33,6 @@ Template.newSite.events({
     					.replace(/[^\w ]+/g,'-')
     					.replace(/ +/g,'-');
 		$("input[name='slug']").val(siteUrl);
-		console.log(siteUrl);
 	}
 });
 
@@ -53,9 +53,7 @@ Template.site.helpers({
 		}
 	},
 	checklistQuery: function() {
-		// console.log(this);
 		var checklistType = $('#newChecklist').find('option:selected').val();
-		console.log(checklistType);
 		var site = this.site.slug,
 			type = 'sweep';
 		return "site="+site+"&type="+type;
@@ -67,6 +65,24 @@ Template.site.helpers({
 		};
 
 		return "<select id='newChecklist'>"+options+"</select>";
+	},
+	itemsChecked: function() {
+		var checkedItems = 0;
+		for (var i = 0; i < this.items.length; i++) {
+			var checkedState = "";
+			for (var j = 0; j < this.items[i].events.length; j++) {
+				if(this.items[i].events[j].type == 'check' || this.items[i].events[j].type == 'uncheck') {
+					checkedState = this.items[i].events[j].type;
+				}
+			};
+			if(checkedState == 'check') {
+				checkedItems++;
+			}
+		};
+		return checkedItems;
+	},
+	itemsCount: function(){
+		return this.items.length;
 	}
 });
 
@@ -80,7 +96,6 @@ Template.allSites.helpers({
 	},
 	clientSlug: function(){
 		var client = Clients.findOne({_id:this.client});
-		console.log(client);
 		return client.slug;
 	}
 });

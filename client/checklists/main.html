@@ -1,9 +1,11 @@
 <template name="checklist">
-	<h1>{{title}}</h1>
-	<h2><a href="/site/{{site.slug}}">{{site.url}}</a></h2>
+	<header>
+		<h1>{{title}}</h1>
+		<h2><a href="/site/{{site.slug}}">{{site.url}}</a></h2>		
+	</header>
 	{{#each items}}
 		<section class="checklistItem" id="{{id}}">
-			<input type="checkbox">
+			<input type="checkbox" {{isChecked}}>
 			<h3>{{title}}</h3>
 			<p>{{description}}</p>
 		</section>
@@ -37,13 +39,7 @@
 </template>
 
 <template name="newChecklistItem">
-<!-- 	{{#autoForm collection="ChecklistItems" id="insertChecklistItem" type="insert" template="plain"}}
-		{{> afQuickField name='checklistType' options=ChecklistTypes}}
-		{{> afQuickField name='default'}}
-		{{> afQuickField name='revisions'}}
-		<button type="submit">Add</button>
-	{{/autoForm}} -->
-	<form id="insertChecklistItem">
+	<form id="insertChecklistItem" class="checklistItem">
 		<input type="text" name="title" placeholder="Title">
 		<input type="textarea" name="description" placeholder="Item description">
 		<input type="submit" value="Add Item">

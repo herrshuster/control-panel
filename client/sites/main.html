@@ -4,6 +4,7 @@
 		<h2>Checklists</h2>
 		{{#each checklists}}
 			<h3><a href="/checklist/{{_id}}">{{title}}</a></h3>
+			<progress value={{itemsChecked}} max={{itemsCount}}></progress>
 		{{/each}}
 		New {{{checklistTypes}}} Checklist
 	</section>

@@ -18,74 +18,49 @@ Template.newChecklistItem.events({
 	"submit form#insertChecklistItem": function(event,context) {
 		//make sure this only fires in the context of being inside a checklist
 		event.preventDefault();
-		console.log(context);
-		var title = event.target[0].value,
-			description = event.target[1].value,
-			checklist_for = context.data.belongs_to;		
-		ChecklistItems.insert({
+		var ChecklistItem = {
 			checklistType: context.data.type,
 			default: false,
 			revisions: [
 				{
 					reversion: 1,
-					title: title,
-					description: description
+					title: event.target[0].value,
+					description: event.target[1].value
 				}
 			]
-
-		},function(error,id){
-			console.log(error,id);
-			if(id) {
-				Checklists.update(
-					{_id:checklist_for},
-					{$addToSet: {
-						items: {
-							id: id,
-							events: [
-								{
-									date: new Date(),
-									user: Meteor.user()._id,
-									type: "create"
-								}
-							],
-							title: title,
-							description: description
-						}
-					}},
-					function(error,id) {
-						console.log(error,id);
-						if(id) {
-							$('form#insertChecklistItem').remove();
-							//Also re-insert "new checklist item" link
-						}
-					}
-				);
+		};
+		Meteor.call(
+			'create_checklistItem',
+			ChecklistItem,
+			context.data.belongs_to,
+			function(response){
+				$('form#insertChecklistItem').remove();
+				//Also re-insert "new checklist item" link
 			}
-		});
+		);
 	}
 });
 Template.newChecklistItem.onRendered(function(){
 	if(this.data.type) {
 		$('select[name=checklistType] option[value='+this.data.type+']').attr('selected','selected')
 	}
-	console.log(this.data.type);
 });
 Template.newChecklist.events({
 	//Items can be added and removed on this screen
 	"mousedown [type=submit]": function(event,context) {
-		//Move this to serverside
-		Checklists.insert({
+		var Checklist = {
 			title: this.title,
 			belongs_to: this.belongs_to,
 			type: this.type,
 			items: this.items
-		}, function(error,id){
-			if(id) {
-				Router.go('/checklist/'+id);
+		};
+		Meteor.call(
+			'create_checklist',
+			Checklist,
+			function(response){
+				console.log(response);//returns undefined
 			}
-			console.log(error,id);
-		});
-		console.log(this);
+		);
 	},
 });
 Template.checklist.events({
@@ -94,13 +69,52 @@ Template.checklist.events({
 		window.opener.location.href = event.target.href;
 	},
 	"click a#new_item": function(event,context) {
-		Blaze.renderWithData(Template.newChecklistItem,{type:this.type,belongs_to:this._id},document.body,event.currentTarget);
+		Blaze.renderWithData(
+			Template.newChecklistItem,
+			{
+				type:this.type,
+				belongs_to:this._id
+			},
+			document.body,
+			event.currentTarget
+		);
 		//remove this link until it is reinserted by a successful checklist item addition
-	}	
+	},
+	"click .checklistItem input[type=checkbox]": function(event,context) {
+		var item_id = this.id,
+			checklist_id = context.data._id,
+			eventType;
+		var checklist = Checklists.findOne({_id:checklist_id});
+		if(event.target.checked) {
+			eventType = 'check';
+		} else {
+			eventType = 'uncheck';
+		}
+		Meteor.call(
+			'event_checklist_item',
+			eventType,
+			item_id,
+			checklist_id,
+			function(response) {
+				console.log(response)
+			}
+		);
+	}
 })
 Template.checklist.helpers({
 	site: function() {
 		var site = Sites.findOne({_id:this.belongs_to});
 		return site;
+	},
+	isChecked: function() {
+		var checkedState = "";
+		for (var i = 0; i < this.events.length; i++) {
+			if(this.events[i].type == 'check' || this.events[i].type == 'uncheck') {
+				checkedState = this.events[i].type;
+			}
+		};
+		if(checkedState == 'check') {
+			return 'checked';
+		};
 	}
 });
