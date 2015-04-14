@@ -30,6 +30,18 @@ body {
 }
 
 input {
+	&[type=editable] {
+		// box-sizing: content-box;
+		border: 0;
+		transition: 0.25s box-shadow ease-in-out;
+		&:hover {
+			box-shadow: 0 0 1px gray;
+		}
+		&:focus {
+			box-shadow: 0 0 1px gray,
+						0 0 1px green inset;
+		}
+	}
 	&[type=checkbox] {
 
 	}
@@ -38,4 +50,10 @@ input {
 fieldset {
 	// border: none;
 	// padding: 0;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	input {
+		font: inherit;
+	}
 }

@@ -3,8 +3,7 @@
 	<section id="checklists">
 		<h2>Checklists</h2>
 		{{#each checklists}}
-			<h3><a href="/checklist/{{_id}}">{{title}}</a></h3>
-			<progress value={{itemsChecked}} max={{itemsCount}}></progress>
+			{{> site__checklist}}
 		{{/each}}
 		New {{{checklistTypes}}} Checklist
 	</section>
@@ -41,6 +40,12 @@
 
 </template>
 
+<template name="site__checklist">
+	<section class="siteChecklist">
+		<h3><a href="/checklist/{{_id}}">{{title}}</a></h3>
+		<progress value={{itemsChecked}} max={{itemsCount}}></progress>
+	</section>
+</template>
 
 
 <template name="newSite">

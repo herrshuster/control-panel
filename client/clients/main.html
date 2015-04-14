@@ -8,6 +8,10 @@
 	{{/if}}
 	<h2>Client Information</h2>
 	{{#with client}}
+		<h3><input type=editable name=name value={{name}} readonly></h3>
+		{{#each addIndex address}}
+			{{> client__address}}
+		{{/each}}
 		{{#autoForm collection="Clients" doc=this id="edit_client" type="update" template="plain"}}
 			{{> afQuickField name='name'}}
 			{{> afQuickField name='address'}}
@@ -21,6 +25,16 @@
 	{{/with}}
 </template>
 
+<template name="client__address">
+	<img src="{{address__map}}">
+	<address>
+		<input type=editable name=address.{{index}}.street_address value={{street_address}} readonly><br>
+		<input type=editable name=address.{{index}}.address_locality value={{address_locality}} readonly> <input type=editable name=address.{{index}}.address_region value={{address_region}} readonly>, <input type=editable name=address.{{index}}.postal_code value={{postal_code}} readonly>
+	</address>
+	{{#if note}}
+		<p>{{value.note}}</p>
+	{{/if}}
+</template>
 
 
 

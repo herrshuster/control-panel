@@ -4,6 +4,54 @@
 		"selected_items":
 		[
 			[
+				"for",
+				"for	for (…) {…}"
+			],
+			[
+				"newChecklist",
+				"newChecklistItem"
+			],
+			[
+				"allow",
+				"allowedValues"
+			],
+			[
+				"Check",
+				"ChecklistItemRevisionSchema"
+			],
+			[
+				"Checkl",
+				"checklistTypes"
+			],
+			[
+				"Checklist",
+				"ChecklistItemRevision"
+			],
+			[
+				"Chec",
+				"ChecklistItemSchema"
+			],
+			[
+				"phone",
+				"phone_numbers"
+			],
+			[
+				"Email",
+				"EmailAddressSchema"
+			],
+			[
+				"email",
+				"email_addresses"
+			],
+			[
+				"Add",
+				"AddressSchema"
+			],
+			[
+				"Em",
+				"EmailAddressSchema"
+			],
+			[
 				"all",
 				"allowedValues"
 			]
@@ -12,60 +60,73 @@
 	"buffers":
 	[
 		{
-			"file": "meteor-control-panel.js",
+			"file": "client/clients/main.js",
 			"settings":
 			{
-				"buffer_size": 3865,
+				"buffer_size": 1981,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "site.js",
+			"file": "main.less",
 			"settings":
 			{
-				"buffer_size": 1056,
+				"buffer_size": 815,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "client.js",
+			"file": "lib/methods.js",
 			"settings":
 			{
-				"buffer_size": 653,
+				"buffer_size": 169,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "site.html",
+			"file": "client/clients/main.html",
 			"settings":
 			{
-				"buffer_size": 1848,
+				"buffer_size": 2074,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "client.html",
+			"file": "meteor-control-panel.html",
 			"settings":
 			{
-				"buffer_size": 496,
+				"buffer_size": 387,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "home.html",
+			"file": "server/clients/main.js",
 			"settings":
 			{
-				"buffer_size": 67,
+				"buffer_size": 304,
 				"line_ending": "Unix"
 			}
 		}
 	],
 	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
 	"command_palette":
 	{
 		"height": 392.0,
+		"last_filter": "synta",
 		"selected_items":
 		[
+			[
+				"synta",
+				"Set Syntax: LESS"
+			],
+			[
+				"isnta",
+				"Package Control: Install Package"
+			],
 			[
 				"inst",
 				"Package Control: Install Package"
@@ -75,7 +136,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 430.0
+		"width": 313.0
 	},
 	"console":
 	{
@@ -95,25 +156,64 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel"
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client/checklists",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client/clients",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client/sites",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/lib",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/server",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/server/checklists",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/server/clients",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/server/sites"
 	],
 	"file_history":
 	[
-		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/meteor-control-panel.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client/checklists/main.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/server/checklists/main.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client/sites/main.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client/clients/main.html",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/lib/schemas.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/main.less",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/lib/helpers.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client/clients/main.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/logins-restrictions.fake.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/main.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/server/schemas.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client/sites/main.html",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/home.html",
 		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/meteor-control-panel.html",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/todo.txt",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client/checklists/main.html",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client/checklists/main.less",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client/users/main.html",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/meteor-control-panel.less",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/typebase.less",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/README.md",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/checklist.html",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/checklist.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/site.html",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client.html",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/client.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/site.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/site.less",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/lib/routes.js",
+		"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel/lib/schemas/site.js",
 		"/Users/tyleratoptimizehere.co/Desktop/control-panel/data/control-panel.0",
 		"/Users/tyleratoptimizehere.co/Desktop/control-panel/schemas/site.js",
 		"/Users/tyleratoptimizehere.co/Downloads/Agile Development.md"
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 93.0,
 		"where_history":
 		[
+			"/Users/tyleratoptimizehere.co/Desktop/meteor-control-panel"
 		]
 	},
 	"find_state":
@@ -121,6 +221,76 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"k",
+			"value.",
+			"street_address",
+			"each_with_index",
+			"each",
+			"console.log",
+			"key",
+			"ChecklistItem",
+			"lients",
+			"type: CredentialSchema",
+			"LoginSchema",
+			"loginschema",
+			"loginsche",
+			"permissions",
+			"with",
+			"console.log",
+			"console.l",
+			"console.log",
+			"this.events[i]",
+			"i",
+			"response",
+			"error,",
+			"this",
+			"Meteor.user(",
+			"allSites",
+			"checklist",
+			"window.ope",
+			"window.o",
+			"default",
+			"event",
+			"insertChecklistItem",
+			"h3",
+			"h2",
+			"items[i].revisions[items[i].revisions.length -1]",
+			"button",
+			"Object.keys(ChecklistTypes)",
+			"console.log",
+			"ChecklistTypes",
+			"'type': '',",
+			"function()",
+			",",
+			"each",
+			"action",
+			"Action",
+			"date",
+			"type",
+			"Site",
+			"site",
+			"with",
+			"Client",
+			"Clients",
+			"with",
+			"console.log",
+			"(){\n",
+			"_url",
+			"clientName",
+			"_name",
+			"match",
+			"people",
+			"Clients",
+			"Sites",
+			"client",
+			": {",
+			"h2",
+			"h1",
+			"people.$.",
+			"phone_numbers.$.",
+			"email_addresses.$.",
+			"addresses.$.",
+			"\",",
 			"this.route",
 			"site",
 			"Sites",
@@ -168,19 +338,19 @@
 			[
 				{
 					"buffer": 0,
-					"file": "meteor-control-panel.js",
+					"file": "client/clients/main.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3865,
+						"buffer_size": 1981,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								580,
-								580
+								1303,
+								1303
 							]
 						],
 						"settings":
@@ -188,28 +358,57 @@
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": 0.0,
-						"translation.y": 53.0,
+						"translation.x": 614.0,
+						"translation.y": 295.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "site.js",
+					"file": "main.less",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1056,
+						"buffer_size": 815,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								819,
-								819
+								670,
+								670
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LESS/LESS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "lib/methods.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 169,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								102,
+								102
 							]
 						],
 						"settings":
@@ -224,26 +423,66 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "client.js",
+					"buffer": 3,
+					"file": "client/clients/main.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 653,
+						"buffer_size": 2074,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								626,
-								626
+								932,
+								932
+							],
+							[
+								1035,
+								1035
+							],
+							[
+								1132,
+								1132
+							],
+							[
+								1225,
+								1225
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"syntax": "Packages/HTML/HTML.tmLanguage",
 							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 29.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "meteor-control-panel.html",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 387,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -253,84 +492,26 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "site.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1848,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								854,
-								854
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "client.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 496,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								455,
-								455
-							]
-						],
-						"settings":
-						{
-							"open_with_edit": true,
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
 					"buffer": 5,
-					"file": "home.html",
+					"file": "server/clients/main.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 67,
+						"buffer_size": 304,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								67,
-								67
+								16,
+								16
 							]
 						],
 						"settings":
 						{
 							"open_with_edit": true,
-							"syntax": "Packages/HTML/HTML.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -344,7 +525,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 23.0
+		"height": 22.0
 	},
 	"input":
 	{
@@ -377,15 +558,17 @@
 	{
 		"height": 0.0
 	},
+	"pinned_build_system": "",
 	"project": "Meteor Control Panel.sublime-project",
 	"replace":
 	{
-		"height": 42.0
+		"height": 40.0
 	},
 	"save_all_on_build": true,
 	"select_file":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -394,6 +577,7 @@
 	"select_project":
 	{
 		"height": 500.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -402,6 +586,7 @@
 	"select_symbol":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -415,7 +600,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 244.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

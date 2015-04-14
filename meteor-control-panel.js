@@ -1,5 +1,14 @@
 
 
+
+Router.onBeforeAction(function () {
+  if (!Meteor.userId()) {
+    this.render('login');
+  } else {
+    this.next();
+  }
+});
+
 Router.route('/', function(){
 	this.render('home');
 });
@@ -87,7 +96,7 @@ Router.route('/client/:_slug', function(){
 
 				if(client) {
 					var sites = Sites.find({client:client._id}).fetch();
-					console.log(sites);
+					console.log(client,sites);
 					return {
 						client: client,
 						sites: sites

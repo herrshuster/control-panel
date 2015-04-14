@@ -46,18 +46,6 @@ Template.site.events({
 	}
 });
 Template.site.helpers({
-	checklistOptions: function() {
-		return {
-			ownerId: this._id,
-			type: 'reactive to select box in new checklist link'
-		}
-	},
-	checklistQuery: function() {
-		var checklistType = $('#newChecklist').find('option:selected').val();
-		var site = this.site.slug,
-			type = 'sweep';
-		return "site="+site+"&type="+type;
-	},
 	checklistTypes: function() {
 		var options = "<option value='' selected>Select Type</option>";
 		for (var i = ChecklistTypes.length - 1; i >= 0; i--) {
@@ -65,7 +53,10 @@ Template.site.helpers({
 		};
 
 		return "<select id='newChecklist'>"+options+"</select>";
-	},
+	}
+});
+
+Template.site__checklist.helpers({
 	itemsChecked: function() {
 		var checkedItems = 0;
 		for (var i = 0; i < this.items.length; i++) {

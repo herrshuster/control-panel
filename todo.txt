@@ -5,3 +5,5 @@ Instead of using popup windows for checklists, adding items, &c, render inline
 consider changing 'sites' to 'properties' to make industry agnostic
 
 password generator
+
+Server/client separation

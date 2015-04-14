@@ -1,0 +1,139 @@
+//users will have a number of restrictions
+
+//users may reduce the restrictions of those with more, down to and including their own amount
+//Users may not change the restrictions of those with the same amount
+//Users may increase their own restrictions, but not decrease them
+//Users with no restrictions may increase their own restrictions as long as there is at least one more user with no restrictions
+
+function can_change_restrictions(restricting_user,restricted_user,new_restrictions) {
+	if(restricting_user !== restricted_user) {
+		if(restricting_user.restrictions < restricted_user.restrictions) {
+			//keep users from granting users fewer restrictions than themselves
+			if(restricting_user.restrictions >= new_restrictions) {
+				return true
+			} else {
+				//users may not grant fewer restrictions than their own
+				return false
+			}
+		} else {
+			//users may not restrict users with fewer restrictions than them
+			return false
+		}
+	} else if(restricting_user.restrictions <= new_restrictions) {
+		if(other users with no restrictions exist) {
+			//you may restrict yourself further
+		}
+	} else {
+		//you may not reduce your restrictions
+	}
+}
+
+
+//logins currently have a level; instead, they should have three fields:
+{
+	owner: String,
+	permissions: [
+		{
+			user: String,
+			granter: String
+		}
+	],
+	restrictions: [
+		{
+			user: String,
+			restrictor: String
+		}
+	]
+}
+
+//The default owner is the creator
+//Logins may be accessed by the owner and any users with the same or fewer restrictions
+
+//Ownership may be transferred by the owner or a less-restricted user to anyone
+function can_transfer_ownership(requester,old_owner,new_owner) {
+	if(requester == old_owner) {
+		return true
+	} else if(requester.restrictions < old_owner.restrictions) {
+		return true
+	} else {
+		//you can't transfer ownership away from a less-restricted user
+		return false
+	}
+}
+
+//users with more restrictions than the owner may not change restrictions
+//users with the same or fewer restrictions than the owner may grant or revoke special permission to users with more restrictions than themselves
+//users with fewer restrictions than the owner may restrict access to the login by users with more restrictions than themselves
+//A user may not be both permitted and restricted from accessing a login, and the owner may not be restricted
+function can_grant_permission(granting_user,granted_user,credential){
+	console.log("You would like to grant access to "+credential+" by "+granted_user+", ")
+	if(granting_user.restrictions <= credential.owner.restrictions) {
+		console.log("you have the same or fewer restrictions than the credential's owner, "+credential.owner)
+		if(granting_user.restrictions < granted_user.restrictions) {
+			console.log("and you have fewer restrictions than, "+granted_user)
+			if(granted_user is not in credential.restrictions) {
+				console.log("and "+granted_user+" has not been restricted, ")
+				add granted_user to credential.permissions
+				console.log("so "+granted_user+"now has access to"+credential);
+			} else if(granting_user.restrictions < credential.owner.restrictions) {
+				console.log("and though "+granted_user+" was previously restricted by"+credential.restrictions.granted_user.restrictor+", you are less restricted than they, ")
+				remove granted_user from credential.restrictions
+				console.log("so "+granted+" is no longer restricted, ")
+				add granted_user to credential.permissions
+				console.log("and "+granted_user+"now has access to"+credential);
+			} else if(credential.permissions.granting_user.granter.restrictions < credential.owner.restrictions) {
+				//TO TEST
+				console.log("and though "+granted_user+" was previously restricted by "+credential.restrictions.granted_user.restrictor+", who is less restricted than you, you were granted access by "+credential.permissions.granting_user.granter+", who is less restricted than "+credential.restrictions.granted_user.restrictor)
+			} else {
+				console.log("but "+granted_user+" was restricted by "+credential.restrictions.granted_user.restrictor+" who is less restricted than you.")
+				return false
+			}
+		} else {
+			console.log("but you may not grant access to someone with fewer restrictions than yourself.")
+			return false
+		}
+	} else {
+		console.log("but you may not grant access to a credential owned by someone with fewer restrictions than you.")
+		return false
+	}
+}
+
+//this function is contingent on the user accessing the credential
+function can_restrict_access(restricting_user,restricted_user,credential) {
+	console.log("You want to restrict access by "+restricted_user+" to "+credential+", ")
+	if(restricting_user.restrictions < restricted_user.restrictions) {
+		console.log("you have fewer restrictions than "+restricted_user+", ")
+		if(restricted_user is not in credential.permissions) {
+			console.log("who has not previously been specially permitted, ")
+			add restricted_user to credential.restrictions
+			console.log("so "+restricted_user+" can no longer access "+credential);
+		} else if(credential.permissions.restricted_user.granter.restrictions > restricting_user.permissions){
+			console.log("and though "+restricted_user+" was previously permitted by "+credential.permissions.restricted_user.granter+", you are less restricted than they, ")
+			remove restricted_user from credential.permissions
+			add restricted_user to credential.restrictions
+			console.log("so "+restricted_user+" can no longer access "+credential);
+		} else {
+			//There should be a corollary to the TO TEST check above
+			console.log("but a less restricted user than you granted access to the user you are trying to restrict")
+			return false
+		}
+	} else {
+		console.log("but they are less restricted than you.")
+		return false
+	}
+}
+
+//When a login is requested, it first checks if the requesting user has been restricted, then if the requesting user's level has access to the credential. If not, then it checks if the user has been permitted.
+function can_access_credential(requesting_user,credential) {
+	if(requesting_user is not in credential.restrictions) {
+		if(requesting_user.restrictions <= credential.owner.restrictions) {
+
+		} else if(requesting_user is in credential.permissions) {
+
+		} else {
+			return false
+		}
+	} else {
+		return false
+	}
+}
