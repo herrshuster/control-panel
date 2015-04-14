@@ -23,15 +23,15 @@
 			{{> afQuickField name='dubdub'}}
 			{{> afQuickField name='organization_name'}}
 			{{> afQuickField name='billing_cycle'}}
-			{{> afQuickField name='addresses'}}
-			{{> afQuickField name='email_addresses'}}
-			{{> afQuickField name='phone_numbers'}}
-			{{> afQuickField name='services'}}
-			{{> afQuickField name='products'}}
-			{{> afQuickField name='locations'}}
+			{{> afQuickField name='address'}}
+			{{> afQuickField name='email_address'}}
+			{{> afQuickField name='phone_number'}}
+			{{> afQuickField name='service'}}
+			{{> afQuickField name='product'}}
+			{{> afQuickField name='location'}}
 			{{> afQuickField name='board'}}
-			{{> afQuickField name='people'}}
-			{{> afQuickField name='services_provided'}}
+			{{> afQuickField name='person'}}
+			{{> afQuickField name='service_provided'}}
 			{{> afQuickField name='status'}}
 			<button type="submit">Update</button>
 		{{/autoForm}}
@@ -51,27 +51,27 @@
 <template name="newSite">
 	<h1>Add a New Site</h1>
 	{{#autoForm collection="Sites" id="add_site" type="insert" template="plain"}}
-		{{> afQuickField name='client' options=allClients}}
+	<!-- 	{{> afQuickField name='client' options=allClients}}
 		{{> afQuickField name='url'}}
 		{{> afQuickField name='slug'}}
 		{{> afQuickField name='secure'}}
-		{{> afQuickField name='organization_name'}}<!--should autofill from client-->
+		{{> afQuickField name='organization_name'}}
 		{{> afQuickField name='billing_cycle'}}
-		{{> afQuickField name='addresses'}}
-		{{> afQuickField name='email_addresses'}}
-		{{> afQuickField name='phone_numbers'}}
-		{{> afQuickField name='services_offered'}}
-		{{> afQuickField name='products_offered'}}
-		{{> afQuickField name='locations'}}
+		{{> afQuickField name='address'}}
+		{{> afQuickField name='email_address'}}
+		{{> afQuickField name='phone_number'}}
+		{{> afQuickField name='service_offered'}}
+		{{> afQuickField name='product_offered'}}
+		{{> afQuickField name='location'}}
 		{{> afQuickField name='board'}}
-		<!--{{> afQuickField name='people'}}-->
-		{{> afQuickField name='services_provided' options='allowed'}}
+		{{> afQuickField name='people'}}
+		{{> afQuickField name='service_provided' options='allowed'}}
 		{{> afQuickField name='status' options='allowed'}}
-		{{> afQuickField name='services_used'}}
-		{{> afQuickField name='file_access'}}
+		{{> afQuickField name='service_used'}}
+		{{> afQuickField name='file_access'}} -->
 		<button type="submit">Add</button>
 	{{/autoForm}}
-	
+
 
 </template>
 

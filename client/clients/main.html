@@ -12,12 +12,16 @@
 		{{#each addIndex address}}
 			{{> client__address}}
 		{{/each}}
+		<a class='add-item address' href="#">Add Address</a>
+		{{#each addIndex email_address}}
+			{{> client__email_address}}
+		{{/each}}
+		<a class='add-item email_address' href="#">Add Email Address</a>
 		{{#autoForm collection="Clients" doc=this id="edit_client" type="update" template="plain"}}
 			{{> afQuickField name='name'}}
-			{{> afQuickField name='address'}}
-			{{> afQuickField name='email_addresses'}}
-			{{> afQuickField name='phone_numbers'}}
-			{{> afQuickField name='people'}}
+			{{> afQuickField name='email_address'}}
+			{{> afQuickField name='phone_number'}}
+			{{> afQuickField name='person'}}
 			{{> afQuickField name='referral'}}
 			{{> afQuickField name='note'}}
 			<button type="submit">Update</button>
@@ -26,14 +30,28 @@
 </template>
 
 <template name="client__address">
-	<img src="{{address__map}}">
-	<address>
-		<input type=editable name=address.{{index}}.street_address value={{street_address}} readonly><br>
-		<input type=editable name=address.{{index}}.address_locality value={{address_locality}} readonly> <input type=editable name=address.{{index}}.address_region value={{address_region}} readonly>, <input type=editable name=address.{{index}}.postal_code value={{postal_code}} readonly>
-	</address>
-	{{#if note}}
-		<p>{{value.note}}</p>
-	{{/if}}
+	<section class="client_address" data-index="{{index}}" data-field=address>
+		<button class="remove">X</button>
+		<img src="{{address__map}}">
+		<address>
+			<input type=editable name=address.{{index}}.street_address value={{street_address}} placeholder="Street Address" readonly><br>
+			<input type=editable name=address.{{index}}.address_locality value={{address_locality}} placeholder="City" readonly> <input type=editable name=address.{{index}}.address_region value={{address_region}} placeholder="ST" readonly>, <input type=editable name=address.{{index}}.postal_code placeholder="ZIP" value={{postal_code}} readonly>
+		</address>
+		{{#if note}}
+			<p>{{note}}</p>
+		{{/if}}
+	</section>
+</template>
+
+<template name="client__email_address">
+	<section class="client_email_address" data-index="{{index}}" data-field=email_address>
+		<button class="remove">X</button>
+		<input type=editable name=email_address.{{index}}.address value={{address}} placeholder="Email" readonly><a href="mailto:{{address}}">send to</a><br>
+		<input type=editable name=email_address.{{index}}.login value={{login}} placeholder="Login" readonly>
+		{{#if note}}
+			<p>{{note}}</p>
+		{{/if}}
+	</section>
 </template>
 
 
@@ -41,17 +59,17 @@
 
 <template name="newClient">
 	<h1>Add a New Client</h1>
-	{{#autoForm collection="Clients" id="client" type="insert" template="plain"}}
+<!-- 	{{#autoForm collection="Clients" id="client" type="insert" template="plain"}}
 		{{> afQuickField name='name'}}
 		{{> afQuickField name='slug'}}
 		{{> afQuickField name='address'}}
-		{{> afQuickField name='email_addresses'}}
-		{{> afQuickField name='phone_numbers'}}
-		{{> afQuickField name='people'}}
+		{{> afQuickField name='email_address'}}
+		{{> afQuickField name='phone_number'}}
+		{{> afQuickField name='person'}}
 		{{> afQuickField name='referral'}}
 		{{> afQuickField name='note'}}
 		<button type="submit">Add</button>
-	{{/autoForm}}
+	{{/autoForm}} -->
 
 </template>
 

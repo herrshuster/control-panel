@@ -1,4 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Gentium+Basic:400,400italic,700,700italic);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
 
 * {
 	box-sizing: border-box;
@@ -30,16 +31,17 @@ body {
 }
 
 input {
+	border-radius: 2px;
 	&[type=editable] {
 		// box-sizing: content-box;
 		border: 0;
 		transition: 0.25s box-shadow ease-in-out;
+		font-family: Source Code Pro, monospace;
 		&:hover {
 			box-shadow: 0 0 1px gray;
 		}
 		&:focus {
-			box-shadow: 0 0 1px gray,
-						0 0 1px green inset;
+			box-shadow: 0 0 1px gray inset;
 		}
 	}
 	&[type=checkbox] {

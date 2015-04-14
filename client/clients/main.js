@@ -14,7 +14,7 @@ Template.newClient.events({
 		$("input[name='slug']").val(clientName);
 		console.log(clientName);
 	}
-});	
+});
 
 Template.allClients.helpers({
 	clients: function(){
@@ -38,35 +38,81 @@ Template.client__address.helpers({
 	}
 });
 
+Template.clientInfo.onRendered(function(){
+	console.log('rendered');
+	// console.log(this.findAll('input'));
+	// $('input').attr('size',$(this).val().length);
+})
+
 Template.clientInfo.events({
-	"focus input[type=editable]": function(event,context) {
-		// console.log(event);
-		$(event.target).removeProp('readonly');
-		// console.log("field:",event);
+	'load': function(event,context) {
+		var editables = $('input[type=editable]');
+		$.each(editables, function(index, val) {
+			$(this).attr('size',$(this).val().length);
+		});
 	},
-	"keyup input[type=editable]": function(event,context) {
-		var pause;
+	'focus input[type=editable]': function(event,context) {
+		$(event.target).removeProp('readonly');
+	},
+	'keydown input[type=editable]': function(event,context) {
+		$(event.target).attr('size',$(event.target).val().length);
+	},
+	'keyup input[type=editable]': function(event,context) {
+		//this should wait for a pause and then save
+		// console.log(event);
 		if(event.keyCode == 13) {
-			$(event.target).prop('readonly','readonly').blur();
-		} else {
-			// var pause;
-			clearTimeout(pause);
-			pause = setTimeout(function(){
-				//This timeout just waits once, and then live updates instead of clearing the timeout every time
-				//use setInterval to save input every second, unless hitting enter
-				var field = event.target.name,
+			var field = event.target.name,
 					value = event.target.value;
-				Meteor.call(
-					'client_update_field',
-					context.data.client._id,
-					field,
-					value,
-					function(response){
-						console.log(response);
-					}
-				);
-			},1500);
+			Meteor.call(
+				'client_update_field',
+				context.data.client._id,
+				field,
+				value,
+				function(response){
+					console.log(response);
+					$(event.target).prop('readonly','readonly').blur();
+				}
+			);
 		}
-		
+	},
+	'blur input[type=editable]': function(event,context) {
+		var field = event.target.name,
+				value = event.target.value;
+		Meteor.call(
+			'client_update_field',
+			context.data.client._id,
+			field,
+			value,
+			function(response){
+				console.log(response);
+				$(event.target).prop('readonly','readonly');
+			}
+		);
+	},
+	'click .add-item': function(event,context) {
+		var classes = event.target.className.split(/\s+/);
+		//this only adds address because of hard-code in server/clients/main.js
+		var item_to_add = classes[1];
+		Meteor.call(
+			'client_add_to_field',
+			context.data.client._id,
+			item_to_add,
+			function(response) {
+				console.log(response);
+			}
+		);
+	},
+	'click button.remove': function(event,context) {
+		var index_to_remove = $(event.target.parentElement).attr('data-index');
+		console.log(index_to_remove);
+		Meteor.call(
+			'client_remove_field',
+			context.data.client._id,
+			$(event.target.parentElement).attr('data-field'),
+			index_to_remove,
+			function(response) {
+				console.log(response);
+			}
+		)
 	}
 });
