@@ -46,20 +46,21 @@ Template.clientInfo.onRendered(function(){
 
 Template.clientInfo.events({
 	'load': function(event,context) {
-		var editables = $('input[type=editable]');
+		var editables = $('*[type=editable]');
 		$.each(editables, function(index, val) {
 			$(this).attr('size',$(this).val().length);
 		});
 	},
-	'focus input[type=editable]': function(event,context) {
+	'focus *[type=editable]': function(event,context) {
 		$(event.target).removeProp('readonly');
 	},
-	'keydown input[type=editable]': function(event,context) {
-		$(event.target).attr('size',$(event.target).val().length);
+	'keydown *[type=editable]': function(event,context) {
+		$(event.target).attr('size',$(event.target).val().length + 1);
 	},
-	'keyup input[type=editable]': function(event,context) {
+	'keyup *[type=editable]': function(event,context) {
 		//this should wait for a pause and then save
 		// console.log(event);
+		$(event.target).attr('size',$(event.target).val().length);
 		if(event.keyCode == 13) {
 			var field = event.target.name,
 					value = event.target.value;
@@ -75,7 +76,7 @@ Template.clientInfo.events({
 			);
 		}
 	},
-	'blur input[type=editable]': function(event,context) {
+	'blur *[type=editable]': function(event,context) {
 		var field = event.target.name,
 				value = event.target.value;
 		Meteor.call(

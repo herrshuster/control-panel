@@ -30,22 +30,21 @@ body {
 	}
 }
 
-input {
+input,
+textarea {
 	border-radius: 2px;
 	&[type=editable] {
 		// box-sizing: content-box;
 		border: 0;
 		transition: 0.25s box-shadow ease-in-out;
 		font-family: Source Code Pro, monospace;
+		font-size: 1rem;
 		&:hover {
 			box-shadow: 0 0 1px gray;
 		}
 		&:focus {
 			box-shadow: 0 0 1px gray inset;
 		}
-	}
-	&[type=checkbox] {
-
 	}
 }
 
@@ -58,4 +57,7 @@ h1,h2,h3,h4,h5,h6 {
 	input {
 		font: inherit;
 	}
+}
+.card {
+	border: 1px solid gray;
 }
