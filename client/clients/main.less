@@ -1,10 +1,57 @@
 .client_address,
 .client_email_address,
-.client_phone_number {
+.client_phone_number,
+.client_person,
+.person_phone_number,
+.person_email_address {
 	position: relative;
 	.remove {
 		position: absolute;
 		right: 0;
 		top: 0;
+	}
+}
+.client_address {
+	background-size: cover;
+	background-position: center center;
+}
+
+.flex-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: stretch;
+	align-content: stretch;
+}
+body {
+	.flex-container;
+  
+	h1 {
+		width: 100%;
+	}
+	.add-item {
+		width: 100%;
+	}
+}
+#person {
+	h3 {
+		width: 100%;
+	}
+	.flex-container;
+}
+#address {
+	h3 {
+		width: 100%;
+	}
+	.flex-container;
+	.client_address {
+		width: 100%;
+		@media (min-width: 480px) {
+			width: 50%;
+		}
+		@media (min-width: 768px) {
+			width: 33%;
+		}
 	}
 }

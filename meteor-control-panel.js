@@ -195,7 +195,7 @@ Router.route('/user/:_id', function(){
 		'user',
 		{
 			data: function(){
-				var user = Users.findOne({_id:this.params._id});
+				var user = Meteor.users.findOne({_id:this.params._id});
 
 				console.log(user);
 
@@ -207,20 +207,22 @@ Router.route('/user/:_id', function(){
 	name: 'user.show'
 });
 
-// Router.route('/users/', function(){
-// 	this.render(
-// 		'user',
-// 		{
-// 			data: function(){
-// 				var user = Users.findOne({_id:this.params._id});
+Router.route('/users/', function(){
+	this.render(
+		'allUsers',
+		{
+			data: function(){
+				var users = Meteor.users.find().fetch();
 
-// 				console.log(user);
+				console.log(users);
 
-// 				return user;
-// 			}
-// 		}
-// 	);
-// }, {
-// 	name: 'user.show'
-// });
+				return {
+					users: users
+				};
+			}
+		}
+	);
+}, {
+	name: 'user.all'
+});
 

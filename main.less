@@ -10,6 +10,7 @@ body {
 	margin: 0;
 	float: left;
 	width: 100vw;
+	padding: 0.5rem;
 	>header {
 		padding: 0 0.5rem;
 	}
@@ -17,7 +18,7 @@ body {
 		width: 100%;
 		float: left;
 		margin-bottom: 0.5rem;
-		padding: 0.5rem;
+		// padding: 0.5rem;
 		ul {
 			margin: 0;
 			padding: 0;
@@ -33,7 +34,7 @@ body {
 input,
 textarea {
 	border-radius: 2px;
-	&[type=editable] {
+	&.editable {
 		// box-sizing: content-box;
 		border: 0;
 		transition: 0.25s box-shadow ease-in-out;
@@ -59,5 +60,8 @@ h1,h2,h3,h4,h5,h6 {
 	}
 }
 .card {
-	border: 1px solid gray;
+	box-shadow: 0 0 1px gray;
+	border-radius: 2px;
+	margin-bottom: 1rem;
+	padding: 0.5rem;
 }

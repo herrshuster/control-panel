@@ -1,14 +1,18 @@
 <template name="clientInfo">
 	<h1>{{client.name}}</h1>
 	{{#if sites}}
-		<h2>Sites</h2>
-		{{#each sites}}
-			<a href="/site/{{slug}}">{{url}}</a>
-		{{/each}}
+		<section class=card id='sites'>
+			<h2>Sites</h2>
+			{{#each sites}}
+				<a href="/site/{{slug}}">{{url}}</a>
+			{{/each}}
+		</section>
 	{{/if}}
-	<h2>Client Information</h2>
 	{{#with client}}
-		<h3><input type=editable name=name value={{name}} readonly></h3>
+		<section class=card id='client'>
+			<h2>Client Information</h2>
+			<h3><input type=text class=editable name=name value={{name}} readonly></h3>
+		</section>
 		<section class=card id='address'>
 			<h3>Addresses</h3>
 			{{#each addIndex address}}
@@ -37,54 +41,80 @@
 			{{/each}}
 			<a class='add-item person' href="#">Add Person</a>
 		</section>
-		<input type=editable name=referral value={{referral}} placeholder="enter referral" readonly><br>
-		<textarea type=editable name=note value={{note}} placeholder="enter note" readonly></textarea>
+		<input type=text class=editable name=referral value={{referral}} placeholder="enter referral" readonly><br>
+		<textarea class=editable name=note value={{note}} placeholder="enter note" readonly></textarea>
 	{{/with}}
 </template>
 
 <template name="client__address">
-	<section class=client_address data-index={{index}} data-field=address>
+	<section class=client_address data-index={{index}} data-field=address style='background-image:url({{address__map}})'>
 		<button class=remove>X</button>
-		<img src="{{address__map}}">
 		<address>
-			<input type=editable name=address.{{index}}.street_address value={{street_address}} placeholder="add street address" readonly><br>
-			<input type=editable name=address.{{index}}.address_locality value={{address_locality}} placeholder="add city" readonly> <input type=editable name=address.{{index}}.address_region value={{address_region}} placeholder="add state" readonly>, <input type=editable name=address.{{index}}.postal_code placeholder="add zip" value={{postal_code}} readonly>
+			<input type=text class=editable name=address.{{index}}.street_address value={{street_address}} placeholder="add street address" readonly><br>
+			<input type=text class=editable name=address.{{index}}.address_locality value={{address_locality}} placeholder="add city" readonly> <input type=text class=editable name=address.{{index}}.address_region value={{address_region}} placeholder="add state" readonly>, <input type=text class=editable name=address.{{index}}.postal_code placeholder="add zip" value={{postal_code}} readonly>
 		</address>
-		<textarea type=editable name=address.{{index}}.note placeholder="add note" value={{note}} readonly></textarea>
+		<textarea class=editable name=address.{{index}}.note placeholder="add note" value={{note}} readonly></textarea>
 		<!-- 'add note' -->
 	</section>
 </template>
 
 <template name="client__email_address">
-	<section class=client_email_address data-index={{index}} data-field=email_address>
+	<section class=client_email_address data-index={{index}} data-field=client.{{index}}.email_address>
 		<button class=remove>X</button>
-		<input type=editable name=email_address.{{index}}.address value={{address}} placeholder="add email address" readonly>{{#if address}}<a href="mailto:{{address}}">send to</a>{{/if}}<br>
-		<input type=editable name=email_address.{{index}}.login value={{login}} placeholder="add login" readonly><br>
-		<textarea type=editable name=email_address.{{index}}.note value={{note}} placeholder="add note" readonly></textarea>
+		<input type=text class=editable name=email_address.{{index}}.address value={{address}} placeholder="add email address" readonly>{{#if address}}<a href="mailto:{{address}}">send to</a>{{/if}}<br>
+		<input type=text class=editable name=email_address.{{index}}.login value={{login}} placeholder="add login" readonly><br>
+		<textarea class=editable name=email_address.{{index}}.note value={{note}} placeholder="add note" readonly></textarea>
 	</section>
 </template>
 
 <template name="client__phone_number">
-	<section class="client_phone_number" data-index="{{index}}" data-field=phone_number>
+	<section class="client_phone_number" data-index={{index}} data-field=client.{{index}}.phone_number>
 		<button class=remove>X</button>
-		<input type=editable name=phone_number.{{index}}.number value={{number}} placeholder="add phone number" readonly><!--if isMobile, add 'call'--><br>
-		<textarea type=editable name=phone_number.{{index}}.note value={{note}} placeholder="add note" reaonly></textarea>
+		<input type=text class=editable name=phone_number.{{index}}.number value={{number}} placeholder="add phone number" readonly><!--if isMobile, add 'call'--><br>
+		<textarea class=editable name=phone_number.{{index}}.note value={{note}} placeholder="add note" reaonly></textarea>
+	</section>
+</template>
+
+<template name="client__person__phone_number">
+	<section class="person_phone_number" data-index={{index}} data-field=person.{{parentIndex}}.phone_number>
+		<button class=remove>X</button>
+		<input type=text class=editable name=person.{{parentIndex}}.phone_number.{{index}}.number value={{number}} placeholder="add person's number" readonly><br>
+		<textarea class=editable name=person.{{parentIndex}}.phone_number.{{index}}.note value={{note}} placeholder="add note" readonly></textarea>
+	</section>
+</template>
+
+<template name="client__person__email_address">
+	<section class="person_email_address" data-index={{index}} data-field=person.{{parentIndex}}.email_address>
+		<button class=remove>X</button>
+		<input type=text class=editable name=person.{{parentIndex}}.email_address.{{index}}.address value={{address}} placeholder="add person's email" readonly>{{#if address}}<a href="mailto:{{address}}">send to</a>{{/if}}<br>
+		<input type=text class=editable name=person.{{parentIndex}}.email_address.{{index}}.login value={{login}} placeholder="add email login" readonly><br>
+		<textarea class=editable name=person.{{parentIndex}}.email_address.{{index}}.note value={{note}} placeholder="add note" readonly></textarea>
 	</section>
 </template>
 
 <template name="client__person">
 	<section class=client_person data-index={{index}} data-field=person>
 		<button class=remove>X</button>
-		<input type=editable name=name value={{name}} placeholder="add person's name" readonly><br>
-		{{#each addIndex phone_number}}
-		<!-- phone number & notes -->
-		{{/each}}
-		{{#each addIndex email}}
-		<!-- number,login, and notes -->
-		{{/each}}
-		<input type=editable name=position value={{position}} placeholder="add position" readonly><br>
-		<input type=editable name=public value={{public}} placeholder="is public?" readonly><br>
-		<input type=editable name=note value={{note}} placeholder="add note" readonly>
+		<h4><input type=text class=editable name=person.{{index}}.name value={{name}} placeholder="add person's name" readonly></h4>
+		{{#if phone_number}}
+			<h5>Phone Numbers</h5>
+			{{#each addIndex phone_number}}
+				{{> client__person__phone_number}}
+				<!-- use genericphone number template plz -->
+			{{/each}}
+		{{/if}}
+		<a class='add-item person.{{index}}.phone_number' href="#">Add Phone Number</a>
+		{{#if email_address}}
+			<h5>Email Addresses</h5>
+			{{#each addIndex email_address}}
+				{{> client__person__email_address}}
+			{{/each}}
+		{{/if}}
+		<a class='add-item person.{{index}}.email_address' href="#">Add Email Address</a>
+		<input type=text class=editable name=person.{{index}}.position value={{position}} placeholder="add position" readonly><br>
+		<label for=person.{{index}}.public>Is public?</label>
+		<input class=editable type=checkbox name=person.{{index}}.public checked="{{#if public}}checked{{/if}}"><br><!--should be boolean-->
+		<input type=text class=editable name=person.{{index}}.note value={{note}} placeholder="add note" readonly>
 	</section>
 </template>
 

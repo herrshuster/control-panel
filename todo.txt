@@ -7,3 +7,7 @@ consider changing 'sites' to 'properties' to make industry agnostic
 password generator
 
 Server/client separation
+
+checklist new item isn't working
+
+menu with links to all sites, new site, &c, and select lists of recent sites & clients _above_ top of page so when user scrolls up they're visible

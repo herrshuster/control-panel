@@ -4,6 +4,6 @@
 
 <template name="allUsers">
 {{#each users}}
-	{{profile.name}}
+	<a href='/user/{{_id}}'>{{profile.name}}</a>
 {{/each}}
 </template>

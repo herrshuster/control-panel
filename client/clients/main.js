@@ -42,28 +42,32 @@ Template.clientInfo.onRendered(function(){
 	console.log('rendered');
 	// console.log(this.findAll('input'));
 	// $('input').attr('size',$(this).val().length);
-})
+});
+
 
 Template.clientInfo.events({
 	'load': function(event,context) {
-		var editables = $('*[type=editable]');
+		//not working
+		var editables = $('.editable');
+		console.log(editables);
 		$.each(editables, function(index, val) {
 			$(this).attr('size',$(this).val().length);
 		});
 	},
-	'focus *[type=editable]': function(event,context) {
+	'focus .editable': function(event,context) {
 		$(event.target).removeProp('readonly');
 	},
-	'keydown *[type=editable]': function(event,context) {
+	'keydown .editable': function(event,context) {
 		$(event.target).attr('size',$(event.target).val().length + 1);
 	},
-	'keyup *[type=editable]': function(event,context) {
+	'keyup .editable': function(event,context) {
 		//this should wait for a pause and then save
 		// console.log(event);
 		$(event.target).attr('size',$(event.target).val().length);
 		if(event.keyCode == 13) {
 			var field = event.target.name,
 					value = event.target.value;
+					console.log(field);
 			Meteor.call(
 				'client_update_field',
 				context.data.client._id,
@@ -76,9 +80,17 @@ Template.clientInfo.events({
 			);
 		}
 	},
-	'blur *[type=editable]': function(event,context) {
-		var field = event.target.name,
-				value = event.target.value;
+	'blur .editable': function(event,context) {
+		if($(event.target).val().length == 0) {
+			$(event.target).attr('size',$(event.target).attr('placeholder').length);
+		}
+
+		var field = event.target.name;
+		if($(event.target).attr('type') == 'checkbox') {
+			var value = $(event.target).prop('checked');
+		} else {
+			value = event.target.value;
+		}
 		Meteor.call(
 			'client_update_field',
 			context.data.client._id,
@@ -91,6 +103,7 @@ Template.clientInfo.events({
 		);
 	},
 	'click .add-item': function(event,context) {
+		//Remove empty fields at some point
 		var classes = event.target.className.split(/\s+/);
 		//this only adds address because of hard-code in server/clients/main.js
 		var item_to_add = classes[1];
@@ -104,6 +117,7 @@ Template.clientInfo.events({
 		);
 	},
 	'click button.remove': function(event,context) {
+		//doesn't work for subfields
 		var index_to_remove = $(event.target.parentElement).attr('data-index');
 		console.log(index_to_remove);
 		Meteor.call(
