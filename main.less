@@ -1,11 +1,12 @@
 @import url(http://fonts.googleapis.com/css?family=Gentium+Basic:400,400italic,700,700italic);
 @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
-
+@import (reference) '_mixins.less';
 * {
 	box-sizing: border-box;
 }
 
 body {
+	.flex-container;
 	font-family: 'Gentium Basic', serif;
 	margin: 0;
 	float: left;
@@ -29,7 +30,15 @@ body {
 			margin-right: 0.5rem;
 		}
 	}
+	>h1 {
+		width: 100%;
+	}
+	.add-item {
+		width: 100%;
+	}
 }
+
+
 
 input,
 textarea {

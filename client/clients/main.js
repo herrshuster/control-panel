@@ -5,43 +5,49 @@ Template.newClient.onRendered(function(){
 	$('input[name="slug"]').prop('readonly',true);
 });
 Template.newClient.events({
-	"keyup [name=name]": function(event,context) {
+	'keyup [name=name]': function(event,context) {
 		var clientName = event.target.value;
 		clientName = clientName
 						.toLowerCase()
     					.replace(/[^\w ]+/g,'')
     					.replace(/ +/g,'-');
-		$("input[name='slug']").val(clientName);
-		console.log(clientName);
+		$(".slug").val(clientName);
+	},
+	'submit form': function(event,context) {
+		event.preventDefault();
+
+		var name = $('[name=name]').val(),
+			slug = $('.slug').val(),
+			referral = $('[name=referral]').val();
+
+		Meteor.call(
+			'client_create',
+			{
+				name: name,
+				slug: slug,
+				referral: referral,
+			},
+			function(error,response) {
+				if(!error) {
+					Router.go('/client/'+slug);
+				}
+			}
+		);
 	}
 });
+
 
 Template.allClients.helpers({
 	clients: function(){
 		return Clients.find().fetch();
 	},
 	clientFileUrl: function() {
-		console.log(this);
+		// console.log(this);
 		return this.slug;
 	},
 	sites: function() {
 		return Sites.find({client:this._id}).fetch();
 	}
-});
-
-Template.client__address.helpers({
-	address__map: function() {
-		// console.log(this);
-		var addressURL = encodeURIComponent(this.street_address+" "+this.address_locality+" "+this.address_region+" "+this.postal_code);
-		var mapstring = "http://maps.googleapis.com/maps/api/staticmap?center="+addressURL+"&zoom=14&size=250x100&maptype=roadmap&markers="+addressURL;
-		return mapstring;
-	}
-});
-
-Template.clientInfo.onRendered(function(){
-	console.log('rendered');
-	// console.log(this.findAll('input'));
-	// $('input').attr('size',$(this).val().length);
 });
 
 
@@ -62,19 +68,18 @@ Template.clientInfo.events({
 	},
 	'keyup .editable': function(event,context) {
 		//this should wait for a pause and then save
-		// console.log(event);
 		$(event.target).attr('size',$(event.target).val().length);
+		//Should check if it's in a field ending with a comma, and advance if so (for city)
 		if(event.keyCode == 13) {
-			var field = event.target.name,
-					value = event.target.value;
-					console.log(field);
+			event.preventDefault();
+			//Though allow for new lines in textareas
 			Meteor.call(
-				'client_update_field',
+				'update_field',
+				'clients',
 				context.data.client._id,
-				field,
-				value,
+				event.target.name,
+				event.target.value,
 				function(response){
-					console.log(response);
 					$(event.target).prop('readonly','readonly').blur();
 				}
 			);
@@ -92,41 +97,43 @@ Template.clientInfo.events({
 			value = event.target.value;
 		}
 		Meteor.call(
-			'client_update_field',
+			'update_field',
+			'clients',
 			context.data.client._id,
 			field,
 			value,
 			function(response){
-				console.log(response);
-				$(event.target).prop('readonly','readonly');
+				$(event.target).prop('readonly','readonly').blur();
 			}
 		);
+		if(!$(event.target).val()) {
+			console.log('remove it');
+		}
 	},
 	'click .add-item': function(event,context) {
-		//Remove empty fields at some point
+		//TODO: Remove empty fields
 		var classes = event.target.className.split(/\s+/);
-		//this only adds address because of hard-code in server/clients/main.js
 		var item_to_add = classes[1];
 		Meteor.call(
-			'client_add_to_field',
+			'add_to_field',
+			'clients',
 			context.data.client._id,
 			item_to_add,
-			function(response) {
-				console.log(response);
+			function(error, response) {
+				console.log(error,response);
 			}
 		);
 	},
 	'click button.remove': function(event,context) {
-		//doesn't work for subfields
 		var index_to_remove = $(event.target.parentElement).attr('data-index');
-		console.log(index_to_remove);
 		Meteor.call(
-			'client_remove_field',
+			'remove_field',
+			'clients',
 			context.data.client._id,
 			$(event.target.parentElement).attr('data-field'),
 			index_to_remove,
-			function(response) {
-				console.log(response);
+			function(error,response) {
+				console.log(error,response);
 			}
 		)
 	}

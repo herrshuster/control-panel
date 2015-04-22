@@ -1,9 +1,17 @@
 <template name="user">
-{{profile.name}}
+	<img class=profile src="{{services.google.picture}}">
+	{{profile.name}}
+	{{services.google.email}}
+	<input type=range name=restrictions value={{profile.restrictions}}>
 </template>
 
 <template name="allUsers">
 {{#each users}}
-	<a href='/user/{{_id}}'>{{profile.name}}</a>
+	<section class="user">
+		<img class=profile src="{{services.google.picture}}">
+		<a href='/user/{{_id}}'>{{#if isCurrentUser}}You{{else}}{{profile.name}}{{/if}}</a>
+		{{services.google.email}}
+		Restrictions: {{profile.restrictions}}
+	</section>
 {{/each}}
 </template>

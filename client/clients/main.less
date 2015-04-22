@@ -1,3 +1,5 @@
+@import (reference) '../../_mixins.less';
+
 .client_address,
 .client_email_address,
 .client_phone_number,
@@ -16,24 +18,7 @@
 	background-position: center center;
 }
 
-.flex-container {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	align-items: stretch;
-	align-content: stretch;
-}
-body {
-	.flex-container;
-  
-	h1 {
-		width: 100%;
-	}
-	.add-item {
-		width: 100%;
-	}
-}
+
 #person {
 	h3 {
 		width: 100%;
@@ -54,4 +39,7 @@ body {
 			width: 33%;
 		}
 	}
+}
+.allClients {
+	width: 100%;
 }

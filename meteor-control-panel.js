@@ -1,4 +1,7 @@
-
+toTitleCase = function (str)
+{
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
 
 
 Router.onBeforeAction(function () {
@@ -197,7 +200,7 @@ Router.route('/user/:_id', function(){
 			data: function(){
 				var user = Meteor.users.findOne({_id:this.params._id});
 
-				console.log(user);
+				// console.log(user);
 
 				return user;
 			}
@@ -214,7 +217,7 @@ Router.route('/users/', function(){
 			data: function(){
 				var users = Meteor.users.find().fetch();
 
-				console.log(users);
+				// console.log(users);
 
 				return {
 					users: users

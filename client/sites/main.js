@@ -1,30 +1,22 @@
 Template.newSite.helpers({
 	allClients: function(){
+		console.log(Sites._c2._simpleSchema._schema);
 		return Clients.find().map(function(client){
 			return {label: client.name, value: client._id};
 		});
 	},
-	siteSlug: function() {
-		console.log(this);
-		return "butts";
+	statusOptions: function() {
+		var SiteSchema = Sites._c2._simpleSchema._schema;
+		return SiteSchema.status.allowedValues.map(function(status){
+			return {label: toTitleCase(status), value: status}
+		});
 	}
 });
 Template.newSite.onRendered(function(){
 	$('input[name="slug"]').prop('readonly',true);
 	//change this to a live-updaing field instead of an input, which is insecure
 });
-AutoForm.addHooks(
-	'add_site',
-	{	
-		beginSubmit: function() {
-			//Add site variable to retrieve when Router.go
-		},
-		endSubmit: function() {
 
-			// Router.go('/site/'+)
-		}
-	}
-);
 Template.newSite.events({
 	"keyup [name='url']": function(event,context) {
 		var siteUrl = event.target.value;
@@ -33,7 +25,77 @@ Template.newSite.events({
     					.replace(/[^\w ]+/g,'-')
     					.replace(/ +/g,'-');
 		$("input[name='slug']").val(siteUrl);
+	},
+	'submit form': function(event,context) {
+		event.preventDefault();
+		function isValidUrl(url) {
+			//validate against RegEx.Domain
+			return true;
+		}
+		var client = $('[name=client]').val(),
+			url = $('[name=url]').val(),
+			slug = url.toLowerCase().replace(/[^\w ]+/g,'-').replace(/ +/g,'-'),
+			secure = $('[name=secure]').prop('checked'),
+			status = $('[name=status]').val(),
+			organization_name = $('[name=organization_name]').val();
+		console.log(client,url,slug,secure,status);
+		function validateSiteFields() {
+			if(!client) {
+				alert('You must enter a client first');
+				//click here to create a client first
+				return false;
+			} else if(!url || !isValidUrl(url)) {
+				alert('Enter a URL');
+				return false;
+			} else if(!status) {
+				var active = confirm('Is this an active site?');
+				if(active) {
+					status = 'active';
+				} else {
+					status = 'inactive';
+				}
+				$('[name=status]').val(status);
+				if(validateSiteFields()) {
+					return true;
+				} else {
+					return false;
+				}
+				
+			} else if(!organization_name) {
+				organization_name = prompt('Please enter an organization name','name');
+				$('[name=organization_name]').val(organization_name);
+				if(validateSiteFields()) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return true;
+			}
+		}
+		if(validateSiteFields()) {
+			Meteor.call(
+				'site_create',
+				{
+					client: client,
+					url: url,
+					slug: slug,
+					secure: secure,
+					status: status,
+					organization_name: organization_name
+
+				},
+				function(error,response) {
+					if(!error) {
+						Router.go('/site/'+slug);
+					} else {
+						console.log(error);
+					}
+				}
+			);
+		} 
 	}
+	
 });
 
 Template.site.events({
@@ -43,6 +105,89 @@ Template.site.events({
 	"click #checklists a": function(event,context) {
 		event.preventDefault();
 		window.open(event.target.href,'Checklist','height=600,width=500,scrollbars=yes')
+	},
+	'load': function(event,context) {
+		//not working
+		var editables = $('.editable');
+		console.log(editables);
+		$.each(editables, function(index, val) {
+			$(this).attr('size',$(this).val().length);
+		});
+	},
+	'focus .editable': function(event,context) {
+		$(event.target).removeProp('readonly');
+	},
+	'keydown .editable': function(event,context) {
+		$(event.target).attr('size',$(event.target).val().length + 1);
+	},
+	'keyup .editable': function(event,context) {
+		//this should wait for a pause and then save
+		$(event.target).attr('size',$(event.target).val().length);
+		//Should check if it's in a field ending with a comma, and advance if so (for city)
+		if(event.keyCode == 13) {
+			event.preventDefault();
+			//Though allow for new lines in textareas
+			Meteor.call(
+				'update_field',
+				'sites',
+				context.data.site._id,
+				event.target.name,
+				event.target.value,
+				function(response){
+					$(event.target).prop('readonly','readonly').blur();
+				}
+			);
+		}
+	},
+	'blur .editable': function(event,context) {
+		if($(event.target).val().length == 0) {
+			$(event.target).attr('size',$(event.target).attr('placeholder').length);
+		}
+
+		var field = event.target.name;
+		if($(event.target).attr('type') == 'checkbox') {
+			var value = $(event.target).prop('checked');
+		} else {
+			value = event.target.value;
+		}
+		Meteor.call(
+			'update_field',
+			'sites',
+			context.data.site._id,
+			field,
+			value,
+			function(response){
+				$(event.target).prop('readonly','readonly').blur();
+			}
+		);
+	},
+	'click .add-item': function(event,context) {
+		//TODO: Remove empty fields
+		//TODO: Focus on first field of new item
+		var classes = event.target.className.split(/\s+/);
+		var item_to_add = classes[1];
+		Meteor.call(
+			'add_to_field',
+			'sites',
+			context.data.site._id,
+			item_to_add,
+			function(error, response) {
+				console.log(error,response);
+			}
+		);
+	},
+	'click button.remove': function(event,context) {
+		var index_to_remove = $(event.target.parentElement).attr('data-index');
+		Meteor.call(
+			'remove_field',
+			'sites',
+			context.data.site._id,
+			$(event.target.parentElement).attr('data-field'),
+			index_to_remove,
+			function(response) {
+				console.log(response);
+			}
+		)
 	}
 });
 Template.site.helpers({
@@ -53,7 +198,11 @@ Template.site.helpers({
 		};
 
 		return "<select id='newChecklist'>"+options+"</select>";
-	}
+	},
+	collectionType: function() {
+		return 'site';
+	},
+	isSiteFile: true
 });
 
 Template.site__checklist.helpers({

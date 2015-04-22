@@ -17,28 +17,61 @@
 	</section>
 	<h2>Site Information</h2>
 	{{#with site}}
-		{{#autoForm collection="Sites" doc=this id="edit_site" type="update" template="plain"}}
-			{{> afQuickField name='url'}}
-			{{> afQuickField name='secure'}}
-			{{> afQuickField name='dubdub'}}
-			{{> afQuickField name='organization_name'}}
-			{{> afQuickField name='billing_cycle'}}
-			{{> afQuickField name='address'}}
-			{{> afQuickField name='email_address'}}
-			{{> afQuickField name='phone_number'}}
-			{{> afQuickField name='service'}}
-			{{> afQuickField name='product'}}
-			{{> afQuickField name='location'}}
-			{{> afQuickField name='board'}}
-			{{> afQuickField name='person'}}
-			{{> afQuickField name='service_provided'}}
-			{{> afQuickField name='status'}}
-			<button type="submit">Update</button>
-		{{/autoForm}}
+		<div class=card id='basicInfo'>
+			<input type=text class=editable name=url value={{url}} readonly>
+			<input type=checkbox class=editable name=secure checked='{{#if secure}}checked{{/if}}'>
+			<input type=text name=organization_name value={{organization_name}} readonly>
+			<select class=editable name=billing_cycle>{{billingCycles}}</select>
+		</div>
+		<div class=card id='contactInfo'>
+			{{#each addIndex address}}
+				{{> address}}
+			{{/each}}
+			<a class='add-item address' href='#'>Add Address</a>
+			{{#each addIndex email_address}}
+				{{> email_address}}
+			{{/each}}
+			<a class='add-item email_address' href='#'>Add Email Address</a>
+			{{#each addIndex phone_number}}
+				{{> phone_number}}
+			{{/each}}
+			<a class='add-item phone_number' href='#'>Add Phone Number</a>
+			<!-- Get person from client -->
+		</div>
+		<div class='businessInfo'>
+			{{#if service_offered}}
+				<h3>Services Offered</h3>
+				{{#each service_offered}}
+					<span class=service_offered>{{service_offered}}</span>
+					<!-- Not outputting value -->
+				{{/each}}
+			{{/if}}
+			<a class='add-item service_offered' href='#'>Add Service Offered</a>
+			{{#if product_offered}}
+				<h3>Products Offered</h3>
+				{{#each product_offered}}
+					<span class=product_offered>{{service_offered}}</span>
+				{{/each}}
+			{{/if}}
+			<a class='add-item product_offered' href='#'>Add Product offered</a>
+			{{#if location}}
+				<h3>Locations</h3>
+				{{#each location}}
+					<span class=location>{{service_offered}}</span>
+				{{/each}}
+			{{/if}}
+			<a class='add-item location' href='#'>Add Location</a>
+		</div>
+		<!-- Service_provided -->
+		<!-- Status -->
+		<!-- service_used -->
+		<!-- file_access -->
 	{{/with}}
 
 
 </template>
+
+
 
 <template name="site__checklist">
 	<section class="siteChecklist">
@@ -50,37 +83,37 @@
 
 <template name="newSite">
 	<h1>Add a New Site</h1>
-	{{#autoForm collection="Sites" id="add_site" type="insert" template="plain"}}
-	<!-- 	{{> afQuickField name='client' options=allClients}}
-		{{> afQuickField name='url'}}
-		{{> afQuickField name='slug'}}
-		{{> afQuickField name='secure'}}
-		{{> afQuickField name='organization_name'}}
-		{{> afQuickField name='billing_cycle'}}
-		{{> afQuickField name='address'}}
-		{{> afQuickField name='email_address'}}
-		{{> afQuickField name='phone_number'}}
-		{{> afQuickField name='service_offered'}}
-		{{> afQuickField name='product_offered'}}
-		{{> afQuickField name='location'}}
-		{{> afQuickField name='board'}}
-		{{> afQuickField name='people'}}
-		{{> afQuickField name='service_provided' options='allowed'}}
-		{{> afQuickField name='status' options='allowed'}}
-		{{> afQuickField name='service_used'}}
-		{{> afQuickField name='file_access'}} -->
-		<button type="submit">Add</button>
-	{{/autoForm}}
+	<form>
+		<select name=client>
+			<option value=''>-select a client</option>
+		{{#each allClients}}
+			<option value='{{value}}'>{{label}}</option>
+		{{/each}}
+		</select><br>
+		<input type=text name=url placeholder=url><br>
+		<label for=secure>Secure?</label>
+		<input type=checkbox name=secure><br>
+		<input type=text name=organization_name placeholder='Organization Name'><br>
+		<select name=status>
+			<option value=''>-site status</option>
+		{{#each statusOptions}}
+			<option value='{{value}}'>{{label}}</option>
+		{{/each}}	
+		</select><br>
+		<input type=submit value=add>
+	</form>
 
 
 </template>
 
 <template name="allSites">
 	<h2>All Sites</h2>
+	<ul class='allSites'>
 	{{#each sites}}
-		<section class="site">
+		<li class="site">
 			<h3><a href="/site/{{slug}}">{{url}}</a></h3>
 			<span class="client"><a href="/client/{{clientSlug}}">Client: {{clientName}}</a></span>
-		</section>
+		</li>
 	{{/each}}
+	</ul>
 </template>
