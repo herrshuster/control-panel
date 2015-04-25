@@ -57,8 +57,10 @@ Template.newChecklist.events({
 		Meteor.call(
 			'create_checklist',
 			Checklist,
-			function(response){
-				console.log(response);//returns undefined
+			function(error,result){
+				if(!error) {
+					Router.go('checklist.show',{_id:result});
+				}
 			}
 		);
 	},

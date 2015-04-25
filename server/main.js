@@ -1,3 +1,19 @@
+Meteor.publish('clients',function(){
+	return Clients.find({});
+});
+
+Meteor.publish('sites',function(){
+	return Sites.find({});
+});
+
+Meteor.publish('checklists',function(){
+	return Checklists.find({});
+});
+
+Meteor.publish('checklistItems',function(){
+	return ChecklistItems.find({});
+});
+
 Accounts.onCreateUser(function(options,user){
 	console.log(user);
 	user._id = Meteor.users._makeNewID();
@@ -15,7 +31,7 @@ Meteor.methods({
 	update_field: function(collection,document_id,field,value) {
 		obj = {};
 		obj[field] = value;
-		// console.log(obj);
+		console.log(obj);
 		if (collection == 'clients') {
 			//Replace this if check
 			var Collection = Clients;	
@@ -28,6 +44,7 @@ Meteor.methods({
 		}, {
 			$set: obj
 		}, function(error,id) {
+			console.log(error,id);
 			return(error,id);
 		}
 		);
@@ -50,7 +67,6 @@ Meteor.methods({
 		}
 		var filterPhrase = escapeRegExp(xField+'.$');
 		var filter = new RegExp('^('+filterPhrase+')$');//This filter finds the top-level defininition of any field which has children, whether objects or array items
-		console.log('filter',filter)
 		if(Schema[xField].type.name == 'Array') {
 			//If the field is an array, it needs an object set up to set
 			var fieldKeys = Object.keys(Schema),
@@ -62,49 +78,58 @@ Meteor.methods({
 					dataToInsert[field] = {};
 					console.log('match',fieldKeys[i].match(filter));
 					console.log('schema',fieldKeys[i],Schema[fieldKeys[i]]);
-					// console.log(Schema);
 					var subFields = [];
 					for (var k = 0; k < fieldKeys.length; k++) {
 						if(fieldKeys[k].match(new RegExp('^'+filterPhrase+'\.'))) {
 							if(Schema[fieldKeys[k]].type.name == 'String') {
+								//This is where the data gets inserted
 								dataToInsert[field][fieldKeys[k].match(new RegExp('^('+filterPhrase+'\.)(.+)'))[2]] = '';								
 							}
 						}
 					};
-					// console.log('subfields',subFields);
 					var currentKey = Schema[fieldKeys[i]];
 					if(currentKey.type.name == 'String' && fieldKeys[i].replace(xField+'.$.','').indexOf('.$.') == -1) {
 						//Only insert strings which are not tested
-						// dataToInsert[field][fieldKeys[i].replace(xField+'.$.','')] = '';
-						console.log(currentKey);
+						console.log('String',currentKey);
+						// dataToInsert[field] = [];
 						dataToInsert[field] = '';
 					} else if(currentKey.type.name == 'Boolean') {
+						console.log('Boolean (not inserted)',currentKey);
 						// dataToInsert[field][fieldKeys[i].replace(xField+'.$.','')] = false;
 					} else if(currentKey.type.name == 'Array') {
-						//TODO: check optional
-						// dataToInsert[field][fieldKeys[i].replace(xField+'.$.','')] = [];
-						// dataToInsert[field][fieldKeys[i].replace(xField+'.$.','')][0] = {};
-						//for each of the fieldKeys, find those that begin with fieldKeys[i]
-						// for (var j = 0; j < fieldKeys.length; j++) {
-							// if(fieldKeys[j].indexOf(fieldKeys[i]+'.$.') > -1) {
-								// dataToInsert[field][fieldKeys[i].replace(xField+'.$.','')][0][fieldKeys[j].replace(xField+'.$.'+fieldKeys[i].replace(xField+'.$.','')+'.$.','')] = '';
-							// }
-						// };
+						console.log('Array (not inserted)',currentKey);
+					} else if(currentKey.type.name == 'Object') {
+						console.log('I OBJECT');
 					}
 				}
 			};
 		}
 		console.log('add_to_field dataToInsert',dataToInsert);
-		Collection.update(
-		{
-			_id: document_id
-		}, {
-			$addToSet: dataToInsert
-		}, function(error,id) {
-			console.log(error,id);
-			return (error,id);
+		console.log('type',Object.prototype.toString.call(dataToInsert[field]));
+		if(Object.prototype.toString.call(dataToInsert[field]) == '[object String]') {
+			Collection.update(
+			{
+				_id: document_id
+			}, {
+				$push: dataToInsert
+			}, function(error,id) {
+				console.log(error,id);
+				return (error,id);
+			}
+			);
+
+		} else if(Object.prototype.toString.call(dataToInsert[field]) == '[object Object]') {
+			Collection.update(
+			{
+				_id: document_id
+			}, {
+				$addToSet: dataToInsert
+			}, function(error,id) {
+				console.log(error,id);
+				return (error,id);
+			}
+			);
 		}
-		);
 	},
 	remove_field: function(collection,document_id,field,index) {
 		if (collection == 'clients') {
@@ -138,7 +163,7 @@ Meteor.methods({
 							if(!error) {
 								return id;
 							} else {
-								throw error;
+								return error;
 							}
 							console.log('error',error,'id',id);
 						}
@@ -147,4 +172,5 @@ Meteor.methods({
 			}
 		)
 	}
-})
+});
+

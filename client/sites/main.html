@@ -1,17 +1,32 @@
 <template name="site">
 	<h1>{{site.url}}</h1>
-	<section id="checklists">
+	<section id="checklists" class=card>
 		<h2>Checklists</h2>
 		{{#each checklists}}
 			{{> site__checklist}}
 		{{/each}}
 		New {{{checklistTypes}}} Checklist
 	</section>
-	<section id="client">
+	<section id="client" class=card>
 		{{#if client}}
 			<h2>Associated Client</h2>
 			{{#with client}}
 				<a href="/client/{{slug}}">{{name}}</a>
+				{{#each addIndex person}}
+					<div class=person>
+						<h3>{{name}}</h3>
+						<h4>{{position}}</h4>
+						{{#each phone_number}}
+							<a href='tel:{{mobileNumber}}'>{{number}}</a><br>
+							{{note}}<br>
+						{{/each}}
+						{{#each addIndex email_address}}
+							<a href='mailto:{{address}}'>{{address}}</a><br>
+							{{note}}<br>
+						{{/each}}
+						<p>{{note}}</p>
+					</div>
+				{{/each}}
 			{{/with}}
 		{{/if}}
 	</section>
@@ -38,29 +53,52 @@
 			<a class='add-item phone_number' href='#'>Add Phone Number</a>
 			<!-- Get person from client -->
 		</div>
-		<div class='businessInfo'>
+		<div class=card id='businessInfo'>
 			{{#if service_offered}}
 				<h3>Services Offered</h3>
-				{{#each service_offered}}
-					<span class=service_offered>{{service_offered}}</span>
-					<!-- Not outputting value -->
+				{{#each addIndex service_offered}}
+					<div data-field=service_offered data-index={{index}}>
+						<button class=remove>X</button>
+						<input class=editable name='service_offered.{{index}}' value={{value}} placeholder='Add service name' readonly><br>
+					</div>
 				{{/each}}
 			{{/if}}
 			<a class='add-item service_offered' href='#'>Add Service Offered</a>
 			{{#if product_offered}}
 				<h3>Products Offered</h3>
-				{{#each product_offered}}
-					<span class=product_offered>{{service_offered}}</span>
+				{{#each addIndex product_offered}}
+					<div data-field=product_offered data-index={{index}}>
+						<button class=remove>X</button>
+						<input class=editable name='product_offered.{{index}}' value={{value}} placeholder='Add product name' readonly><br>
+					</div>
 				{{/each}}
 			{{/if}}
 			<a class='add-item product_offered' href='#'>Add Product offered</a>
 			{{#if location}}
 				<h3>Locations</h3>
-				{{#each location}}
-					<span class=location>{{service_offered}}</span>
+				{{#each addIndex location}}
+					<div data-field=location data-index={{index}}>
+						<button class=remove>X</button>
+						<input class=editable name='location.{{index}}' value={{value}} placeholder='Add location name' readonly><br>
+					</div>
 				{{/each}}
 			{{/if}}
 			<a class='add-item location' href='#'>Add Location</a>
+		</div>
+		<div class=card id='involvement'>
+		{{#if service_provided}}
+			{{#each addIndex service_provided}}
+				<div data-field=service_provided data-index={{index}}>
+					<button class=remove>X</button>
+					<select class=editable name='service_provided.{{index}}'>
+					{{#each provided_services}}
+						<option value={{this}} selected='{{#if is_provided_service}}selected{{/if}}'>{{this}}</option>
+					{{/each}}
+					</select>
+				</div>
+			{{/each}}
+		{{/if}}
+		<a class='add-item service_provided' href='#'>Add Service Provided</a>
 		</div>
 		<!-- Service_provided -->
 		<!-- Status -->

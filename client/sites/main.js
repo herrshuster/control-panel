@@ -1,6 +1,5 @@
 Template.newSite.helpers({
 	allClients: function(){
-		console.log(Sites._c2._simpleSchema._schema);
 		return Clients.find().map(function(client){
 			return {label: client.name, value: client._id};
 		});
@@ -38,7 +37,6 @@ Template.newSite.events({
 			secure = $('[name=secure]').prop('checked'),
 			status = $('[name=status]').val(),
 			organization_name = $('[name=organization_name]').val();
-		console.log(client,url,slug,secure,status);
 		function validateSiteFields() {
 			if(!client) {
 				alert('You must enter a client first');
@@ -109,7 +107,6 @@ Template.site.events({
 	'load': function(event,context) {
 		//not working
 		var editables = $('.editable');
-		console.log(editables);
 		$.each(editables, function(index, val) {
 			$(this).attr('size',$(this).val().length);
 		});
@@ -139,7 +136,7 @@ Template.site.events({
 			);
 		}
 	},
-	'blur .editable': function(event,context) {
+	'blur .editable:not(select)': function(event,context) {
 		if($(event.target).val().length == 0) {
 			$(event.target).attr('size',$(event.target).attr('placeholder').length);
 		}
@@ -150,6 +147,7 @@ Template.site.events({
 		} else {
 			value = event.target.value;
 		}
+		// console.log('field',field,'value',value);
 		Meteor.call(
 			'update_field',
 			'sites',
@@ -159,6 +157,19 @@ Template.site.events({
 			function(response){
 				$(event.target).prop('readonly','readonly').blur();
 			}
+		);
+	},
+	'change select.editable': function(event,context) {
+		Meteor.call(
+			'update_field',
+			'sites',
+			context.data.site._id,
+			$(event.target).attr('name'),
+			event.target.value,
+			function(response) {
+				console.log(response);
+			}
+
 		);
 	},
 	'click .add-item': function(event,context) {
@@ -191,6 +202,7 @@ Template.site.events({
 	}
 });
 Template.site.helpers({
+	isSiteFile: true,
 	checklistTypes: function() {
 		var options = "<option value='' selected>Select Type</option>";
 		for (var i = ChecklistTypes.length - 1; i >= 0; i--) {
@@ -202,7 +214,22 @@ Template.site.helpers({
 	collectionType: function() {
 		return 'site';
 	},
-	isSiteFile: true
+	provided_services: function() {
+		var schemaAllowedValues = Sites._c2._simpleSchema._schema['service_provided.$'].allowedValues,//get all allowed values
+			siteProvidedServices = Template.parentData(1).service_provided,//get the currently provided services
+			services = $(schemaAllowedValues).not(siteProvidedServices).get();//remove the provided services from the list
+		services.unshift(this.value);//add the current service to the beginning of the array
+		var blankIndex = services.indexOf('');
+		if(blankIndex !== 0) {
+			services.splice(blankIndex,1);
+		}
+		return services;
+		//Find other provided_services and exclude only those values
+		//e.g. a site has domain and SEO. the domain dropdown excludes 'SEO' and vice versa, and a new service excludes both
+	},
+	is_provided_service: function() {
+		return (this == Template.parentData().value);
+	}
 });
 
 Template.site__checklist.helpers({
@@ -228,14 +255,14 @@ Template.site__checklist.helpers({
 
 Template.allSites.helpers({
 	sites: function(){
-		return Sites.find().fetch();
+		return Sites.find({},{slug:1,url:1}).fetch();
 	},
 	clientName: function(){
 		var client = Clients.findOne({_id:this.client});
 		return client.name;
 	},
 	clientSlug: function(){
-		var client = Clients.findOne({_id:this.client});
+		var client = Clients.findOne({_id:this.client},{slug:1});
 		return client.slug;
 	}
 });

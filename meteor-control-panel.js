@@ -4,6 +4,7 @@ toTitleCase = function (str)
 }
 
 
+
 Router.onBeforeAction(function () {
   if (!Meteor.userId()) {
     this.render('login');

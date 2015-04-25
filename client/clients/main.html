@@ -4,7 +4,7 @@
 		<section class=card id='sites'>
 			<h2>Sites</h2>
 			{{#each sites}}
-				<a href="/site/{{slug}}">{{url}}</a>
+				<h3><a href="/site/{{slug}}">{{url}}</a></h3>
 			{{/each}}
 		</section>
 	{{/if}}
@@ -14,28 +14,28 @@
 			<h3><input type=text class=editable name=name value={{name}} readonly></h3>
 		</section>
 		<section class=card id='address'>
-			<h3>Addresses</h3>
+			<h2>Addresses</h2>
 			{{#each addIndex address}}
 				{{> address}}
 			{{/each}}
 			<a class='add-item address' href="#">Add Address</a>
 		</section>
 		<section class=card id="email_address">
-			<h3>Email Addresses</h3>
+			<h2>Email Addresses</h2>
 			{{#each addIndex email_address}}
 				{{> email_address}}
 			{{/each}}
 			<a class='add-item email_address' href="#">Add Email Address</a>
 		</section>
 		<section class=card id="phone_number">
-			<h3>Phone Numbers</h3>
+			<h2>Phone Numbers</h2>
 			{{#each addIndex phone_number}}
 				{{> phone_number}}
 			{{/each}}
 			<a class='add-item phone_number' href="#">Add Phone Number</a>
 		</section>
 		<section class=card id="person">
-			<h3>People</h3>
+			<h2>People</h2>
 			{{#each addIndex person}}
 				{{> client__person}}
 			{{/each}}
@@ -74,7 +74,7 @@ also consider making internal map of values so as to tidy markup
 <template name="client__person">
 	<section class=client_person data-index={{index}} data-field=person>
 		<button class=remove>X</button>
-		<h4><input type=text class=editable name=person.{{index}}.name value={{name}} placeholder="add person's name" readonly></h4>
+		<h4><input type=text class=editable name=person.{{index}}.name value={{name}} placeholder="add person's name" readonly>, <input type=text class=editable name=person.{{index}}.position value={{position}} placeholder="position" readonly></h4><br>
 		{{#if phone_number}}
 			<h5>Phone Numbers</h5>
 			{{#each addIndex phone_number}}
@@ -90,7 +90,6 @@ also consider making internal map of values so as to tidy markup
 			{{/each}}
 		{{/if}}
 		<a class='add-item person.{{index}}.email_address' href="#">Add Email Address</a>
-		<input type=text class=editable name=person.{{index}}.position value={{position}} placeholder="add position" readonly><br>
 		<label for=person.{{index}}.public>Is public?</label>
 		<input class=editable type=checkbox name=person.{{index}}.public checked="{{#if public}}checked{{/if}}"><br>
 		<input type=text class=editable name=person.{{index}}.note value={{note}} placeholder="add note" readonly>

@@ -3,21 +3,45 @@
 </head>
 
 <body class='{{bodyClass}}'>
-<nav>
-	<ul>
-		<li><a href="{{pathFor route='client.all'}}">All Clients</a></li>
-		<li><a href="{{pathFor route='client.new'}}">New Client</a></li>
-		<li><a href="{{pathFor route='site.all'}}">All Sites</a></li>
-		<li><a href="{{pathFor route='site.new'}}">New Site</a></li>
-		<li><a href="{{pathFor route='user.all'}}">All Users</a></li>
-	</ul>
-	
-</nav>
+	{{> body_nav}}
+
   <!-- <h1>Control Panel</h1> -->
+  <script type='text/javascript'>
+  //Get this shit out of here
+
+  </script>
 </body>
 
+<template name='body_nav'>
+<nav>
+	<ul>
+		<li>
+			<select>
+				<option>-clients-</option>
+				<option value="{{pathFor route='client.all'}}">(all clients)</option>
+				<option value="{{pathFor route='client.new'}}">(new client)</option>
+				{{#each allClients}}
+					<option value='/client/{{slug}}'>{{name}}</option>
+				{{/each}}
+			</select>
+		</li>
+		<li>
+			<select>
+				<option>-sites-</option>
+				<option value="{{pathFor route='site.all'}}">(all sites)</option>
+				<option value="{{pathFor route='site.new'}}">(new site)</option>
+				{{#each allSites}}
+					<option value='/site/{{slug}}'>{{url}}</option>
+				{{/each}}
+			</select>
+		</li>
+		<li><a href="{{pathFor route='user.all'}}">All Users</a></li>
+	</ul>
+</nav>
+</template>
+
 <template name="address">
-	<section class='{{collectionType}}_address' data-index={{index}} data-field=address style='background-image:url({{address__map}})'>
+	<div class='{{collectionType}}_address' data-index={{index}} data-field=address style='background-image:url({{address__map}})'>
 		<button class=remove>X</button>
 		<address>
 			<input type=text class=editable name=address.{{index}}.street_address value={{street_address}} placeholder="add street address" size={{street_address.length}} readonly><br>
@@ -28,14 +52,14 @@
 		{{else}}
 			<a class='add-note'>Add Note</a>
 		{{/if}}
-	</section>
+	</div>
 </template>
 
 
 <template name="email_address">
-	<section class='{{collectionType}}_email_address' data-index={{index}} data-field='{{#if isSiteFile}}{{collectionType}}.{{index}}{{/if}}.email_address'>
+	<section class='{{collectionType}}_email_address' data-index={{index}} data-field='{{#if isSiteFile}}{{collectionType}}.{{index}}.{{/if}}email_address'>
 		<button class=remove>X</button>
-		<input type=text class=editable name=email_address.{{index}}.address value={{address}} placeholder="add email address" readonly>{{#if address}}<a href="mailto:{{address}}">send to</a>{{/if}}<br>
+		<input type=email class=editable name=email_address.{{index}}.address value={{address}} placeholder="add email address" readonly>{{#if address}}<a href="mailto:{{address}}">send to</a>{{/if}}<br>
 		<input type=text class=editable name=email_address.{{index}}.login value={{login}} placeholder="add login" readonly><br>
 		{{#if note}}
 			<textarea class=editable name=email_address.{{index}}.note value={{note}}></textarea>
@@ -50,13 +74,6 @@
 	<section class="{{collectionType}}_phone_number" data-index={{index}} data-field='{{#if isSiteFile}}{{collectionType}}.{{index}}.{{/if}}phone_number'>
 		<button class=remove>X</button>
 		<input type=text class=editable name=phone_number.{{index}}.number value={{number}} placeholder="add phone number" readonly>{{#if isPhone}}<a href='tel:{{mobileNumber}}'>Call</a>{{/if}}<br>
-		<!-- instead of full values, example:
-		<section class=phone_number data-index={{index}}>
-		<input type=text name=number value={{number}}>
-		placeholder gotten from:
-		var field = this.name
-		Collection.label(field)
-		 -->
 		{{#if note}}
 			<textarea class=editable name=phone_number.{{index}}.note value={{note}}></textarea>
 		{{else}}
@@ -64,3 +81,10 @@
 		{{/if}}
 	</section>
 </template>
+<!-- instead of full values, example:
+<section class=phone_number data-index={{index}}>
+<input type=text name=number value={{number}}>
+placeholder gotten from:
+var field = this.name
+Collection.label(field)
+ -->

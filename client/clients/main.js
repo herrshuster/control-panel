@@ -39,17 +39,26 @@ Template.newClient.events({
 
 Template.allClients.helpers({
 	clients: function(){
-		return Clients.find().fetch();
+		return Clients.find({},{name:1,sites:1}).fetch();
 	},
 	clientFileUrl: function() {
 		// console.log(this);
 		return this.slug;
 	},
 	sites: function() {
-		return Sites.find({client:this._id}).fetch();
+		return Sites.find({client:this._id},{slug:1,url:1}).fetch();
 	}
 });
 
+Template.clientInfo.onRendered(function(){
+	// console.log('butts');
+	var editables = $('.editable');
+	// console.log(editables);
+	$.each(editables, function(index, val) {
+		console.log($(val).val());
+		$(val).width($(val).textWidth() + 'px');
+	});
+})
 
 Template.clientInfo.events({
 	'load': function(event,context) {
@@ -67,6 +76,7 @@ Template.clientInfo.events({
 		$(event.target).attr('size',$(event.target).val().length + 1);
 	},
 	'keyup .editable': function(event,context) {
+		console.log('keyup',event.target)
 		//this should wait for a pause and then save
 		$(event.target).attr('size',$(event.target).val().length);
 		//Should check if it's in a field ending with a comma, and advance if so (for city)
@@ -79,13 +89,16 @@ Template.clientInfo.events({
 				context.data.client._id,
 				event.target.name,
 				event.target.value,
-				function(response){
-					$(event.target).prop('readonly','readonly').blur();
+				function(error,response){
+					if(!error){
+						$(event.target).prop('readonly','readonly').blur();
+					}
 				}
 			);
 		}
 	},
-	'blur .editable': function(event,context) {
+	'onblur .editable': function(event,context) {
+		console.log('blur',event.target);
 		if($(event.target).val().length == 0) {
 			$(event.target).attr('size',$(event.target).attr('placeholder').length);
 		}
@@ -102,8 +115,10 @@ Template.clientInfo.events({
 			context.data.client._id,
 			field,
 			value,
-			function(response){
-				$(event.target).prop('readonly','readonly').blur();
+			function(error,response){
+				if(!error) {
+					$(event.target).prop('readonly','readonly');
+				}
 			}
 		);
 		if(!$(event.target).val()) {
@@ -138,3 +153,4 @@ Template.clientInfo.events({
 		)
 	}
 });
+

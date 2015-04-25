@@ -25,6 +25,7 @@ Meteor.methods({
 							}
 						}},
 						function(error,id) {
+
 							if(id) {
 								return id;
 							} else {
@@ -37,13 +38,14 @@ Meteor.methods({
 		);
 	},
 	create_checklist: function(Checklist) {
-		Checklists.insert(
+		return Checklists.insert(
 			{
 				title: Checklist.title,
 				belongs_to: Checklist.belongs_to,
 				type: Checklist.type,
 				items: Checklist.items
 			}, function(error,id){
+				console.log(error,id);
 				if(id) {
 					return id;
 				} else {
