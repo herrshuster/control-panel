@@ -50,39 +50,13 @@ Template.allClients.helpers({
 	}
 });
 
-Template.clientInfo.onRendered(function(){
-	// console.log('butts');
-	var editables = $('.editable');
-	// console.log(editables);
-	$.each(editables, function(index, val) {
-		console.log($(val).val());
-		$(val).width($(val).textWidth() + 'px');
-	});
-})
-
 Template.clientInfo.events({
-	'load': function(event,context) {
-		//not working
-		var editables = $('.editable');
-		console.log(editables);
-		$.each(editables, function(index, val) {
-			$(this).attr('size',$(this).val().length);
-		});
-	},
-	'focus .editable': function(event,context) {
-		$(event.target).removeProp('readonly');
-	},
-	'keydown .editable': function(event,context) {
-		$(event.target).attr('size',$(event.target).val().length + 1);
-	},
-	'keyup .editable': function(event,context) {
-		console.log('keyup',event.target)
+	'keydown .editable, keyup .editable': function(event,context) {
+		fitText(event.target);
 		//this should wait for a pause and then save
-		$(event.target).attr('size',$(event.target).val().length);
-		//Should check if it's in a field ending with a comma, and advance if so (for city)
 		if(event.keyCode == 13) {
-			event.preventDefault();
-			//Though allow for new lines in textareas
+			event.stopImmediatePropagation();
+			//Allow for new lines in textareas
 			Meteor.call(
 				'update_field',
 				'clients',
@@ -91,14 +65,13 @@ Template.clientInfo.events({
 				event.target.value,
 				function(error,response){
 					if(!error){
-						$(event.target).prop('readonly','readonly').blur();
+						$(event.target).blur();
 					}
 				}
 			);
 		}
 	},
 	'onblur .editable': function(event,context) {
-		console.log('blur',event.target);
 		if($(event.target).val().length == 0) {
 			$(event.target).attr('size',$(event.target).attr('placeholder').length);
 		}
@@ -117,7 +90,7 @@ Template.clientInfo.events({
 			value,
 			function(error,response){
 				if(!error) {
-					$(event.target).prop('readonly','readonly');
+					// $(event.target).prop('readonly','readonly');
 				}
 			}
 		);

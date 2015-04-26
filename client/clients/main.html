@@ -11,7 +11,7 @@
 	{{#with client}}
 		<section class=card id='client'>
 			<h2>Client Information</h2>
-			<h3><input type=text class=editable name=name value={{name}} readonly></h3>
+			<h3><input type=text class=editable name=name value={{name}}></h3>
 		</section>
 		<section class=card id='address'>
 			<h2>Addresses</h2>
@@ -41,8 +41,8 @@
 			{{/each}}
 			<a class='add-item person' href="#">Add Person</a>
 		</section>
-		<input type=text class=editable name=referral value={{referral}} placeholder="enter referral" readonly><br>
-		<textarea class=editable name=note value={{note}} placeholder="enter note" readonly></textarea>
+		<input type=text class=editable name=referral value={{referral}} placeholder="enter referral"><br>
+		<textarea class=editable name=note value={{note}} placeholder="enter note"></textarea>
 	{{/with}}
 </template>
 
@@ -52,17 +52,17 @@
 <template name="client__person__phone_number">
 	<section class="person_phone_number" data-index={{index}} data-field=person.{{parentIndex}}.phone_number>
 		<button class=remove>X</button>
-		<input type=text class=editable name=person.{{parentIndex}}.phone_number.{{index}}.number value={{number}} placeholder="add person's number" readonly><br>
-		<textarea class=editable name=person.{{parentIndex}}.phone_number.{{index}}.note value={{note}} placeholder="add note" readonly></textarea>
+		<input type=text class=editable name=person.{{parentIndex}}.phone_number.{{index}}.number value={{number}} placeholder="add person's number"><br>
+		<textarea class=editable name=person.{{parentIndex}}.phone_number.{{index}}.note value={{note}} placeholder="add note"></textarea>
 	</section>
 </template>
 
 <template name="client__person__email_address">
 	<section class="person_email_address" data-index={{index}} data-field=person.{{parentIndex}}.email_address>
 		<button class=remove>X</button>
-		<input type=text class=editable name=person.{{parentIndex}}.email_address.{{index}}.address value={{address}} placeholder="add person's email" readonly>{{#if address}}<a href="mailto:{{address}}">send to</a>{{/if}}<br>
-		<input type=text class=editable name=person.{{parentIndex}}.email_address.{{index}}.login value={{login}} placeholder="add email login" readonly><br>
-		<textarea class=editable name=person.{{parentIndex}}.email_address.{{index}}.note value={{note}} placeholder="add note" readonly></textarea>
+		<input type=text class=editable name=person.{{parentIndex}}.email_address.{{index}}.address value={{address}} placeholder="add person's email">{{#if address}}<a href="mailto:{{address}}">send to</a>{{/if}}<br>
+		<input type=text class=editable name=person.{{parentIndex}}.email_address.{{index}}.login value={{login}} placeholder="add email login"><br>
+		<textarea class=editable name=person.{{parentIndex}}.email_address.{{index}}.note value={{note}} placeholder="add note"></textarea>
 	</section>
 </template>
 
@@ -74,11 +74,12 @@ also consider making internal map of values so as to tidy markup
 <template name="client__person">
 	<section class=client_person data-index={{index}} data-field=person>
 		<button class=remove>X</button>
-		<h4><input type=text class=editable name=person.{{index}}.name value={{name}} placeholder="add person's name" readonly>, <input type=text class=editable name=person.{{index}}.position value={{position}} placeholder="position" readonly></h4><br>
+		<h4><input type=text class=editable name=person.{{index}}.name value={{name}} placeholder="add person's name">, <input type=text class=editable name=person.{{index}}.position value={{position}} placeholder="position"></h4><br>
 		{{#if phone_number}}
 			<h5>Phone Numbers</h5>
 			{{#each addIndex phone_number}}
 				{{> client__person__phone_number}}
+				<!-- {{> phone_number}} -->
 				<!-- use genericphone number template plz -->
 			{{/each}}
 		{{/if}}
@@ -92,7 +93,7 @@ also consider making internal map of values so as to tidy markup
 		<a class='add-item person.{{index}}.email_address' href="#">Add Email Address</a>
 		<label for=person.{{index}}.public>Is public?</label>
 		<input class=editable type=checkbox name=person.{{index}}.public checked="{{#if public}}checked{{/if}}"><br>
-		<input type=text class=editable name=person.{{index}}.note value={{note}} placeholder="add note" readonly>
+		<input type=text class=editable name=person.{{index}}.note value={{note}} placeholder="add note">
 	</section>
 </template>
 

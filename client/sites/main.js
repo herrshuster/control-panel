@@ -104,34 +104,25 @@ Template.site.events({
 		event.preventDefault();
 		window.open(event.target.href,'Checklist','height=600,width=500,scrollbars=yes')
 	},
-	'load': function(event,context) {
-		//not working
-		var editables = $('.editable');
-		$.each(editables, function(index, val) {
-			$(this).attr('size',$(this).val().length);
-		});
-	},
-	'focus .editable': function(event,context) {
-		$(event.target).removeProp('readonly');
-	},
 	'keydown .editable': function(event,context) {
 		$(event.target).attr('size',$(event.target).val().length + 1);
 	},
-	'keyup .editable': function(event,context) {
+	'keydown .editable, keyup .editable': function(event,context) {
+		fitText(event.target);
 		//this should wait for a pause and then save
-		$(event.target).attr('size',$(event.target).val().length);
-		//Should check if it's in a field ending with a comma, and advance if so (for city)
 		if(event.keyCode == 13) {
-			event.preventDefault();
-			//Though allow for new lines in textareas
+			event.stopImmediatePropagation();
+			//Allow for new lines in textareas
 			Meteor.call(
 				'update_field',
 				'sites',
 				context.data.site._id,
 				event.target.name,
 				event.target.value,
-				function(response){
-					$(event.target).prop('readonly','readonly').blur();
+				function(error,response){
+					if(!error){
+						$(event.target).blur();
+					}
 				}
 			);
 		}
@@ -147,15 +138,13 @@ Template.site.events({
 		} else {
 			value = event.target.value;
 		}
-		// console.log('field',field,'value',value);
 		Meteor.call(
 			'update_field',
 			'sites',
 			context.data.site._id,
 			field,
 			value,
-			function(response){
-				$(event.target).prop('readonly','readonly').blur();
+			function(error,response){
 			}
 		);
 	},
@@ -224,8 +213,6 @@ Template.site.helpers({
 			services.splice(blankIndex,1);
 		}
 		return services;
-		//Find other provided_services and exclude only those values
-		//e.g. a site has domain and SEO. the domain dropdown excludes 'SEO' and vice versa, and a new service excludes both
 	},
 	is_provided_service: function() {
 		return (this == Template.parentData().value);

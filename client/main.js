@@ -3,32 +3,42 @@ Meteor.subscribe('sites');
 Meteor.subscribe('checklists');
 Meteor.subscribe('checklistItems');
 
-var lastScrollTop = 0;
+var lastScrollTop = 0,
+	currentScrollTop,
+	navTop,
+	navHeight,
+	bottomOfNav;
+
 $(window).scroll(function(){
 
-	var currentScrollTop = $(this).scrollTop(),
-		navTop = $('body>nav').position().top,
-		navHeight = $('body>nav').outerHeight(true),
-		bottomOfNav = navTop + navHeight;
+	currentScrollTop = $(this).scrollTop();
+	navTop = $('body>nav').position().top;
+	navHeight = $('body>nav').outerHeight(true);
+	bottomOfNav = navTop + navHeight;
 
-	console.log('navTop',navTop,'navHeight',navHeight)
-
-	if(currentScrollTop > lastScrollTop) {
-		if(bottomOfNav > 0) {
-			$('body>nav').css('top',navTop - (navHeight / 8));
-		}
-	} else {
-		if(bottomOfNav < navHeight) {
-			$('body>nav').css('top',navTop + (navHeight / 16));
-		}
+	if(currentScrollTop > lastScrollTop && bottomOfNav > 0) {
+		$('body>nav').css('top',navTop - (navHeight / 8));
+	} else if(bottomOfNav < navHeight){
+		$('body>nav').css('top',navTop + (navHeight / 16));
 	}
 
 	lastScrollTop = currentScrollTop;
 });
 
+fitText = function(element) {
+	if(!$(element).is('textarea')) {
+		var text = $(element).text(),
+			font = $(element).css('font-size') + " " + $(element).css('font-family');
+		$(element).width($(element).textWidth(text,font) + 16);
+	}
+}
+
 $.fn.textWidth = function(text, font) {
-	if (!$.fn.textWidth.fakeEl) $.fn.textWidth.fakeEl = $('<span>').hide().appendTo(document.body);
-	$.fn.textWidth.fakeEl.text(text || this.val() || this.text()).css('font', font || this.css('font'));
+	if (!$.fn.textWidth.fakeEl) $.fn.textWidth.fakeEl = $('<span>').appendTo(document.body);
+	var htmlText = text || this.val() || this.text();
+	htmlText = $.fn.textWidth.fakeEl.text(htmlText).html(); //encode to Html
+	htmlText = htmlText.replace(/\s/g, "&nbsp;"); //replace trailing and leading spaces
+	$.fn.textWidth.fakeEl.html(htmlText).css('font', font || this.css('font'));
 	return $.fn.textWidth.fakeEl.width();
 };
 
@@ -56,8 +66,7 @@ Template.address.helpers({
 });
 
 Template.registerHelper(
-	'collectionType', function() {
-		// console.log(Template.parentData(2));
+	'templateContext', function() {
 		if(Object.keys(Template.parentData(2))[0] == 'site') {
 			return 'site';
 		} else if(Object.keys(Template.parentData(2))[0] == 'client') {
