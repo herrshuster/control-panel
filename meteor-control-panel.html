@@ -34,46 +34,67 @@
 </nav>
 </template>
 
+
+<!--
+Should be <address is='card-address'></address>
+ -->
 <template name="address">
-	<div class='{{templateContext}}_address' data-index={{index}} data-field=address style='background-image:url({{address__map}})'>
-		<button class=remove>X</button>
 		<address>
-			<input type=text class=editable name=address.{{index}}.street_address value={{street_address}} placeholder="add street address" size={{street_address.length}}><br>
-			<input type=text class=editable name=address.{{index}}.address_locality value={{address_locality}} placeholder="add city" size={{address_locality.length}}> <input type=text class=editable name=address.{{index}}.address_region value={{address_region}} placeholder="add state" size={{address_region.length}}>, <input type=text class=editable name=address.{{index}}.postal_code placeholder="add zip" value={{postal_code}} size={{postal_code.length}}>
+			<input type=text class=editable name=street_address value={{street_address}} placeholder="add street address"><br>
+			<input type=text class=editable name=address_locality value={{address_locality}} placeholder="add city"> <input type=text class=editable name=address_region value={{address_region}} placeholder="add state">, <input type=text class=editable name=postal_code placeholder="add zip" value={{postal_code}}>
 		</address>
 		{{#if note}}
-			<textarea class=editable name=address.{{index}}.note placeholder="add note" value={{note}}></textarea>
+			<textarea class=editable name=note placeholder="add note" value={{note}}></textarea>
 		{{else}}
 			<a class='add-note'>Add Note</a>
 		{{/if}}
-	</div>
+</template>
+
+
+<!--
+Some ideals to think about:
+ -->
+<template name="address2">
+
+	<!-- <card> needs to be hyphenated -->
+
+	<cp-card field=address index={{index}}>
+		<!-- Background applied by helper -->
+		<!-- Remove button created by helper? -->
+		<live-input name=street_address>{{street_address}}</live-input><br>
+		<live-input name=address_locality>{{address_locality}}</live-input>, <live-input name=address_region>{{address_region}}</live-input> <live-input name=postal_code>{{postal_code}}</live-input>
+		{{#if note}}
+			<live-input name=note>{{note}}</live-input>
+		{{else}}
+			<a class='add-note'>Add Note</a>
+		{{/if}}
+		<!-- live-input[name=note] is a textarea -->
+		<!-- placeholder created by prepending 'add' to label -->
+		<!-- to figure out which field to update javascript prepends index and [field=x] from parent <card> -->
+
+	</cp-card>
+
 </template>
 
 
 <template name="email_address">
-	<section class='{{templateContext}}_email_address' data-index={{index}} data-field='{{#if isSiteFile}}{{templateContext}}.{{index}}.{{/if}}email_address'>
-		<button class=remove>X</button>
-		<input type=email class=editable name=email_address.{{index}}.address value={{address}} placeholder="add email address">{{#if address}}<a href="mailto:{{address}}">send to</a>{{/if}}<br>
-		<input type=text class=editable name=email_address.{{index}}.login value={{login}} placeholder="add login"><br>
+		<input type=email class=editable name=address value={{address}} placeholder="add email address">{{#if address}}<a href="mailto:{{address}}">send to</a>{{/if}}<br>
+		<input type=text class=editable name=login value={{login}} placeholder="add login"><br>
 		{{#if note}}
-			<textarea class=editable name=email_address.{{index}}.note value={{note}}></textarea>
+			<textarea class=editable name=note value={{note}}></textarea>
 		{{else}}
 			<a class='add-note'>Add Note</a>
 		{{/if}}
-	</section>
 </template>
 
 
 <template name="phone_number">
-	<section class="{{templateContext}}_phone_number" data-index={{index}} data-field='{{#if isSiteFile}}{{templateContext}}.{{index}}.{{/if}}phone_number'>
-		<button class=remove>X</button>
-		<input type=text class=editable name=phone_number.{{index}}.number value={{number}} placeholder="add phone number">{{#if isPhone}}<a href='tel:{{mobileNumber}}'>Call</a>{{/if}}<br>
+		<input type=text class=editable name=number value={{number}} placeholder="add phone number">{{#if isPhone}}<a href='tel:{{mobileNumber}}'>Call</a>{{/if}}<br>
 		{{#if note}}
-			<textarea class=editable name=phone_number.{{index}}.note value={{note}}></textarea>
+			<textarea class=editable name=note value={{note}}></textarea>
 		{{else}}
 			<a class='add-note'>Add Note</a>
 		{{/if}}
-	</section>
 </template>
 <!-- instead of full values, example:
 <section class=phone_number data-index={{index}}>
@@ -81,4 +102,6 @@
 placeholder gotten from:
 var field = this.name
 Collection.label(field)
+
+Or really, index could be gotten from :nth-of-type
  -->

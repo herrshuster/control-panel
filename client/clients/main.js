@@ -1,24 +1,21 @@
-Template.newClient.helpers({
-
-});
 Template.newClient.onRendered(function(){
 	$('input[name="slug"]').prop('readonly',true);
 });
+
 Template.newClient.events({
 	'keyup [name=name]': function(event,context) {
-		var clientName = event.target.value;
-		clientName = clientName
-						.toLowerCase()
-    					.replace(/[^\w ]+/g,'')
-    					.replace(/ +/g,'-');
+		var clientName = event.target.value
+										.toLowerCase()
+										.replace(/[^\w ]+/g,'')
+										.replace(/ +/g,'-');
 		$(".slug").val(clientName);
 	},
 	'submit form': function(event,context) {
 		event.preventDefault();
 
 		var name = $('[name=name]').val(),
-			slug = $('.slug').val(),
-			referral = $('[name=referral]').val();
+				slug = $('.slug').val(),
+				referral = $('[name=referral]').val();
 
 		Meteor.call(
 			'client_create',
@@ -36,13 +33,11 @@ Template.newClient.events({
 	}
 });
 
-
 Template.allClients.helpers({
 	clients: function(){
 		return Clients.find({},{name:1,sites:1}).fetch();
 	},
 	clientFileUrl: function() {
-		// console.log(this);
 		return this.slug;
 	},
 	sites: function() {
@@ -53,77 +48,61 @@ Template.allClients.helpers({
 Template.clientInfo.events({
 	'keydown .editable, keyup .editable': function(event,context) {
 		fitText(event.target);
-		//this should wait for a pause and then save
-		if(event.keyCode == 13) {
-			event.stopImmediatePropagation();
-			//Allow for new lines in textareas
-			Meteor.call(
-				'update_field',
-				'clients',
-				context.data.client._id,
-				event.target.name,
-				event.target.value,
-				function(error,response){
-					if(!error){
-						$(event.target).blur();
-					}
-				}
-			);
-		}
-	},
-	'onblur .editable': function(event,context) {
-		if($(event.target).val().length == 0) {
-			$(event.target).attr('size',$(event.target).attr('placeholder').length);
-		}
+		if((event.key == 'Enter' && event.target.type !== 'textarea') || event.key == 'Tab') {
+			var parent = $(event.target).parents('.card').attr('id'),
+					index = this.index,
+					field = event.target.name,
+					reference = 'parentIndex' in this ? parent+'.'+this.parentIndex+'.'+$(event.target).parents('section').attr('class')+'.'+index+'.'+field : parent+'.'+index+'.'+field,
+					value = event.target.type == 'checkbox' ? $(event.target).prop('checked') : event.target.value;
+					// not working to edit checkboxes?
 
-		var field = event.target.name;
-		if($(event.target).attr('type') == 'checkbox') {
-			var value = $(event.target).prop('checked');
-		} else {
-			value = event.target.value;
+			event.stopImmediatePropagation();
+
+			console.log(parent,index,field,reference,value);
+
 		}
-		Meteor.call(
-			'update_field',
-			'clients',
-			context.data.client._id,
-			field,
-			value,
-			function(error,response){
-				if(!error) {
-					// $(event.target).prop('readonly','readonly');
-				}
-			}
-		);
-		if(!$(event.target).val()) {
-			console.log('remove it');
-		}
+			delay(function(){
+				update_field('client',context.data.client._id,reference,value,function(){});
+			}, 500 );
+	},
+	'blur .editable, change .editable[type=checkbox]': function(event,context) {
+		// console.log('blur',event)
+		if($(event.target).val().length == 0)
+			$(event.target).attr('size', $(event.target).attr('placeholder').length);
+
+
+			var parent = $(event.target).parents('.card').attr('id'),
+					index = this.index,
+					field = event.target.name,
+					value = event.target.type == 'checkbox' ? $(event.target).prop('checked') : event.target.value,
+					reference = 'parentIndex' in this ? parent+'.'+this.parentIndex+'.'+$(event.target).parents('section').attr('class')+'.'+index+'.'+field : parent+'.'+index+'.'+field;
+
+			update_field('client',context.data.client._id,reference,value);
+			if(!$(event.target).val())
+				console.log('remove it');
+
 	},
 	'click .add-item': function(event,context) {
-		//TODO: Remove empty fields
-		var classes = event.target.className.split(/\s+/);
-		var item_to_add = classes[1];
-		Meteor.call(
-			'add_to_field',
-			'clients',
-			context.data.client._id,
-			item_to_add,
-			function(error, response) {
-				console.log(error,response);
-			}
-		);
+		var item_to_add = event.target.className.split(/\s+/)[1];
+		add_to_field('client',context.data.client._id,item_to_add,function(){
+			var ulToWatch = $(event.target).parents('.card').find('ul');
+			ulToWatch.on('DOMNodeInserted',function(event){
+				if(event.target.nodeName == 'LI') {
+					$(event.target).find('input:first-of-type').focus();
+					ulToWatch.off('DOMNodeInserted','**');
+				}
+			});
+		});
 	},
 	'click button.remove': function(event,context) {
-		var index_to_remove = $(event.target.parentElement).attr('data-index');
-		Meteor.call(
-			'remove_field',
-			'clients',
-			context.data.client._id,
-			$(event.target.parentElement).attr('data-field'),
-			index_to_remove,
-			function(error,response) {
-				console.log(error,response);
-			}
-		)
+		console.log('event',event,'context','this',this);
+		var parent = 'parentIndex' in this ? $(event.target).parents('.card').attr('id')+'.'+this.parentIndex+'.'+$(event.target).parents('section').attr('class') : $(event.target).parents('.card').attr('id'),
+				index = getElIndex($(event.target).parents('li').get()[0]);
+		remove_field('client',context.data.client._id,parent,index);
 	}
 });
+
+Template.clientInfo.onDestroyed(function(){
+	//clean up unused fields
+})
 

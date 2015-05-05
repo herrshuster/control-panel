@@ -9,38 +9,46 @@
 		</section>
 	{{/if}}
 	{{#with client}}
-		<section class=card id='client'>
+		<div class=card id='client'>
 			<h2>Client Information</h2>
 			<h3><input type=text class=editable name=name value={{name}}></h3>
-		</section>
-		<section class=card id='address'>
+		</div>
+		<div class=card id='address'>
 			<h2>Addresses</h2>
+			<ul>
 			{{#each addIndex address}}
-				{{> address}}
+				<li>{{> address}}</li>
 			{{/each}}
+			</ul>
 			<a class='add-item address' href="#">Add Address</a>
-		</section>
-		<section class=card id="email_address">
+		</div>
+		<div class=card id="email_address">
 			<h2>Email Addresses</h2>
+			<ul>
 			{{#each addIndex email_address}}
-				{{> email_address}}
+				<li>{{> email_address}}</li>
 			{{/each}}
+			</ul>
 			<a class='add-item email_address' href="#">Add Email Address</a>
-		</section>
-		<section class=card id="phone_number">
+		</div>
+		<div class=card id="phone_number">
 			<h2>Phone Numbers</h2>
+			<ul>
 			{{#each addIndex phone_number}}
-				{{> phone_number}}
+				<li>{{> phone_number}}</li>
 			{{/each}}
+			</ul>
 			<a class='add-item phone_number' href="#">Add Phone Number</a>
-		</section>
-		<section class=card id="person">
+		</div>
+		<div class=card id="person">
 			<h2>People</h2>
+			<ul>
 			{{#each addIndex person}}
-				{{> client__person}}
+				<li>{{> client__person}}</li>
 			{{/each}}
+			</ul>
 			<a class='add-item person' href="#">Add Person</a>
-		</section>
+		</div>
 		<input type=text class=editable name=referral value={{referral}} placeholder="enter referral"><br>
 		<textarea class=editable name=note value={{note}} placeholder="enter note"></textarea>
 	{{/with}}
@@ -48,53 +56,39 @@
 
 
 
-<!-- DRY out these templates -->
-<template name="client__person__phone_number">
-	<section class="person_phone_number" data-index={{index}} data-field=person.{{parentIndex}}.phone_number>
-		<button class=remove>X</button>
-		<input type=text class=editable name=person.{{parentIndex}}.phone_number.{{index}}.number value={{number}} placeholder="add person's number"><br>
-		<textarea class=editable name=person.{{parentIndex}}.phone_number.{{index}}.note value={{note}} placeholder="add note"></textarea>
-	</section>
-</template>
-
-<template name="client__person__email_address">
-	<section class="person_email_address" data-index={{index}} data-field=person.{{parentIndex}}.email_address>
-		<button class=remove>X</button>
-		<input type=text class=editable name=person.{{parentIndex}}.email_address.{{index}}.address value={{address}} placeholder="add person's email">{{#if address}}<a href="mailto:{{address}}">send to</a>{{/if}}<br>
-		<input type=text class=editable name=person.{{parentIndex}}.email_address.{{index}}.login value={{login}} placeholder="add email login"><br>
-		<textarea class=editable name=person.{{parentIndex}}.email_address.{{index}}.note value={{note}} placeholder="add note"></textarea>
-	</section>
-</template>
-
-<!-- 
+<!--
 SEE ABOUT REMOVING CLASS=EDITABLE AND TARGETING BY TYPE INSTEAD
-also consider making internal map of values so as to tidy markup
  -->
 
 <template name="client__person">
-	<section class=client_person data-index={{index}} data-field=person>
 		<button class=remove>X</button>
-		<h4><input type=text class=editable name=person.{{index}}.name value={{name}} placeholder="add person's name">, <input type=text class=editable name=person.{{index}}.position value={{position}} placeholder="position"></h4><br>
-		{{#if phone_number}}
-			<h5>Phone Numbers</h5>
-			{{#each addIndex phone_number}}
-				{{> client__person__phone_number}}
-				<!-- {{> phone_number}} -->
-				<!-- use genericphone number template plz -->
-			{{/each}}
-		{{/if}}
-		<a class='add-item person.{{index}}.phone_number' href="#">Add Phone Number</a>
-		{{#if email_address}}
-			<h5>Email Addresses</h5>
-			{{#each addIndex email_address}}
-				{{> client__person__email_address}}
-			{{/each}}
-		{{/if}}
-		<a class='add-item person.{{index}}.email_address' href="#">Add Email Address</a>
-		<label for=person.{{index}}.public>Is public?</label>
-		<input class=editable type=checkbox name=person.{{index}}.public checked="{{#if public}}checked{{/if}}"><br>
-		<input type=text class=editable name=person.{{index}}.note value={{note}} placeholder="add note">
-	</section>
+		<h4><input type=text class=editable name=name value={{name}} placeholder="add person's name">, <input type=text class=editable name=position value={{position}} placeholder="position"></h4><br>
+		<section class='phone_number'>
+			{{#if phone_number}}
+				<h5>Phone Numbers</h5>
+				<ul>
+				{{#each addIndex phone_number}}
+					<li>{{> phone_number}}</li>
+				{{/each}}
+				</ul>
+			{{/if}}
+			<!-- dry out this add-item business -->
+			<a class='add-item person.{{index}}.phone_number' href="#">Add Phone Number</a>
+		</section>
+		<section class='email_address'>
+			{{#if email_address}}
+				<h5>Email Addresses</h5>
+				<ul>
+				{{#each addIndex email_address}}
+					<li>{{> email_address}}</li>
+				{{/each}}
+				</ul>
+			{{/if}}
+			<a class='add-item person.{{index}}.email_address' href="#">Add Email Address</a>
+		</section>
+		<label for=public>Is public?</label>
+		<input class=editable type=checkbox name=public checked="{{#if public}}checked{{/if}}"><br>
+		<input type=text class=editable name=note value={{note}} placeholder="add note">
 </template>
 
 

@@ -14,130 +14,112 @@ Meteor.publish('checklistItems',function(){
 	return ChecklistItems.find({});
 });
 
+capitalize = function(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+nameToCollection = function(name) {
+  return this[capitalize(name) + 's'];
+};
+
 Accounts.onCreateUser(function(options,user){
 	console.log(user);
+
 	user._id = Meteor.users._makeNewID();
-	if(options.services) {
+
+	if(options.services)
 		user.services = options.services;
-	}
-	if(options.profile) {
+
+	if(options.profile)
 		user.profile = options.profile;
 		user.profile.restrictions = '0';
-	}
+
 	return user;
 });
 
 Meteor.methods({
 	update_field: function(collection,document_id,field,value) {
+		console.log('update_field called',field,value);
 		obj = {};
 		obj[field] = value;
 		console.log(obj);
-		if (collection == 'clients') {
-			//Replace this if check
-			var Collection = Clients;	
-		} else if(collection = 'sites') {
-			var Collection = Sites;
-		}
-		Collection.update(
-		{
-			_id: document_id
-		}, {
-			$set: obj
-		}, function(error,id) {
+		var Collection = nameToCollection(collection);
+		Collection.update({_id: document_id}, {$set: obj}, function(error,id) {
 			console.log(error,id);
 			return(error,id);
-		}
-		);
+		});
 	},
 	add_to_field: function(collection,document_id,field) {
-		//xField is the genericized version of the string to check
-		xField = field.replace(/(\.[0-9]+\.)/,'.$.');
-		if (collection == 'clients') {
-			//Replace this if check
-			var Collection = Clients;	
-		} else if(collection = 'sites') {
-			var Collection = Sites;
-		}
-		var Schema = Collection._c2._simpleSchema._schema;
-
-		// console.log(Schema);
-
+		console.log('add_to_field called')
 		function escapeRegExp(str) {
 			return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 		}
-		var filterPhrase = escapeRegExp(xField+'.$');
-		var filter = new RegExp('^('+filterPhrase+')$');//This filter finds the top-level defininition of any field which has children, whether objects or array items
-		if(Schema[xField].type.name == 'Array') {
-			//If the field is an array, it needs an object set up to set
-			var fieldKeys = Object.keys(Schema),
-				i;
-			for(i = 0; i < fieldKeys.length; i++) {
-				//For each of the possible keys in the schema
-				if(fieldKeys[i].match(filter)) {
-					var dataToInsert = {};
-					dataToInsert[field] = {};
-					console.log('match',fieldKeys[i].match(filter));
-					console.log('schema',fieldKeys[i],Schema[fieldKeys[i]]);
-					var subFields = [];
-					for (var k = 0; k < fieldKeys.length; k++) {
-						if(fieldKeys[k].match(new RegExp('^'+filterPhrase+'\.'))) {
-							if(Schema[fieldKeys[k]].type.name == 'String') {
-								//This is where the data gets inserted
-								dataToInsert[field][fieldKeys[k].match(new RegExp('^('+filterPhrase+'\.)(.+)'))[2]] = '';								
-							}
-						}
-					};
-					var currentKey = Schema[fieldKeys[i]];
-					if(currentKey.type.name == 'String' && fieldKeys[i].replace(xField+'.$.','').indexOf('.$.') == -1) {
-						//Only insert strings which are not tested
-						console.log('String',currentKey);
-						// dataToInsert[field] = [];
-						dataToInsert[field] = '';
-					} else if(currentKey.type.name == 'Boolean') {
-						console.log('Boolean (not inserted)',currentKey);
-						// dataToInsert[field][fieldKeys[i].replace(xField+'.$.','')] = false;
-					} else if(currentKey.type.name == 'Array') {
-						console.log('Array (not inserted)',currentKey);
-					} else if(currentKey.type.name == 'Object') {
-						console.log('I OBJECT');
+		var indexRegex = /\.([0-9]+)\./, //matches .X., and returns X
+				fieldIndex = field.match(indexRegex) ? field.match(indexRegex)[1] : null,//sets fieldIndex to X or null
+				xField = field.replace(indexRegex,'.$.'),//genericizes field for matching
+				Collection = nameToCollection(collection),
+				schema = Collection._c2._simpleSchema._schema,
+				objectToInsert= {};
+			var Schema = [];
+			_.map(schema, function(value,key){
+				var newObject = {};
+				newObject[key] = value;
+				Schema.push(newObject);
+			});
+			console.log('schema',Schema);
+			Array.prototype.forEach.call(Schema, function(schemoid, i){//loop through all the schema field definitions, calling them 'schemoids'
+				if(schemoid[xField]) {//if a schemoid matches the field we are looking for,
+					var fieldToMatch = '';
+					var fieldToAppend = '';
+					var schemaKey = '';
+					for(var key in schemoid) {
+						fieldToMatch = '^('+escapeRegExp(key+'.$.')+')(.+)';
+						schemaKey = key;//schemakey is the unindexed key
+						fieldToAppend = fieldIndex ? key.replace(/\.\$\./,'.'+fieldIndex+'.') : key;//fieldtoAppend is the indexed key
 					}
+					objectToInsert[fieldToAppend] = {};
+					fieldToMatch = new RegExp(fieldToMatch);
+					var fieldsToInsert = [];
+					Array.prototype.forEach.call(Schema, function(nestedSchemoid,i){
+						for (var i in nestedSchemoid) {
+							var matches = i.match(fieldToMatch);
+							if(matches) {
+								var nestedField = matches[2];
+								var nestedSchemoids = {};
+								fieldsToInsert.push(matches[2]);
+							}
+						  break;
+						}
+					});
+					Array.prototype.forEach.call(fieldsToInsert,function(nestedField,i) {
+						var fieldSchema = schema[schemaKey+'.$.'+nestedField];
+						if(fieldSchema.type.name == 'String' && !fieldSchema.optional) {
+							if(!nestedField.match(/\.\$\./)) {
+								objectToInsert[fieldToAppend][nestedField] = '';
+							}
+						} else if(fieldSchema.type.name == 'Boolean' && !fieldSchema.optional) {
+							objectToInsert[fieldToAppend][nestedField] = false;
+						} else if(fieldSchema.type.name == 'Array' && !fieldSchema.optional) {
+							objectToInsert[fieldToAppend][nestedField] = [];
+							objectToInsert[fieldToAppend][nestedField][0] = {};
+							Array.prototype.forEach.call(fieldsToInsert,function(fieldToCheck,i){
+								var fieldMatches = fieldToCheck.match(/\.\$\.([a-zA-Z0-9_]+)/);
+								if(fieldMatches) {
+									objectToInsert[fieldToAppend][nestedField][0][fieldMatches[1]] = '';
+								}
+							})
+						}
+					})
 				}
-			};
-		}
-		console.log('add_to_field dataToInsert',dataToInsert);
-		console.log('type',Object.prototype.toString.call(dataToInsert[field]));
-		if(Object.prototype.toString.call(dataToInsert[field]) == '[object String]') {
-			Collection.update(
-			{
-				_id: document_id
-			}, {
-				$push: dataToInsert
-			}, function(error,id) {
+			});
+			console.log('prepare for insertion',objectToInsert);
+			Collection.update({_id: document_id}, {$addToSet: objectToInsert}, function(error,id) {
 				console.log(error,id);
-				return (error,id);
-			}
-			);
+			});
 
-		} else if(Object.prototype.toString.call(dataToInsert[field]) == '[object Object]') {
-			Collection.update(
-			{
-				_id: document_id
-			}, {
-				$addToSet: dataToInsert
-			}, function(error,id) {
-				console.log(error,id);
-				return (error,id);
-			}
-			);
-		}
 	},
 	remove_field: function(collection,document_id,field,index) {
-		if (collection == 'clients') {
-			//Replace this if check
-			var Collection = Clients;	
-		} else if(collection = 'sites') {
-			var Collection = Sites;
-		}
+		var Collection = nameToCollection(collection);
 		console.log('collection',collection,'document_id',document_id,'field',field,'index',index);
 		key = field+"."+index;
 		unsetObj = {};
@@ -145,27 +127,12 @@ Meteor.methods({
 		pullObj = {};
 		pullObj[field] = null;
 		console.log(unsetObj,pullObj);
-		Collection.update(
-			{
-				_id: document_id
-			}, {
-				$unset: unsetObj
-			}, function(error,id) {
+		Collection.update({_id: document_id}, {$unset: unsetObj}, function(error,id) {
 				console.log(error,id);
 				if(!error) {
-					Collection.update(
-						{
-							_id: document_id
-						}, {
-							$pull: pullObj
-						}, function(error,id) {
-							console.log(error,id);
-							if(!error) {
-								return id;
-							} else {
-								return error;
-							}
+					Collection.update({_id: document_id}, {$pull: pullObj}, function(error,id) {
 							console.log('error',error,'id',id);
+							return error ? error : id;
 						}
 					);
 				}

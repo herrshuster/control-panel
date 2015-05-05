@@ -27,9 +27,10 @@ $(window).scroll(function(){
 
 fitText = function(element) {
 	if(!$(element).is('textarea')) {
-		var text = $(element).text(),
-			font = $(element).css('font-size') + " " + $(element).css('font-family');
-		$(element).width($(element).textWidth(text,font) + 16);
+		var text = element.value.length > 0 ? element.value : element.placeholder,
+				font = $(element).css('font-size') + " " + $(element).css('font-family');
+
+		$(element).width($(element).textWidth(text,font) + 8);
 	}
 }
 
@@ -57,23 +58,6 @@ Template.body_nav.events({
 	}
 })
 
-Template.address.helpers({
-	address__map: function() {
-		var addressURL = encodeURIComponent(this.street_address+" "+this.address_locality+" "+this.address_region+" "+this.postal_code);
-		var mapstring = "http://maps.googleapis.com/maps/api/staticmap?center="+addressURL+"&zoom=14&size=500x350&maptype=roadmap&markers="+addressURL;
-		return mapstring;
-	}
-});
-
-Template.registerHelper(
-	'templateContext', function() {
-		if(Object.keys(Template.parentData(2))[0] == 'site') {
-			return 'site';
-		} else if(Object.keys(Template.parentData(2))[0] == 'client') {
-			return 'client'
-		}
-	}
-);
 
 Template.registerHelper(
 	'isPhone', (
@@ -97,20 +81,55 @@ Template.phone_number.helpers({
 	}
 });
 
+fitEditables = function(template) {
+	$.each(template.findAll('.editable'),function(i,el) {
+		fitText(el);
+	});
+}
+
+delay = (function(){
+	var timer = 0;
+	return function(callback, ms){
+		clearTimeout (timer);
+		timer = setTimeout(callback, ms);
+	};
+})();
+
+Template.address.onRendered(function(){
+	$(this.firstNode).before('<button class=remove>X</button>');
+	var addressURL = encodeURIComponent(this.data.street_address+" "+this.data.address_locality+" "+this.data.address_region+" "+this.data.postal_code),
+			mapstring = "http://maps.googleapis.com/maps/api/staticmap?center="+addressURL+"&zoom=14&size=500x350&maptype=roadmap&markers="+addressURL;
+	$(this.firstNode).css('background-image','url('+mapstring+')');
+	fitEditables(this);
+});
+
+
 Template.address.events({
 	'click .add-note': function(event,context) {
 		console.log(this,event,context);
 		$(event.target).parent().append('<textarea class=editable name=address.'+this.index+'.note></textarea>').focus();
 		$(event.target).remove();
 	}
+	//change map background when address is changed
+});
+
+Template.email_address.onRendered(function(){
+	$(this.firstNode).before('<button class=remove>X</button>');
+	fitEditables(this);
 });
 
 Template.email_address.events({
 	'click .add-note': function(event,context) {
-		console.log(this,event,context);
 		$(event.target).parent().append('<textarea class=editable name=email_address.'+this.index+'.note></textarea>').focus();
 		$(event.target).remove();
 	}
+	//'add-item': focusNewItem(event)
+	//add emitter and use this to handle it, then define a function once to handle focusing on new items
+});
+
+Template.phone_number.onRendered(function(){
+	$(this.firstNode).before('<button class=remove>X</button>');
+	fitEditables(this);
 });
 
 Template.phone_number.events({
@@ -121,6 +140,58 @@ Template.phone_number.events({
 	}
 });
 
+getElIndex = function(el) {
+    var k = 0;
+		while(el.previousElementSibling){
+				k++;
+				el = el.previousElementSibling;
+		}
+		return k;
+}
+
+
+
+
+update_field = function(collection,document_id,field,value,callback) {
+	Meteor.call(
+		'update_field',
+		collection,
+		document_id,
+		field,
+		value,
+		function(error,response){
+			if(!error){
+				callback();
+			}
+		}
+	);
+}
+
+remove_field = function(collection,document_id,field,index) {
+	Meteor.call(
+		'remove_field',
+		collection,
+		document_id,
+		field,
+		index,
+		function(error,response) {
+			console.log(error,response);
+		}
+	);
+}
+
+add_to_field = function(collection,document_id,field,callback) {
+	Meteor.call(
+		'add_to_field',
+		collection,
+		document_id,
+		field,
+		function(error, response) {
+			if(!error)
+				callback();
+		}
+	);
+}
 
 
 

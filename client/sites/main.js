@@ -13,16 +13,15 @@ Template.newSite.helpers({
 });
 Template.newSite.onRendered(function(){
 	$('input[name="slug"]').prop('readonly',true);
-	//change this to a live-updaing field instead of an input, which is insecure
+	//change this to a live-updating field instead of an input, which is insecure
 });
 
 Template.newSite.events({
 	"keyup [name='url']": function(event,context) {
-		var siteUrl = event.target.value;
-		siteUrl = siteUrl
-						.toLowerCase()
-    					.replace(/[^\w ]+/g,'-')
-    					.replace(/ +/g,'-');
+		var siteUrl = event.target.value
+									.toLowerCase()
+									.replace(/[^\w ]+/g,'-')
+									.replace(/ +/g,'-');
 		$("input[name='slug']").val(siteUrl);
 	},
 	'submit form': function(event,context) {
@@ -32,11 +31,12 @@ Template.newSite.events({
 			return true;
 		}
 		var client = $('[name=client]').val(),
-			url = $('[name=url]').val(),
-			slug = url.toLowerCase().replace(/[^\w ]+/g,'-').replace(/ +/g,'-'),
-			secure = $('[name=secure]').prop('checked'),
-			status = $('[name=status]').val(),
-			organization_name = $('[name=organization_name]').val();
+				url = $('[name=url]').val(),
+				slug = url.toLowerCase().replace(/[^\w ]+/g,'-').replace(/ +/g,'-'),
+				secure = $('[name=secure]').prop('checked'),
+				status = $('[name=status]').val(),
+				organization_name = $('[name=organization_name]').val();
+
 		function validateSiteFields() {
 			if(!client) {
 				alert('You must enter a client first');
@@ -47,26 +47,19 @@ Template.newSite.events({
 				return false;
 			} else if(!status) {
 				var active = confirm('Is this an active site?');
-				if(active) {
-					status = 'active';
-				} else {
-					status = 'inactive';
-				}
+
+				active ? status = 'active' : status = 'inactive';
+
 				$('[name=status]').val(status);
-				if(validateSiteFields()) {
-					return true;
-				} else {
-					return false;
-				}
-				
+
+				return validateSiteFields();
+
 			} else if(!organization_name) {
 				organization_name = prompt('Please enter an organization name','name');
 				$('[name=organization_name]').val(organization_name);
-				if(validateSiteFields()) {
-					return true;
-				} else {
-					return false;
-				}
+
+				return validateSiteFields();
+
 			} else {
 				return true;
 			}
@@ -84,16 +77,15 @@ Template.newSite.events({
 
 				},
 				function(error,response) {
-					if(!error) {
+					if(!error)
 						Router.go('/site/'+slug);
-					} else {
+					else
 						console.log(error);
-					}
 				}
 			);
-		} 
+		}
 	}
-	
+
 });
 
 Template.site.events({
@@ -109,85 +101,30 @@ Template.site.events({
 	},
 	'keydown .editable, keyup .editable': function(event,context) {
 		fitText(event.target);
-		//this should wait for a pause and then save
-		if(event.keyCode == 13) {
+		if(event.keyCode == 13 || event.keyCode == 9) {
 			event.stopImmediatePropagation();
-			//Allow for new lines in textareas
-			Meteor.call(
-				'update_field',
-				'sites',
-				context.data.site._id,
-				event.target.name,
-				event.target.value,
-				function(error,response){
-					if(!error){
-						$(event.target).blur();
-					}
-				}
-			);
+			update_field('site',context.data.site._id,event.target.name,event.target.value);
 		}
 	},
 	'blur .editable:not(select)': function(event,context) {
-		if($(event.target).val().length == 0) {
+		if($(event.target).val().length == 0)
 			$(event.target).attr('size',$(event.target).attr('placeholder').length);
-		}
 
 		var field = event.target.name;
-		if($(event.target).attr('type') == 'checkbox') {
-			var value = $(event.target).prop('checked');
-		} else {
-			value = event.target.value;
-		}
-		Meteor.call(
-			'update_field',
-			'sites',
-			context.data.site._id,
-			field,
-			value,
-			function(error,response){
-			}
-		);
+		var value = ($(event.target).attr('type') == 'checkbox') ? $(event.target).prop('checked') : event.target.value;
+		update_field('site',context.data.site._id,field,value);
 	},
 	'change select.editable': function(event,context) {
-		Meteor.call(
-			'update_field',
-			'sites',
-			context.data.site._id,
-			$(event.target).attr('name'),
-			event.target.value,
-			function(response) {
-				console.log(response);
-			}
-
-		);
+		update_field('site',context.data.site._id,$(event.target).attr('name'),event.target.value);
 	},
 	'click .add-item': function(event,context) {
-		//TODO: Remove empty fields
-		//TODO: Focus on first field of new item
 		var classes = event.target.className.split(/\s+/);
 		var item_to_add = classes[1];
-		Meteor.call(
-			'add_to_field',
-			'sites',
-			context.data.site._id,
-			item_to_add,
-			function(error, response) {
-				console.log(error,response);
-			}
-		);
+		add_to_field('site',context.data.site._id,item_to_add);
 	},
 	'click button.remove': function(event,context) {
 		var index_to_remove = $(event.target.parentElement).attr('data-index');
-		Meteor.call(
-			'remove_field',
-			'sites',
-			context.data.site._id,
-			$(event.target.parentElement).attr('data-field'),
-			index_to_remove,
-			function(response) {
-				console.log(response);
-			}
-		)
+		remove_field('sites',context.data.site._id,$(event.target.parentElement).attr('data-field'),index_to_remove);
 	}
 });
 Template.site.helpers({
@@ -205,13 +142,16 @@ Template.site.helpers({
 	},
 	provided_services: function() {
 		var schemaAllowedValues = Sites._c2._simpleSchema._schema['service_provided.$'].allowedValues,//get all allowed values
-			siteProvidedServices = Template.parentData(1).service_provided,//get the currently provided services
-			services = $(schemaAllowedValues).not(siteProvidedServices).get();//remove the provided services from the list
+				siteProvidedServices = Template.parentData(1).service_provided,//get the currently provided services
+				services = $(schemaAllowedValues).not(siteProvidedServices).get();//remove the provided services from the list
+
 		services.unshift(this.value);//add the current service to the beginning of the array
+
 		var blankIndex = services.indexOf('');
-		if(blankIndex !== 0) {
+
+		if(blankIndex !== 0)
 			services.splice(blankIndex,1);
-		}
+
 		return services;
 	},
 	is_provided_service: function() {
@@ -225,13 +165,14 @@ Template.site__checklist.helpers({
 		for (var i = 0; i < this.items.length; i++) {
 			var checkedState = "";
 			for (var j = 0; j < this.items[i].events.length; j++) {
-				if(this.items[i].events[j].type == 'check' || this.items[i].events[j].type == 'uncheck') {
+				if(this.items[i].events[j].type == 'check' || this.items[i].events[j].type == 'uncheck')
 					checkedState = this.items[i].events[j].type;
-				}
+
 			};
-			if(checkedState == 'check') {
+
+			if(checkedState == 'check')
 				checkedItems++;
-			}
+
 		};
 		return checkedItems;
 	},

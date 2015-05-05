@@ -6,18 +6,21 @@ consider changing 'sites' to 'properties' to make industry agnostic
 
 password generator
 
-Server/client separation
-
 checklist new item isn't working
 
 menu with links to all sites, new site, &c, and select lists of recent sites & clients _above_ top of page so when user scrolls up they're visible
 
 Chrome/Firefox extension that detects if you're on a site that's in the control panel and puts the relevant information under a button
 
-instead of div[data-field=x], just use <x></x>
 
 Checklist phases:
 first is initialization, has extra items that only need to be done once
 after that, regular checklists (are created?) have different items
 
 https://github.com/CollectionFS/Meteor-CollectionFS
+
+http://stackoverflow.com/questions/29690350/how-would-you-find-a-collection-dynamically-in-meteor-with-a-value
+
+DRY out .editable updates
+
+update fields after user pauses?

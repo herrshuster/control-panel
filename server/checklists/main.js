@@ -5,7 +5,6 @@ Meteor.methods({
 				checklistType: ChecklistItem.checklistType,
 				default: ChecklistItem.default,
 				revisions: ChecklistItem.revisions
-
 			},function(error,id){
 				if(id) {
 					Checklists.update(
@@ -25,12 +24,7 @@ Meteor.methods({
 							}
 						}},
 						function(error,id) {
-
-							if(id) {
-								return id;
-							} else {
-								return error;
-							}
+							return id ? id : error;
 						}
 					);
 				}
@@ -46,11 +40,7 @@ Meteor.methods({
 				items: Checklist.items
 			}, function(error,id){
 				console.log(error,id);
-				if(id) {
-					return id;
-				} else {
-					return error;
-				}
+				return id ? id : error;
 			}
 		);
 	},
