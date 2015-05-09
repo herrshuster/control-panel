@@ -1,94 +1,189 @@
 <template name="clientInfo">
-	<h1>{{client.name}}</h1>
-	{{#if sites}}
-		<section class=card id='sites'>
-			<h2>Sites</h2>
-			{{#each sites}}
-				<h3><a href="/site/{{slug}}">{{url}}</a></h3>
-			{{/each}}
-		</section>
-	{{/if}}
-	{{#with client}}
-		<div class=card id='client'>
-			<h2>Client Information</h2>
-			<h3><input type=text class=editable name=name value={{name}}></h3>
-		</div>
-		<div class=card id='address'>
-			<h2>Addresses</h2>
-			<ul>
-			{{#each addIndex address}}
-				<li>{{> address}}</li>
-			{{/each}}
+	<div class='row'>
+
+		<div class='col s12'>
+			<ul class='tabs card grey darken-4 white-text'>
+				<li class='tab col l6 m4 l2'><a href='#clientInfo' class='white-text'><i class='mdi-social-person'></i><span class='hide-on-small-only'>Client Info</span></a></li>
+				<li class='tab col l6 m4 l2'><a href='#siteInfo' class='white-text'><i class='mdi-social-public'></i><span class='hide-on-small-only'>Site Info</span></a></li>
+				<li class='tab col l6 m4 l2'><a href='#clientNotes' class='white-text'><i class='mdi-content-sort'></i><span class='hide-on-small-only'>Client Notes</span></a></li>
+				<li class='tab col l6 m4 l2'><a href='#clientAddresses' class='white-text'><i class='mdi-maps-place'></i><span class='hide-on-small-only'>Addresses</span></a></li>
+				<li class='tab col l6 m4 l2'><a href='#clientEmails' class='white-text'><i class='mdi-communication-email'></i><span class='hide-on-small-only'>Emails</span></a></li>
+				<li class='tab col l6 m4 l2'><a href='#clientPhoneNumbers' class='white-text'><i class='mdi-communication-phone'></i><span class='hide-on-small-only'>Phone Numbers</span></a></li>
+				<li class='tab col l6 m4 l2'><a href='#clientPeople' class='white-text'><i class='mdi-social-people'></i><span class='hide-on-small-only'>People</span></a></li>
 			</ul>
-			<a class='add-item address' href="#">Add Address</a>
 		</div>
-		<div class=card id="email_address">
-			<h2>Email Addresses</h2>
-			<ul>
-			{{#each addIndex email_address}}
-				<li>{{> email_address}}</li>
-			{{/each}}
-			</ul>
-			<a class='add-item email_address' href="#">Add Email Address</a>
+
+		<div class='col s12' id='clientInfo'>
+			<div class='cp-collection' id='client'>
+				<div class="card-content">
+					<span class='card-title blue-text text-darken-4'>Client Information</span>
+					<h3><input type=text class=live-field name=name value={{client.name}}></h3>
+				</div>
+			</div>
 		</div>
-		<div class=card id="phone_number">
-			<h2>Phone Numbers</h2>
-			<ul>
-			{{#each addIndex phone_number}}
-				<li>{{> phone_number}}</li>
-			{{/each}}
-			</ul>
-			<a class='add-item phone_number' href="#">Add Phone Number</a>
+
+		<div class='col s12' id='siteInfo'>
+			<div class='cp-collection' id='sites'>
+				<div class='card-content'>
+					<span class='card-title blue-text text-darken-4'>Sites</span>
+					<ul class="collection">
+					{{#each sites}}
+						<li class='collection-item'><i class='mdi-social-public'></i><a href="/site/{{slug}}">{{url}}</a></li>
+					{{/each}}
+					</ul>
+				</div>
+			</div>
 		</div>
-		<div class=card id="person">
-			<h2>People</h2>
-			<ul>
-			{{#each addIndex person}}
-				<li>{{> client__person}}</li>
-			{{/each}}
-			</ul>
-			<a class='add-item person' href="#">Add Person</a>
+
+
+		<div class='col s12' id='clientNotes'>
+			<div class="card">
+				<div class="card-content">
+					<div class="input-field">
+						<input type=text class=live-field name=referral value={{client.referral}} placeholder="enter referral"><br>
+					</div>
+					<div class="input-field">
+						<textarea class='live-field materialize-textarea' name=note value={{client.note}} placeholder="enter note"></textarea>
+					</div>
+				</div>
+			</div>
 		</div>
-		<input type=text class=editable name=referral value={{referral}} placeholder="enter referral"><br>
-		<textarea class=editable name=note value={{note}} placeholder="enter note"></textarea>
-	{{/with}}
+
+		<div class='col s12' id='clientAddresses'>
+			<div class='cp-collection' id='address'>
+				<ul>
+				{{#each addIndex client.address}}
+					<li class='col s12 m6 l4'>
+						<div class='card grey darken-4 white-text'>{{> address}}</div>
+					</li>
+				{{/each}}
+					<li class='col s12 m6 l4 add-item'>
+						<div class='card grey darken-4 white-text'>
+							<div class='card-action'>
+								<a class='address' href="#"><i class='mdi-content-add'></i>Add Address</a>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+
+
+		<div class='col s12' id='clientEmails'>
+			<div class='cp-collection' id="email_address">
+				<ul>
+				{{#each addIndex client.email_address}}
+					<li class='col s12 m6 l4'>
+						<div class='card grey darken-4 white-text'>{{> email_address}}</div>
+					</li>
+				{{/each}}
+					<li class='col s12 m6 l4 add-item'>
+						<div class='card grey darken-4 white-text'>
+							<div class='card-action'>
+								<a class='email_address' href="#"><i class='mdi-content-add'></i>Add Email Address</a>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+
+
+
+		<div class='col s12' id='clientPhoneNumbers'>
+			<div class='cp-collection' id="phone_number">
+					<ul>
+					{{#each addIndex client.phone_number}}
+						<li class='col s12 m6 l4'>
+							<div class='card grey darken-4 white-text'>{{> phone_number}}</div>
+						</li>
+					{{/each}}
+						<li class='col s12 m6 l4 add-item'>
+							<div class='card grey darken-4 white-text'>
+								<div class='card-action'>
+									<a class='phone_number' href="#"><i class='mdi-content-add'></i>Add Phone Number</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+			</div>
+		</div>
+
+
+		<div class='col s12' id='clientPeople'>
+			<div class='cp-collection' id="person">
+				<ul>
+				{{#each addIndex client.person}}
+					<li class='col s12 m12 l6'>
+						<div class='card grey darken-4 white-text'>{{> client__person}}</div>
+					</li>
+				{{/each}}
+					<li class='col s12 m6 l4 add-item'>
+						<div class='card grey darken-4 white-text'>
+							<div class='card-action'>
+								<a class='person' href="#"><i class='mdi-content-add'></i>Add Person</a>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
 </template>
 
 
 
 <!--
-SEE ABOUT REMOVING CLASS=EDITABLE AND TARGETING BY TYPE INSTEAD
+SEE ABOUT REMOVING CLASS=live-field AND TARGETING BY TYPE INSTEAD
  -->
 
 <template name="client__person">
 		<button class=remove>X</button>
-		<h4><input type=text class=editable name=name value={{name}} placeholder="add person's name">, <input type=text class=editable name=position value={{position}} placeholder="position"></h4><br>
-		<section class='phone_number'>
-			{{#if phone_number}}
-				<h5>Phone Numbers</h5>
-				<ul>
-				{{#each addIndex phone_number}}
-					<li>{{> phone_number}}</li>
-				{{/each}}
-				</ul>
-			{{/if}}
-			<!-- dry out this add-item business -->
-			<a class='add-item person.{{index}}.phone_number' href="#">Add Phone Number</a>
-		</section>
-		<section class='email_address'>
-			{{#if email_address}}
-				<h5>Email Addresses</h5>
-				<ul>
-				{{#each addIndex email_address}}
-					<li>{{> email_address}}</li>
-				{{/each}}
-				</ul>
-			{{/if}}
-			<a class='add-item person.{{index}}.email_address' href="#">Add Email Address</a>
-		</section>
-		<label for=public>Is public?</label>
-		<input class=editable type=checkbox name=public checked="{{#if public}}checked{{/if}}"><br>
-		<input type=text class=editable name=note value={{note}} placeholder="add note">
+		<div class='card-content'>
+			<div class='input-field col s12 m6 l6'>
+				<input type=text class=live-field name=name value={{name}} placeholder="add person's name">
+			</div>
+			<div class='input-field col s12 m6 l6'>
+				<input type=text class=live-field name=position value={{position}} placeholder="position">
+			</div>
+			<section class='phone_number'>
+				{{#if phone_number}}
+					<h5 class='col s12 m12 l12'>Phone Numbers</h5>
+					<ul>
+					{{#each addIndex phone_number}}
+						<li class='card col s12 grey darken-4 white-text'>{{> phone_number}}</li>
+					{{/each}}
+					</ul>
+				{{/if}}
+				<!-- dry out this add-item business -->
+				<div class='add-item'><a class='person.{{index}}.phone_number waves-effect waves-green btn-flat' href="#">Add Phone Number</a></div>
+			</section>
+			<section class='email_address'>
+				{{#if email_address}}
+					<h5 class='col s12 m12 l12'>Email Addresses</h5>
+					<ul>
+					{{#each addIndex email_address}}
+						<li class='card col s12 grey darken-4 white-text'>{{> email_address}}</li>
+					{{/each}}
+					</ul>
+				{{/if}}
+				<div class='add-item'><a class='person.{{index}}.email_address waves-effect waves-green btn-flat' href="#">Add Email Address</a></div>
+			</section>
+			<div class='col s12 input-field'>
+				<input class='live-field filled-in' type=checkbox name=public checked="{{#if public}}checked{{/if}}">
+				<label for=public>Is public?</label>
+			</div>
+			<div class='col s12 input-field'>
+				<input type=text class=live-field name=note value={{note}} placeholder="add note">
+			</div>
+		</div>
 </template>
 
 
@@ -97,9 +192,9 @@ SEE ABOUT REMOVING CLASS=EDITABLE AND TARGETING BY TYPE INSTEAD
 <template name="newClient">
 	<h1>Add a New Client</h1>
 	<form>
-		<input type=text class=editable name=name placeholder=name><br>
+		<input type=text class=live-field name=name placeholder=name><br>
 		<input type=hidden class=slug><br>
-		<textarea name=referral class=editable placeholder=referral></textarea><br>
+		<textarea name=referral class=live-field placeholder=referral></textarea><br>
 		<input type=submit value=add>
 	</form>
 </template>

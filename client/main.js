@@ -9,21 +9,22 @@ var lastScrollTop = 0,
 	navHeight,
 	bottomOfNav;
 
-$(window).scroll(function(){
+// $(window).scroll(function(){
 
-	currentScrollTop = $(this).scrollTop();
-	navTop = $('body>nav').position().top;
-	navHeight = $('body>nav').outerHeight(true);
-	bottomOfNav = navTop + navHeight;
+// 	currentScrollTop = $(this).scrollTop();
+// 	navTop = $('body>nav').position().top;
+// 	navHeight = $('body>nav').outerHeight(true);
+// 	bottomOfNav = navTop + navHeight;
 
-	if(currentScrollTop > lastScrollTop && bottomOfNav > 0) {
-		$('body>nav').css('top',navTop - (navHeight / 8));
-	} else if(bottomOfNav < navHeight){
-		$('body>nav').css('top',navTop + (navHeight / 16));
-	}
+// 	if(currentScrollTop > lastScrollTop && bottomOfNav > 0) {
+// 		$('body>nav').css('top',navTop - (navHeight / 8));
+// 		//scrolling down, keep these from overstepping their bounds
+// 	} else if(bottomOfNav < navHeight){
+// 		$('body>nav').css('top',navTop + (navHeight / 16));
+// 	}
 
-	lastScrollTop = currentScrollTop;
-});
+// 	lastScrollTop = currentScrollTop;
+// });
 
 fitText = function(element) {
 	if(!$(element).is('textarea')) {
@@ -43,12 +44,21 @@ $.fn.textWidth = function(text, font) {
 	return $.fn.textWidth.fakeEl.width();
 };
 
+Template.body_nav.onRendered(function(){
+
+    $(".button-collapse").sideNav();
+
+})
+
 Template.body_nav.helpers({
 	allClients: function() {
 		return Clients.find({},{slug:1,name:1}).fetch();
 	},
 	allSites: function() {
 		return Sites.find({},{slug:1,url:1}).fetch();
+	},
+	documentName: function() {
+		return Session.get('documentName');
 	}
 });
 
@@ -69,22 +79,26 @@ Template.registerHelper(
 
 Template.registerHelper(
 	'bodyScroll', function(event) {
-		console.log('event',event,'this',this);
+		// console.log('event',event,'this',this);
 	}
 );
 
 
 Template.phone_number.helpers({
 	'mobileNumber': function() {
-		console.log('this',this);
-		//Not working
+		return this.number.replace(/[^\d.]/g, "");
 	}
 });
 
-fitEditables = function(template) {
-	$.each(template.findAll('.editable'),function(i,el) {
+fitLiveFields = function(template) {
+	$.each(template.findAll('.live-field'),function(i,el) {
 		fitText(el);
 	});
+}
+
+appendNote = function(event,context) {
+	$(event.target).parent('.card').find('.card-content .col:last-of-type').show().find('textarea').focus();
+	$(event.target).remove();
 }
 
 delay = (function(){
@@ -96,47 +110,49 @@ delay = (function(){
 })();
 
 Template.address.onRendered(function(){
-	$(this.firstNode).before('<button class=remove>X</button>');
-	var addressURL = encodeURIComponent(this.data.street_address+" "+this.data.address_locality+" "+this.data.address_region+" "+this.data.postal_code),
-			mapstring = "http://maps.googleapis.com/maps/api/staticmap?center="+addressURL+"&zoom=14&size=500x350&maptype=roadmap&markers="+addressURL;
-	$(this.firstNode).css('background-image','url('+mapstring+')');
-	fitEditables(this);
+	$(this.firstNode).before('<button class="remove btn-flat waves-effect waves-red"><i class="mdi-content-clear"></i></button>');
+	// var addressURL = encodeURIComponent(this.data.street_address+" "+this.data.address_locality+" "+this.data.address_region+" "+this.data.postal_code),
+	// 		mapstring = "http://maps.googleapis.com/maps/api/staticmap?center="+addressURL+"&zoom=14&size=500x350&maptype=roadmap&markers="+addressURL;
+	// $(this.firstNode).css('background-image','url('+mapstring+')');
+	// fitLiveFields(this);
+	$('.collapsible').collapsible();
 });
 
+Template.address.helpers({
+	'addressURL': function() {
+		// console.log('map',this);
+		return encodeURIComponent(this.street_address+" "+this.address_locality+" "+this.address_region+" "+this.postal_code);
+	}
+})
 
 Template.address.events({
 	'click .add-note': function(event,context) {
-		console.log(this,event,context);
-		$(event.target).parent().append('<textarea class=editable name=address.'+this.index+'.note></textarea>').focus();
-		$(event.target).remove();
+		appendNote(event,context);
 	}
 	//change map background when address is changed
 });
 
 Template.email_address.onRendered(function(){
-	$(this.firstNode).before('<button class=remove>X</button>');
-	fitEditables(this);
+	$(this.firstNode).before('<button class="remove btn-flat waves-effect waves-red"><i class="mdi-content-clear"></i></button>');
+	// fitLiveFields(this);
+	$('.collapsible').collapsible();
 });
 
 Template.email_address.events({
 	'click .add-note': function(event,context) {
-		$(event.target).parent().append('<textarea class=editable name=email_address.'+this.index+'.note></textarea>').focus();
-		$(event.target).remove();
+		appendNote(event,context);
 	}
-	//'add-item': focusNewItem(event)
-	//add emitter and use this to handle it, then define a function once to handle focusing on new items
 });
 
 Template.phone_number.onRendered(function(){
-	$(this.firstNode).before('<button class=remove>X</button>');
-	fitEditables(this);
+	$(this.firstNode).before('<button class="remove btn-flat waves-effect waves-red"><i class="mdi-content-clear"></i></button>');
+	// fitLiveFields(this);
+	$('.collapsible').collapsible();
 });
 
 Template.phone_number.events({
 	'click .add-note': function(event,context) {
-		console.log(this,event,context);
-		$(event.target).parent().append('<textarea class=editable name=phone_number.'+this.index+'.note></textarea>').focus();
-		$(event.target).remove();
+		appendNote(event,context);
 	}
 });
 
@@ -152,18 +168,13 @@ getElIndex = function(el) {
 
 
 
-update_field = function(collection,document_id,field,value,callback) {
+update_field = function(collection,document_id,field,value) {
 	Meteor.call(
 		'update_field',
 		collection,
 		document_id,
 		field,
-		value,
-		function(error,response){
-			if(!error){
-				callback();
-			}
-		}
+		value
 	);
 }
 

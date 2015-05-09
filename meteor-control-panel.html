@@ -1,100 +1,135 @@
 <head>
   <title>Control Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
-<body class='{{bodyClass}}'>
+<body>
 	{{> body_nav}}
 </body>
 
 <template name='body_nav'>
-<nav>
-	<ul>
-		<li>
-			<select>
-				<option>-clients-</option>
-				<option value="{{pathFor route='client.all'}}">(all clients)</option>
-				<option value="{{pathFor route='client.new'}}">(new client)</option>
-				{{#each allClients}}
-					<option value='/client/{{slug}}'>{{name}}</option>
-				{{/each}}
-			</select>
-		</li>
-		<li>
-			<select>
-				<option>-sites-</option>
-				<option value="{{pathFor route='site.all'}}">(all sites)</option>
-				<option value="{{pathFor route='site.new'}}">(new site)</option>
-				{{#each allSites}}
-					<option value='/site/{{slug}}'>{{url}}</option>
-				{{/each}}
-			</select>
-		</li>
-		<li><a href="{{pathFor route='user.all'}}">All Users</a></li>
-	</ul>
-</nav>
+	<div class="navbar-fixed">
+		<ul id="client-menu" class="dropdown-content">
+			<li><a href="{{pathFor route='client.all'}}">(all clients)</a></li>
+			<li><a href="{{pathFor route='client.new'}}">(new client)</a></li>
+		  <li class="divider"></li>
+			{{#each allClients}}
+				<li><a href='/client/{{slug}}'>{{name}}</a></li>
+			{{/each}}
+		</ul>
+		<ul id="site-menu" class="dropdown-content">
+			<li><a href="{{pathFor route='site.all'}}">(all sites)</a></li>
+			<li><a href="{{pathFor route='site.new'}}">(new site)</a></li>
+			{{#each allSites}}
+				<li><a href='/site/{{slug}}'>{{url}}</a></li>
+			{{/each}}
+		</ul>
+		<nav>
+			<div class="nav-wrapper grey darken-4">
+				<a href='#' class='brand-logo center'>{{documentName}}</a>
+				<a href="#" data-activates="mobile-menu" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+				<ul class="left hide-on-med-and-down">
+					<li><a class="dropdown-button" href="#!" data-activates="client-menu">Clients<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+					<li><a class="dropdown-button" href="#!" data-activates="site-menu">Sites<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+					<li><a href="{{pathFor route='user.all'}}">All Users</a></li>
+				</ul>
+			</div>
+
+			<ul class='side-nav' id='mobile-menu'>
+				<li>
+					<ul>
+						<li><a href="{{pathFor route='client.all'}}">(all clients)</a></li>
+						<li><a href="{{pathFor route='client.new'}}">(new client)</a></li>
+					  <li class="divider"></li>
+						{{#each allClients}}
+							<li><a href='/client/{{slug}}'>{{name}}</a></li>
+						{{/each}}
+					</ul>
+				</li>
+				<li>
+					<ul>
+						<li><a href="{{pathFor route='site.all'}}">(all sites)</a></li>
+						<li><a href="{{pathFor route='site.new'}}">(new site)</a></li>
+						{{#each allSites}}
+							<li><a href='/site/{{slug}}'>{{url}}</a></li>
+						{{/each}}
+					</ul>
+				</li>
+			</ul>
+
+		</nav>
+	</div>
 </template>
 
 
-<!--
-Should be <address is='card-address'></address>
- -->
 <template name="address">
-		<address>
-			<input type=text class=editable name=street_address value={{street_address}} placeholder="add street address"><br>
-			<input type=text class=editable name=address_locality value={{address_locality}} placeholder="add city"> <input type=text class=editable name=address_region value={{address_region}} placeholder="add state">, <input type=text class=editable name=postal_code placeholder="add zip" value={{postal_code}}>
-		</address>
-		{{#if note}}
-			<textarea class=editable name=note placeholder="add note" value={{note}}></textarea>
-		{{else}}
-			<a class='add-note'>Add Note</a>
-		{{/if}}
-</template>
-
-
-<!--
-Some ideals to think about:
- -->
-<template name="address2">
-
-	<!-- <card> needs to be hyphenated -->
-
-	<cp-card field=address index={{index}}>
-		<!-- Background applied by helper -->
-		<!-- Remove button created by helper? -->
-		<live-input name=street_address>{{street_address}}</live-input><br>
-		<live-input name=address_locality>{{address_locality}}</live-input>, <live-input name=address_region>{{address_region}}</live-input> <live-input name=postal_code>{{postal_code}}</live-input>
-		{{#if note}}
-			<live-input name=note>{{note}}</live-input>
-		{{else}}
-			<a class='add-note'>Add Note</a>
-		{{/if}}
-		<!-- live-input[name=note] is a textarea -->
-		<!-- placeholder created by prepending 'add' to label -->
-		<!-- to figure out which field to update javascript prepends index and [field=x] from parent <card> -->
-
-	</cp-card>
+	<div class='card-image'>
+		<img src="http://maps.googleapis.com/maps/api/staticmap?center={{addressURL}}&zoom=14&size=500x250&maptype=roadmap&markers={{addressURL}}" />
+	</div>
+	<div class='card-content'>
+		<div class="input-field col s12 m12 l12">
+			<input type=text class='live-field validate' name=street_address value={{street_address}} placeholder="add street address"><br>
+		</div>
+		<div class="input-field col s6 m6 l6">
+			<input type=text class='live-field validate' name=address_locality value={{address_locality}} placeholder="add city">
+		</div>
+		<div class="input-field col s2 m2 l2">
+			<input type=text class='live-field validate' name=address_region value={{address_region}} placeholder="add state">
+		</div>
+		<div class="input-field col s4 m4 l4">
+			<input type=text class='live-field validate' name=postal_code placeholder="add zip" value={{postal_code}}>
+		</div>
+		<div class='input-field col s12 m12 l12' style='display: {{#if note}}block{{else}}none{{/if}}'>
+			<textarea class='live-field materialize-textarea' name=note placeholder="add note" value={{note}}></textarea>
+		</div>
+	</div>
+	{{#if note}}
+	{{else}}
+		<a class='add-note card-action col s12 m12 l12'>Add Note</a>
+	{{/if}}
 
 </template>
+
+
 
 
 <template name="email_address">
-		<input type=email class=editable name=address value={{address}} placeholder="add email address">{{#if address}}<a href="mailto:{{address}}">send to</a>{{/if}}<br>
-		<input type=text class=editable name=login value={{login}} placeholder="add login"><br>
-		{{#if note}}
-			<textarea class=editable name=note value={{note}}></textarea>
-		{{else}}
-			<a class='add-note'>Add Note</a>
-		{{/if}}
+	<div class='card-content'>
+		<div class="input-field">
+			<input type='email' class='live-field validate col s12 m10 l10' name=address value={{address}} placeholder="add email address">
+			{{#if address}}<a class='col s12 m2 l2' href="mailto:{{address}}"><i class='mdi-content-send'></i></a>{{/if}}
+		</div>
+
+		<div class='input-field col s12 m12 l12'>
+			<input type=text class='live-field validate' name=login value={{login}} placeholder="add login">
+		</div>
+		<div class='col s12 m12 l12' style='display: {{#if note}}block{{else}}none{{/if}}'>
+			<div class='input-field'>
+				<textarea class='live-field materialize-textarea' name=note value={{note}}></textarea>
+			</div>
+		</div>
+	</div>
+	{{#if note}}
+	{{else}}
+		<a class='add-note card-action col s12 m12 l12'>Add Note</a>
+	{{/if}}
 </template>
 
 
 <template name="phone_number">
-		<input type=text class=editable name=number value={{number}} placeholder="add phone number">{{#if isPhone}}<a href='tel:{{mobileNumber}}'>Call</a>{{/if}}<br>
-		{{#if note}}
-			<textarea class=editable name=note value={{note}}></textarea>
-		{{else}}
-			<a class='add-note'>Add Note</a>
-		{{/if}}
+	<div class='card-content'>
+		<div class='input-field'>
+			<input type=text class='live-field col s12 m10 l10' name=number value={{number}} placeholder="add phone number">
+			{{#if number}}<a class='col s12 m2 l2' href='tel:{{mobileNumber}}'><i class='mdi-notification-phone-in-talk'></i></a>{{/if}}
+		</div>
+		<div class='col s12 m12 l12' style='display: {{#if note}}block{{else}}none{{/if}}'>
+				<textarea class='live-field materialize-textarea' name=note value={{note}}></textarea>
+		</div>
+	</div>
+	{{#if note}}
+	{{else}}
+		<a class='add-note card-action col s12 m12 l12'>Add Note</a>
+	{{/if}}
 </template>
 <!-- instead of full values, example:
 <section class=phone_number data-index={{index}}>

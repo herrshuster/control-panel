@@ -68,7 +68,7 @@ Router.route('/site/:_slug', function(){
 					};
 				} else {
 					console.log('Site not found');
-				}		
+				}
 			}
 		}
 	);
@@ -100,14 +100,15 @@ Router.route('/client/:_slug', function(){
 
 				if(client) {
 					var sites = Sites.find({client:client._id}).fetch();
-					console.log(client,sites);
+					// console.log(client,sites);
+					Session.set({documentName:client.name});
 					return {
 						client: client,
 						sites: sites
 					};
 				} else {
 					console.log('Client not found');
-				}		
+				}
 			}
 		}
 	);
@@ -124,11 +125,11 @@ Router.route('/checklist/new', {
 		if(this.params.query.type) {
 			var type = this.params.query.type;
 		}
-		
+
 		latestRevisions = [];
 		//Get all default items of the requested checklist type
 		var items = ChecklistItems.find({checklistType:type,default:true}).fetch();
-		//loop through items and build a new checklist 
+		//loop through items and build a new checklist
 		for (var i = items.length - 1; i >= 0; i--) {
 			var latestRevision = items[i].revisions[items[i].revisions.length -1];
 			latestRevisions.push({
@@ -143,7 +144,7 @@ Router.route('/checklist/new', {
 			});
 		};
 		console.log('revisions',latestRevisions);
-	
+
 
 		return {
 			title: "Checklist",
@@ -157,7 +158,7 @@ Router.route('/checklist/new', {
 		this.render('newChecklist');
 	},
 	name: 'checklist.new'
-	
+
 });
 
 Router.route('/checklist/:_id', function(){

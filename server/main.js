@@ -44,13 +44,15 @@ Meteor.methods({
 		obj[field] = value;
 		console.log(obj);
 		var Collection = nameToCollection(collection);
-		Collection.update({_id: document_id}, {$set: obj}, function(error,id) {
+		return Collection.update({_id: document_id}, {$set: obj}, function(error,id) {
 			console.log(error,id);
-			return(error,id);
+			if(!error) {
+				return id;
+			}
 		});
 	},
 	add_to_field: function(collection,document_id,field) {
-		console.log('add_to_field called')
+		console.log('add_to_field called',field)
 		function escapeRegExp(str) {
 			return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 		}

@@ -33,10 +33,10 @@
 	<h2>Site Information</h2>
 	{{#with site}}
 		<div class=card id='basicInfo'>
-			<input type=text class=editable name=url value={{url}} readonly>
-			<input type=checkbox class=editable name=secure checked='{{#if secure}}checked{{/if}}'>
+			<input type=text class=live-field name=url value={{url}} readonly>
+			<input type=checkbox class=live-field name=secure checked='{{#if secure}}checked{{/if}}'>
 			<input type=text name=organization_name value={{organization_name}} readonly>
-			<select class=editable name=billing_cycle>{{billingCycles}}</select>
+			<select class=live-field name=billing_cycle>{{billingCycles}}</select>
 		</div>
 		<div class=card id='contactInfo'>
 			{{#each addIndex address}}
@@ -59,7 +59,7 @@
 				{{#each addIndex service_offered}}
 					<div data-field=service_offered data-index={{index}}>
 						<button class=remove>X</button>
-						<input class=editable name='service_offered.{{index}}' value={{value}} placeholder='Add service name' readonly><br>
+						<input class=live-field name='service_offered.{{index}}' value={{value}} placeholder='Add service name' readonly><br>
 					</div>
 				{{/each}}
 			{{/if}}
@@ -69,7 +69,7 @@
 				{{#each addIndex product_offered}}
 					<div data-field=product_offered data-index={{index}}>
 						<button class=remove>X</button>
-						<input class=editable name='product_offered.{{index}}' value={{value}} placeholder='Add product name' readonly><br>
+						<input class=live-field name='product_offered.{{index}}' value={{value}} placeholder='Add product name' readonly><br>
 					</div>
 				{{/each}}
 			{{/if}}
@@ -79,7 +79,7 @@
 				{{#each addIndex location}}
 					<div data-field=location data-index={{index}}>
 						<button class=remove>X</button>
-						<input class=editable name='location.{{index}}' value={{value}} placeholder='Add location name' readonly><br>
+						<input class=live-field name='location.{{index}}' value={{value}} placeholder='Add location name' readonly><br>
 					</div>
 				{{/each}}
 			{{/if}}
@@ -90,7 +90,7 @@
 				{{#each addIndex service_provided}}
 					<div data-field=service_provided data-index={{index}}>
 						<button class=remove>X</button>
-						<select class=editable name='service_provided.{{index}}'>
+						<select class=live-field name='service_provided.{{index}}'>
 						{{#each provided_services}}
 							<option value={{this}} selected='{{#if is_provided_service}}selected{{/if}}'>{{this}}</option>
 						{{/each}}
@@ -135,7 +135,7 @@
 			<option value=''>-site status</option>
 		{{#each statusOptions}}
 			<option value='{{value}}'>{{label}}</option>
-		{{/each}}	
+		{{/each}}
 		</select><br>
 		<input type=submit value=add>
 	</form>

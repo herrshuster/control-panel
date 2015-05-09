@@ -4,6 +4,58 @@
 		"selected_items":
 		[
 			[
+				"field",
+				"fieldToCheck"
+			],
+			[
+				"fields",
+				"fieldsToInsert〔variable〕"
+			],
+			[
+				"nested",
+				"nestedSchemoid〔argument〕"
+			],
+			[
+				"nes",
+				"nestedSchemoids〔variable〕"
+			],
+			[
+				"fie",
+				"fieldToAppend〔variable〕"
+			],
+			[
+				"object",
+				"objectToInsert"
+			],
+			[
+				"esc",
+				"escapeRegExp〔function〕"
+			],
+			[
+				"fiel",
+				"fieldToMatch〔variable〕"
+			],
+			[
+				"neste",
+				"nestedSchemoid〔argument〕"
+			],
+			[
+				"set",
+				"setTimeout〔function〕"
+			],
+			[
+				"clear",
+				"clearTimeout〔function〕"
+			],
+			[
+				"name",
+				"nameToCollection〔function〕"
+			],
+			[
+				"vali",
+				"validateSiteFields〔function〕"
+			],
+			[
 				"text",
 				"textWidth"
 			],
@@ -32,18 +84,34 @@
 	"buffers":
 	[
 		{
-			"file": "client/clients/main.html",
+			"file": "meteor-control-panel.html",
 			"settings":
 			{
-				"buffer_size": 4641,
+				"buffer_size": 5036,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "todo.txt",
+			"file": "client/clients/main.js",
 			"settings":
 			{
-				"buffer_size": 940,
+				"buffer_size": 3837,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "client/clients/main.html",
+			"settings":
+			{
+				"buffer_size": 7103,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "main.less",
+			"settings":
+			{
+				"buffer_size": 2754,
 				"line_ending": "Unix"
 			}
 		},
@@ -51,15 +119,7 @@
 			"file": "client/main.js",
 			"settings":
 			{
-				"buffer_size": 3447,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "meteor-control-panel.html",
-			"settings":
-			{
-				"buffer_size": 3383,
+				"buffer_size": 5182,
 				"line_ending": "Unix"
 			}
 		}
@@ -71,10 +131,26 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 128.0,
-		"last_filter": "fix ",
+		"height": 400.0,
+		"last_filter": "syntax j",
 		"selected_items":
 		[
+			[
+				"syntax j",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"pretty",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"syntax js",
+				"Set Syntax: JSON"
+			],
+			[
+				"json",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
 			[
 				"fix ",
 				"GutterColor: Fix Current Color Scheme"
@@ -112,7 +188,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 328.0
+		"width": 601.0
 	},
 	"console":
 	{
@@ -135,34 +211,36 @@
 	[
 		"/Users/schuster/Desktop/meteor-control-panel",
 		"/Users/schuster/Desktop/meteor-control-panel/client",
-		"/Users/schuster/Desktop/meteor-control-panel/client/checklists",
 		"/Users/schuster/Desktop/meteor-control-panel/client/clients",
 		"/Users/schuster/Desktop/meteor-control-panel/client/sites",
 		"/Users/schuster/Desktop/meteor-control-panel/lib",
-		"/Users/schuster/Desktop/meteor-control-panel/server"
+		"/Users/schuster/Desktop/meteor-control-panel/server",
+		"/Users/schuster/Desktop/meteor-control-panel/server/checklists",
+		"/Users/schuster/Desktop/meteor-control-panel/server/clients"
 	],
 	"file_history":
 	[
 		"/Users/schuster/Desktop/meteor-control-panel/server/main.js",
-		"/Users/schuster/Desktop/meteor-control-panel/client/main.js",
-		"/Users/schuster/Desktop/meteor-control-panel/client/clients/main.js",
-		"/Users/schuster/Desktop/meteor-control-panel/client/sites/main.html",
-		"/Users/schuster/Desktop/meteor-control-panel/client/sites/main.js",
-		"/Users/schuster/Desktop/meteor-control-panel/client/checklists/main.js",
-		"/Users/schuster/Desktop/meteor-control-panel/client/clients/main.html",
-		"/Users/schuster/Desktop/meteor-control-panel/meteor-control-panel.html",
-		"/Users/schuster/Desktop/meteor-control-panel/.meteor/local/build/programs/web.browser/app/client/sites/main.js",
-		"/Users/schuster/Desktop/meteor-control-panel/main.less",
-		"/Users/schuster/Desktop/meteor-control-panel/client/sites/main.less",
-		"/Users/schuster/Desktop/meteor-control-panel/server/checklists/main.js",
-		"/Users/schuster/Desktop/meteor-control-panel/client/clients/main.less",
 		"/Users/schuster/Desktop/meteor-control-panel/meteor-control-panel.js",
+		"/Users/schuster/Desktop/meteor-control-panel/todo.txt",
+		"/Users/schuster/Desktop/meteor-control-panel/meteor-control-panel.html",
+		"/Users/schuster/Desktop/meteor-control-panel/client/clients/main.less",
+		"/Users/schuster/Desktop/meteor-control-panel/main.less",
+		"/Users/schuster/Desktop/meteor-control-panel/client/main.js",
+		"/Users/schuster/Desktop/meteor-control-panel/client/sites/main.html",
+		"/Users/schuster/Desktop/meteor-control-panel/client/clients/main.html",
+		"/Users/schuster/Desktop/meteor-control-panel/lib/schemas.js",
+		"/Users/schuster/Desktop/meteor-control-panel/lib/methods.js",
+		"/Users/schuster/Desktop/meteor-control-panel/client/clients/main.js",
+		"/Users/schuster/Desktop/meteor-control-panel/client/sites/main.js",
+		"/Users/schuster/Desktop/meteor-control-panel/server/checklists/main.js",
+		"/Users/schuster/Desktop/meteor-control-panel/client/elements.js",
+		"/Users/schuster/Desktop/meteor-control-panel/server/clients/main.js",
+		"/Users/schuster/Desktop/meteor-control-panel/client/checklists/main.js",
+		"/Users/schuster/Desktop/meteor-control-panel/.meteor/local/build/programs/web.browser/app/client/sites/main.js",
+		"/Users/schuster/Desktop/meteor-control-panel/client/sites/main.less",
 		"/Users/schuster/Desktop/meteor-control-panel/server/kadira.js",
 		"/Users/schuster/Desktop/meteor-control-panel/client/checklists/main.html",
-		"/Users/schuster/Desktop/meteor-control-panel/lib/schemas.js",
-		"/Users/schuster/Desktop/meteor-control-panel/server/clients/main.js",
-		"/Users/schuster/Desktop/meteor-control-panel/todo.txt",
-		"/Users/schuster/Desktop/meteor-control-panel/lib/methods.js",
 		"/Users/schuster/Sites/tyler.shuster.house/style.css",
 		"/Users/schuster/Sites/tyler.shuster.house/index.html",
 		"/Users/schuster/Sites/tyler documents/Postfix Admin.html",
@@ -214,7 +292,7 @@
 	],
 	"find":
 	{
-		"height": 35.0
+		"height": 38.0
 	},
 	"find_in_files":
 	{
@@ -230,6 +308,126 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"change",
+			"public",
+			"live-field'",
+			"remove",
+			"aves-teal",
+			"clientinfo",
+			"address",
+			"\n		\n			",
+			"appendNote",
+			"add-note",
+			"ss=live-field",
+			"ype=email ",
+			"</i>",
+			"t'>",
+			"href='#",
+			"href='#c",
+			"'tab'",
+			"siteInfo",
+			"div",
+			"div ",
+			"div",
+			"div ",
+			"li",
+			".card'",
+			"collectionType",
+			"helpers",
+			"console.",
+			" col s12 m4 l3",
+			"Addresses",
+			"Info",
+			"width",
+			"collapsible-header'",
+			"4",
+			"h1",
+			"blue-text",
+			"3",
+			"fitLiveFields(this);",
+			"fittex",
+			"data.",
+			"addressURL",
+			"on class=remove",
+			"remove",
+			".remove",
+			"ollapsible='accordion'",
+			"lapsible='accordion'",
+			"collapsible ",
+			"section",
+			"h2>",
+			"<h2>",
+			"h2>",
+			"lass='collection'>",
+			"class=card",
+			"option value",
+			"dropdown1",
+			"value",
+			"option",
+			"fitLiveFields",
+			"person",
+			"update_field",
+			"dd-note': function(event,context) {\n		\n	}",
+			"$(event.target).parent().append('<textarea class=live-field name=note></textarea>').focus();\n		$(event.target).remove();",
+			"live-input",
+			"editable",
+			"fitLiveFields",
+			"fitEditables",
+			"editable",
+			".editable",
+			"editable",
+			"Editable",
+			"editable",
+			"Editable",
+			"editable",
+			"Editable",
+			"editable",
+			"note",
+			"list-sty",
+			"editable",
+			"EDITABLE",
+			"editable",
+			"{{index",
+			"person.{{index}}.",
+			"update_field",
+			"rue;",
+			"matches[2]",
+			"2",
+			"nestedSchemoid[i]",
+			"i",
+			"key",
+			"[\"Function: Object\"]",
+			"[\"Function: Array\"]",
+			"\"Function: Array\"",
+			"Function: String",
+			"Function: Boolean",
+			"label",
+			"Function: Array",
+			"Function: Object",
+			"Function: String",
+			"'",
+			"optional",
+			"type",
+			"I20150429",
+			"collection",
+			"subfields",
+			"event,this",
+			"this",
+			"templatecontext",
+			".target",
+			"vent",
+			"section",
+			"node",
+			"person.{{index}}",
+			"var ",
+			"console.log('",
+			"phone_number.{{index}}.",
+			"email_address.{{index}}.",
+			"address.{{index}}.",
+			"\n			",
+			"this.",
+			"card-address",
+			"address_region",
 			"collectionType",
 			"    ",
 			"client",
@@ -237,85 +435,7 @@
 			"event.target",
 			" readonly",
 			"update_field",
-			"slug",
-			"allsite",
-			"update_fi",
-			"update_field",
-			"update_fie",
-			"update_field",
-			".call",
-			"this",
-			"    ",
-			"8",
-			"Template.registerHelper",
-			"person",
-			"editable",
-			"div",
-			"section",
-			"h3",
-			"client",
-			"response",
-			"checklist",
-			"hecklists",
-			"allclients",
-			"submit",
-			"personsch",
-			"people",
-			"client__person__phone",
-			"console.log",
-			"parent",
-			"this",
-			"dataToInsert[all[0]]",
-			"[0]",
-			"mobilenu",
-			"hone_number",
-			"people",
-			"person",
-			"personschema",
-			"clients.",
-			"people",
-			"Project",
-			"000000",
-			"open",
-			"rl('li",
-			"rl('",
-			";\n\n}",
-			"rl('",
-			"mysql",
-			"root pass",
-			"self-sign",
-			"virtual_users",
-			"username",
-			"select",
-			"root pas",
-			"XXwemku3gajJKGf",
-			".pem",
-			"mycert",
-			"\\\n                  ",
-			"[webserver]/ssl/example",
-			"[webserver]",
-			"example",
-			"root pass",
-			"&& ",
-			"-ingroup",
-			"XXwemku3gajJKGf",
-			"usermail",
-			" ",
-			"spamc",
-			"P00fyP@55w0rd",
-			"2",
-			"5",
-			"2",
-			"assets/images/",
-			"assets/images/i",
-			"assets/",
-			"ENCRYPT('P00fyP@55w0rd', CONCAT('$6$', SUBSTRING(SHA(RAND()), -16))), ",
-			"example.com",
-			"tyler",
-			"orderby",
-			"class=\"modal\"",
-			"</aside",
-			"header"
+			"slug"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -338,23 +458,25 @@
 			[
 				{
 					"buffer": 0,
-					"file": "client/clients/main.html",
+					"file": "meteor-control-panel.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4641,
+						"buffer_size": 5036,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3278,
-								3278
+								3431,
+								3431
 							]
 						],
 						"settings":
 						{
+							"WordCountSyntax": "html",
+							"auto_complete": false,
 							"incomplete_sync": null,
 							"remote_loading": false,
 							"synced": false,
@@ -362,7 +484,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1243.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
@@ -370,57 +492,25 @@
 				},
 				{
 					"buffer": 1,
-					"file": "todo.txt",
+					"file": "client/clients/main.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 940,
+						"buffer_size": 3837,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								940,
-								940
+								2008,
+								2014
 							]
 						],
 						"settings":
 						{
-							"WordCountSyntax": "plain text",
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "client/main.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3447,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2057,
-								2057
-							]
-						],
-						"settings":
-						{
-							"WordCountShouldRun": false,
 							"WordCountSyntax": "javascript",
+							"auto_complete": false,
 							"incomplete_sync": null,
 							"remote_loading": false,
 							"synced": false,
@@ -428,41 +518,145 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1.0,
+						"translation.y": 748.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 0,
-			"sheets":
-			[
+				},
 				{
-					"buffer": 3,
-					"file": "meteor-control-panel.html",
+					"buffer": 2,
+					"file": "client/clients/main.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3383,
+						"buffer_size": 7103,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1852,
-								1852
+								4635,
+								4635
 							]
 						],
 						"settings":
 						{
+							"WordCountShouldRun": true,
+							"WordCountSyntax": "html",
+							"auto_complete": false,
 							"incomplete_sync": null,
 							"remote_loading": false,
 							"synced": false,
 							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1421.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "main.less",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2754,
+						"regions":
+						{
+							"gutter_color_2142":
+							{
+								"flags": 144,
+								"icon": "Cache/GutterColor/rgba(255,255,255,0.8).png",
+								"regions":
+								[
+									[
+										2142,
+										2184
+									]
+								],
+								"scope": "gutter_color"
+							},
+							"gutter_color_929":
+							{
+								"flags": 144,
+								"icon": "Cache/GutterColor/rgba(255,255,255,0.5).png",
+								"regions":
+								[
+									[
+										949,
+										988
+									]
+								],
+								"scope": "gutter_color"
+							},
+							"gutter_color_949":
+							{
+								"flags": 144,
+								"icon": "Cache/GutterColor/rgba(255,255,255,0.5).png",
+								"regions":
+								[
+									[
+										949,
+										988
+									]
+								],
+								"scope": "gutter_color"
+							}
+						},
+						"selection":
+						[
+							[
+								2752,
+								2752
+							]
+						],
+						"settings":
+						{
+							"WordCountSyntax": "less",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/LESS/LESS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1924.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "client/main.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5182,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								18,
+								24
+							]
+						],
+						"settings":
+						{
+							"WordCountSyntax": "javascript",
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
@@ -477,7 +671,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 27.0
+		"height": 23.0
 	},
 	"input":
 	{
@@ -492,18 +686,11 @@
 				0,
 				1,
 				1
-			],
-			[
-				1,
-				0,
-				2,
-				1
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.5,
 			1.0
 		],
 		"rows":
@@ -525,7 +712,7 @@
 	"project": "Control Panel.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 42.0
 	},
 	"save_all_on_build": true,
 	"select_file":
