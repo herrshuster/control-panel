@@ -1,109 +1,232 @@
 <template name="site">
-	<h1>{{site.url}}</h1>
-	<section id="checklists" class=card>
-		<h2>Checklists</h2>
-		{{#each checklists}}
-			{{> site__checklist}}
-		{{/each}}
-		New {{{checklistTypes}}} Checklist
-	</section>
-	<section id="client" class=card>
-		{{#if client}}
-			<h2>Associated Client</h2>
-			{{#with client}}
-				<a href="/client/{{slug}}">{{name}}</a>
-				{{#each addIndex person}}
-					<div class=person>
-						<h3>{{name}}</h3>
-						<h4>{{position}}</h4>
-						{{#each phone_number}}
-							<a href='tel:{{mobileNumber}}'>{{number}}</a><br>
-							{{note}}<br>
-						{{/each}}
-						{{#each addIndex email_address}}
-							<a href='mailto:{{address}}'>{{address}}</a><br>
-							{{note}}<br>
-						{{/each}}
-						<p>{{note}}</p>
-					</div>
-				{{/each}}
-			{{/with}}
-		{{/if}}
-	</section>
-	<h2>Site Information</h2>
-	{{#with site}}
-		<div class=card id='basicInfo'>
-			<input type=text class=live-field name=url value={{url}} readonly>
-			<input type=checkbox class=live-field name=secure checked='{{#if secure}}checked{{/if}}'>
-			<input type=text name=organization_name value={{organization_name}} readonly>
-			<select class=live-field name=billing_cycle>{{billingCycles}}</select>
+	<div class='row'>
+		<div class="col s12 document-navigation">
+			<ul class="tabs card white">
+				<li class="tab col l6 m4 l2"><a href="#siteInfo" class="black-text"><i class='mdi-social-public'></i> <span class='hide-on-small-only'>Site Info</span></a></li>
+				<li class="tab col l6 m4 l2"><a href="#clientInfo" class="black-text"><i class='mdi-social-person'></i> <span class='hide-on-small-only'>Client Info</span></a></li>
+				<li class="tab col l6 m4 l2"><a href="#businessInfo" class="black-text"><i class='mdi-communication-business'></i> <span class='hide-on-small-only'>Business Info</span></a></li>
+				<li class="tab col l6 m4 l2"><a href="#checklists" class="black-text"><i class='mdi-action-done-all'></i> <span class='hide-on-small-only'>Checklists</span></a></li>
+				<li class="tab col l6 m4 l2"><a href="#snippets" class="black-text"><i class='mdi-content-content-copy'></i> <span class='hide-on-small-only'>Snippets</span></a></li>
+			</ul>
 		</div>
-		<div class=card id='contactInfo'>
-			{{#each addIndex address}}
-				{{> address}}
+
+		<div class="col s12" id='checklists'>
+			<h2>Checklists</h2>
+			{{#each checklists}}
+				{{> site__checklist}}
 			{{/each}}
-			<a class='add-item address' href='#'>Add Address</a>
-			{{#each addIndex email_address}}
-				{{> email_address}}
-			{{/each}}
-			<a class='add-item email_address' href='#'>Add Email Address</a>
-			{{#each addIndex phone_number}}
-				{{> phone_number}}
-			{{/each}}
-			<a class='add-item phone_number' href='#'>Add Phone Number</a>
-			<!-- Get person from client -->
+			New {{{checklistTypes}}} Checklist
 		</div>
-		<div class=card id='businessInfo'>
-			{{#if service_offered}}
-				<h3>Services Offered</h3>
-				{{#each addIndex service_offered}}
-					<div data-field=service_offered data-index={{index}}>
-						<button class=remove>X</button>
-						<input class=live-field name='service_offered.{{index}}' value={{value}} placeholder='Add service name' readonly><br>
-					</div>
-				{{/each}}
-			{{/if}}
-			<a class='add-item service_offered' href='#'>Add Service Offered</a>
-			{{#if product_offered}}
-				<h3>Products Offered</h3>
-				{{#each addIndex product_offered}}
-					<div data-field=product_offered data-index={{index}}>
-						<button class=remove>X</button>
-						<input class=live-field name='product_offered.{{index}}' value={{value}} placeholder='Add product name' readonly><br>
-					</div>
-				{{/each}}
-			{{/if}}
-			<a class='add-item product_offered' href='#'>Add Product offered</a>
-			{{#if location}}
-				<h3>Locations</h3>
-				{{#each addIndex location}}
-					<div data-field=location data-index={{index}}>
-						<button class=remove>X</button>
-						<input class=live-field name='location.{{index}}' value={{value}} placeholder='Add location name' readonly><br>
-					</div>
-				{{/each}}
-			{{/if}}
-			<a class='add-item location' href='#'>Add Location</a>
-		</div>
-		<div class=card id='involvement'>
-			{{#if service_provided}}
-				{{#each addIndex service_provided}}
-					<div data-field=service_provided data-index={{index}}>
-						<button class=remove>X</button>
-						<select class=live-field name='service_provided.{{index}}'>
-						{{#each provided_services}}
-							<option value={{this}} selected='{{#if is_provided_service}}selected{{/if}}'>{{this}}</option>
+
+		<div class="col s12" id="clientInfo">
+			<div class='card white'>
+				{{#if client}}
+					<div class='card-content'>
+						<span class='card-title black-text'>Associated Client</span>
+						<a href="/client/{{client.slug}}#clientInfo">{{client.name}}</a>
+						{{#each addIndex client.person}}
+							<div class=person>
+								<h3>{{name}}</h3>
+								<h4>{{position}}</h4>
+								{{#each phone_number}}
+									<a href='tel:{{mobileNumber}}'>{{number}}</a><br>
+									{{note}}<br>
+								{{/each}}
+								{{#each addIndex email_address}}
+									<a href='mailto:{{address}}'>{{address}}</a><br>
+									{{note}}<br>
+								{{/each}}
+								<p>{{note}}</p>
+							</div>
 						{{/each}}
-						</select>
 					</div>
-				{{/each}}
-			{{/if}}
-			<a class='add-item service_provided' href='#'>Add Service Provided</a>
+				{{/if}}
+			</div>
 		</div>
-		<!-- Status -->
-		<!-- service_used -->
-		<!-- file_access -->
-	{{/with}}
+
+		<div class='col s12' id='businessInfo'>
+
+			<div class='col s12 m6 l8'>
+				<ul class='cp-collection col s12' id='address'>
+					{{#each addIndex site.address}}
+						<li class='col s12 m12 l6'>
+							<div class='card white'>{{> address}}</div>
+						</li>
+					{{/each}}
+					<li class='col s12 m12 l6 add-item'>
+						<div class='card white'>
+							<div class='card-action'>
+								<a class='address' href="#"><i class='mdi-content-add'></i>Add Address</a>
+							</div>
+						</div>
+					</li>
+				</ul>
+
+				<ul class='cp-collection col s12' id='email_address'>
+					{{#each addIndex site.email_address}}
+						<li class='col s12 m12 l6'>
+							<div class='card white'>{{> email_address}}</div>
+						</li>
+					{{/each}}
+					<li class='col s12 m12 l6 add-item'>
+						<div class='card white'>
+							<div class='card-action'>
+								<a class='email_address' href="#"><i class='mdi-content-add'></i>Add Email Address</a>
+							</div>
+						</div>
+					</li>
+				</ul>
+
+				<ul class='cp-collection col s12' id='phone_number'>
+					{{#each addIndex site.phone_number}}
+						<li class='col s12 m12 l6'>
+							<div class='card white'>{{> phone_number}}</div>
+						</li>
+					{{/each}}
+					<li class='col s12 m12 l6 add-item'>
+						<div class='card white'>
+							<div class='card-action'>
+								<a class='phone_number' href="#"><i class='mdi-content-add'></i>Add Phone Number</a>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<!-- Get person from client -->
+			</div>
+
+
+
+			<div class='col s12 m6 l4' id='businessInfo'>
+
+				<div class='card white col s12 cp-collection' id='service_offered'>
+					<div class='card-content'>
+						<span class='card-title black-text'>Services Offered</span>
+						<ul>
+						{{#each addIndex site.service_offered}}
+							<li>
+								<div class='input-field col s12'>
+									<button class='remove btn-flat waves-effect waves-red'>X</button>
+									<input type='text' class=live-field value={{value}} placeholder='Add service name'>
+								</div>
+							</li>
+						{{/each}}
+						</ul>
+					</div>
+					<div class="card-action add-item">
+						<a class='service_offered' href='#'>Add Service Offered</a>
+					</div>
+				</div>
+
+
+				<div class='card white col s12 cp-collection' id='product_offered'>
+					<div class='card-content'>
+						<span class='card-title black-text'>Products Offered</span>
+						<ul>
+						{{#each addIndex site.product_offered}}
+							<li>
+								<div class='input-field col s12'>
+									<button class='remove btn-flat waves-effect waves-red'>X</button>
+									<input type='text' class=live-field value={{value}} placeholder='Add product name'>
+								</div>
+							</li>
+						{{/each}}
+						</ul>
+					</div>
+					<div class="card-action add-item">
+						<a class='product_offered' href='#'>Add Product offered</a>
+					</div>
+				</div>
+
+
+				<div class='card white col s12 cp-collection' id='location'>
+					<div class='card-content'>
+						<span class='card-title black-text'>Locations</span>
+						<ul>
+						{{#each addIndex site.location}}
+							<li>
+								<div class='input-field col s12'>
+									<button class='remove btn-flat waves-effect waves-red'>X</button>
+									<input type='text' class=live-field value={{value}} placeholder='Add location name'>
+								</div>
+							</li>
+						{{/each}}
+						</ul>
+					</div>
+					<div class="card-action add-item">
+						<a class='location' href='#'>Add Location</a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="col s12" id='siteInfo'>
+
+				<div class='col s12 m6 l4'>
+					<div class='card white'>
+						<div class='card-content'>
+							<span class="card-title black-text">URL Info</span>
+							<div class="input-field">
+								<input type='text' class='live-field' name='url' value='{{site.url}}'>
+							</div>
+							<div class="input-field">
+								<input type=checkbox class=live-field name=secure checked='{{#if site.secure}}checked{{/if}}'>
+								<label for=secure>Is secure?</label>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col s12 m6 l4">
+					<div class="card white">
+						<div class="card-content">
+							<span class="card-title black-text">Organization Name</span>
+							<div class="input-field">
+								<input type=text name=organization_name value={{site.organization_name}}>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col s12 m6 l4">
+					<div class="card white">
+						<div class="card-content">
+							<span class="card-title black-text">Billing Cycle</span>
+							<div class="input-field">
+								<select class='live-field browser-default' name='billing_cycle'>{{{billingCycles}}}</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col s12 m6 l4">
+					<div class="card white">
+						<div class="card-content">
+							<span class="card-title black-text">Services Provided</span>
+							<ul class='cp-collection' id='service_provided'>
+								{{#each addIndex site.service_provided}}
+									<li>
+										<div class='col s12 input-field'>
+											<select class="col s8 m10 l10 live-field browser-default">{{{provided_services}}}</select>
+											<button class='col s4 m2 l2 remove btn-flat waves-effect waves-red'>X</button>
+										</div>
+									</li>
+								{{/each}}
+							</ul>
+						</div>
+						<div class="card-action add-item">
+							<a class='service_provided' href='#'>Add Service Provded</a>
+						</div>
+					</div>
+				</div>
+
+				<!-- Status -->
+				<!-- service_used -->
+				<!-- file_access -->
+		</div>
+		<div class="col s12"></div>
+		<div class="col s12"></div>
+	</div>
 
 
 </template>

@@ -84,10 +84,10 @@
 	"buffers":
 	[
 		{
-			"file": "meteor-control-panel.html",
+			"file": "client/clients/main.html",
 			"settings":
 			{
-				"buffer_size": 5036,
+				"buffer_size": 7305,
 				"line_ending": "Unix"
 			}
 		},
@@ -95,31 +95,23 @@
 			"file": "client/clients/main.js",
 			"settings":
 			{
-				"buffer_size": 3837,
+				"buffer_size": 3951,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "client/clients/main.html",
+			"file": "client/sites/main.js",
 			"settings":
 			{
-				"buffer_size": 7103,
+				"buffer_size": 7589,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "main.less",
+			"file": "client/sites/main.html",
 			"settings":
 			{
-				"buffer_size": 2754,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "client/main.js",
-			"settings":
-			{
-				"buffer_size": 5182,
+				"buffer_size": 8721,
 				"line_ending": "Unix"
 			}
 		}
@@ -131,10 +123,18 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 400.0,
-		"last_filter": "syntax j",
+		"height": 128.0,
+		"last_filter": "docbl",
 		"selected_items":
 		[
+			[
+				"docbl",
+				"DocBlockr: Decorate line comment"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
 			[
 				"syntax j",
 				"Set Syntax: JavaScript"
@@ -157,10 +157,6 @@
 			],
 			[
 				"insta",
-				"Package Control: Install Package"
-			],
-			[
-				"inst",
 				"Package Control: Install Package"
 			],
 			[
@@ -215,23 +211,24 @@
 		"/Users/schuster/Desktop/meteor-control-panel/client/sites",
 		"/Users/schuster/Desktop/meteor-control-panel/lib",
 		"/Users/schuster/Desktop/meteor-control-panel/server",
-		"/Users/schuster/Desktop/meteor-control-panel/server/checklists",
-		"/Users/schuster/Desktop/meteor-control-panel/server/clients"
+		"/Users/schuster/Desktop/meteor-control-panel/server/clients",
+		"/Users/schuster/Desktop/meteor-control-panel/server/users"
 	],
 	"file_history":
 	[
-		"/Users/schuster/Desktop/meteor-control-panel/server/main.js",
-		"/Users/schuster/Desktop/meteor-control-panel/meteor-control-panel.js",
 		"/Users/schuster/Desktop/meteor-control-panel/todo.txt",
-		"/Users/schuster/Desktop/meteor-control-panel/meteor-control-panel.html",
-		"/Users/schuster/Desktop/meteor-control-panel/client/clients/main.less",
-		"/Users/schuster/Desktop/meteor-control-panel/main.less",
+		"/Users/schuster/Desktop/meteor-control-panel/server/main.js",
 		"/Users/schuster/Desktop/meteor-control-panel/client/main.js",
-		"/Users/schuster/Desktop/meteor-control-panel/client/sites/main.html",
-		"/Users/schuster/Desktop/meteor-control-panel/client/clients/main.html",
 		"/Users/schuster/Desktop/meteor-control-panel/lib/schemas.js",
-		"/Users/schuster/Desktop/meteor-control-panel/lib/methods.js",
+		"/Users/schuster/Desktop/meteor-control-panel/main.less",
+		"/Users/schuster/Desktop/meteor-control-panel/meteor-control-panel.html",
+		"/Users/schuster/Desktop/meteor-control-panel/meteor-control-panel.js",
 		"/Users/schuster/Desktop/meteor-control-panel/client/clients/main.js",
+		"/Users/schuster/Desktop/meteor-control-panel/client/clients/main.less",
+		"/Users/schuster/Desktop/meteor-control-panel/server/users/main.js",
+		"/Users/schuster/Desktop/meteor-control-panel/client/clients/main.html",
+		"/Users/schuster/Desktop/meteor-control-panel/client/sites/main.html",
+		"/Users/schuster/Desktop/meteor-control-panel/lib/methods.js",
 		"/Users/schuster/Desktop/meteor-control-panel/client/sites/main.js",
 		"/Users/schuster/Desktop/meteor-control-panel/server/checklists/main.js",
 		"/Users/schuster/Desktop/meteor-control-panel/client/elements.js",
@@ -308,6 +305,32 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"i> <span",
+			"onrendered",
+			"n class=remove",
+			"client",
+			"editable",
+			"client",
+			"public",
+			" readonly",
+			"person",
+			"slug",
+			"h3",
+			"businessInfo",
+			"div",
+			"person",
+			"nav",
+			"iv class='col s12' id='",
+			"pathFor",
+			"user",
+			"\"",
+			"credential",
+			": {",
+			"acce",
+			": {",
+			"login",
+			"login:",
+			"login",
 			"change",
 			"public",
 			"live-field'",
@@ -409,33 +432,7 @@
 			"optional",
 			"type",
 			"I20150429",
-			"collection",
-			"subfields",
-			"event,this",
-			"this",
-			"templatecontext",
-			".target",
-			"vent",
-			"section",
-			"node",
-			"person.{{index}}",
-			"var ",
-			"console.log('",
-			"phone_number.{{index}}.",
-			"email_address.{{index}}.",
-			"address.{{index}}.",
-			"\n			",
-			"this.",
-			"card-address",
-			"address_region",
-			"collectionType",
-			"    ",
-			"client",
-			"val",
-			"event.target",
-			" readonly",
-			"update_field",
-			"slug"
+			"collection"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -453,92 +450,24 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "meteor-control-panel.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5036,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3431,
-								3431
-							]
-						],
-						"settings":
-						{
-							"WordCountSyntax": "html",
-							"auto_complete": false,
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1243.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "client/clients/main.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3837,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2008,
-								2014
-							]
-						],
-						"settings":
-						{
-							"WordCountSyntax": "javascript",
-							"auto_complete": false,
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 748.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
 					"file": "client/clients/main.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7103,
+						"buffer_size": 7305,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4635,
-								4635
+								1062,
+								1062
 							]
 						],
 						"settings":
@@ -550,113 +479,117 @@
 							"remote_loading": false,
 							"synced": false,
 							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1421.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "main.less",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2754,
-						"regions":
-						{
-							"gutter_color_2142":
-							{
-								"flags": 144,
-								"icon": "Cache/GutterColor/rgba(255,255,255,0.8).png",
-								"regions":
-								[
-									[
-										2142,
-										2184
-									]
-								],
-								"scope": "gutter_color"
-							},
-							"gutter_color_929":
-							{
-								"flags": 144,
-								"icon": "Cache/GutterColor/rgba(255,255,255,0.5).png",
-								"regions":
-								[
-									[
-										949,
-										988
-									]
-								],
-								"scope": "gutter_color"
-							},
-							"gutter_color_949":
-							{
-								"flags": 144,
-								"icon": "Cache/GutterColor/rgba(255,255,255,0.5).png",
-								"regions":
-								[
-									[
-										949,
-										988
-									]
-								],
-								"scope": "gutter_color"
-							}
-						},
-						"selection":
-						[
-							[
-								2752,
-								2752
-							]
-						],
-						"settings":
-						{
-							"WordCountSyntax": "less",
-							"incomplete_sync": null,
-							"remote_loading": false,
-							"synced": false,
-							"syntax": "Packages/LESS/LESS.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1924.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "client/main.js",
+					"buffer": 1,
+					"file": "client/clients/main.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5182,
+						"buffer_size": 3951,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								18,
-								24
+								3742,
+								3742
 							]
 						],
 						"settings":
 						{
+							"WordCountShouldRun": false,
 							"WordCountSyntax": "javascript",
 							"auto_complete": false,
 							"incomplete_sync": null,
 							"remote_loading": false,
 							"synced": false,
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1093.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 2,
+					"file": "client/sites/main.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7589,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5527,
+								5527
+							]
+						],
+						"settings":
+						{
+							"WordCountShouldRun": false,
+							"WordCountSyntax": "javascript",
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2015.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "client/sites/main.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8721,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								736,
+								736
+							]
+						],
+						"settings":
+						{
+							"WordCountShouldRun": true,
+							"WordCountSyntax": "html",
+							"auto_complete": false,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/HTML/HTML.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
@@ -686,11 +619,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":
@@ -727,9 +667,13 @@
 	"select_project":
 	{
 		"height": 500.0,
-		"last_filter": "docu",
+		"last_filter": "wed",
 		"selected_items":
 		[
+			[
+				"wed",
+				"~/Sites/shuster.house/wedding/Wedding.sublime-project"
+			],
 			[
 				"docu",
 				"~/Sites/shuster.house/wedding/registry/Documents.sublime-project"

@@ -88,6 +88,11 @@ Template.newSite.events({
 
 });
 
+Template.site.onRendered(function(){
+	$('ul.tabs').tabs();
+	$('select.live-field').material_select();
+});
+
 Template.site.events({
 	"change #newChecklist": function(event,context) {
 		window.open(Router.url('checklist.new',{},{query:'site='+this.site.slug+'&type='+event.target.value}),'New Checklist','height=600,width=500,scrollbars=yes');
@@ -96,35 +101,69 @@ Template.site.events({
 		event.preventDefault();
 		window.open(event.target.href,'Checklist','height=600,width=500,scrollbars=yes')
 	},
-	'keydown .editable': function(event,context) {
-		$(event.target).attr('size',$(event.target).val().length + 1);
-	},
-	'keydown .editable, keyup .editable': function(event,context) {
-		fitText(event.target);
-		if(event.keyCode == 13 || event.keyCode == 9) {
-			event.stopImmediatePropagation();
-			update_field('site',context.data.site._id,event.target.name,event.target.value);
+	'keydown .live-field, keyup .live-field': function(event,context) {
+		if((event.key == 'Enter' && event.target.type !== 'textarea')) {
+			$(event.target).blur();
+			console.log('context',context,'this',this);
+		} else {
+			var parent = $(event.target).parents('.cp-collection').attr('id'),
+					index = this.index,
+					field = event.target.name,
+					value = event.target.type == 'checkbox' ? $(event.target).prop('checked') : event.target.value,
+					reference = 'parentIndex' in this ? parent+'.'+this.parentIndex+'.'+$(event.target).parents('section').attr('class')+'.'+index+'.'+field : field ? parent+'.'+index+'.'+field : parent+'.'+index;
+			delay(function(){
+				console.log('should be delaying')
+				update_field('site',context.data.site._id,reference,value);
+			}, 500 );
 		}
 	},
-	'blur .editable:not(select)': function(event,context) {
+	'blur .live-field, change .live-field[type=checkbox]': function(event,context) {
 		if($(event.target).val().length == 0)
-			$(event.target).attr('size',$(event.target).attr('placeholder').length);
+			$(event.target).attr('size', $(event.target).attr('placeholder').length);
 
-		var field = event.target.name;
-		var value = ($(event.target).attr('type') == 'checkbox') ? $(event.target).prop('checked') : event.target.value;
-		update_field('site',context.data.site._id,field,value);
+
+			var parent = $(event.target).parents('.cp-collection').attr('id'),
+					index = this.index,
+					field = event.target.name,
+					value = event.target.type == 'checkbox' ? $(event.target).prop('checked') : event.target.value,
+					reference = 'parentIndex' in this ? parent+'.'+this.parentIndex+'.'+$(event.target).parents('section').attr('class')+'.'+index+'.'+field : field ? parent+'.'+index+'.'+field : parent+'.'+index;
+
+			update_field('site',context.data.site._id,reference,value);
+			if(!$(event.target).val())
+				console.log('remove it');
 	},
-	'change select.editable': function(event,context) {
-		update_field('site',context.data.site._id,$(event.target).attr('name'),event.target.value);
+	'change select.live-field': function(event,context) {
+		//make it work for things like 'billing cycle'
+		update_field('site',context.data.site._id,$(event.target).parents('.cp-collection').attr('id')+'.'+this.index,event.target.value);
 	},
-	'click .add-item': function(event,context) {
-		var classes = event.target.className.split(/\s+/);
-		var item_to_add = classes[1];
-		add_to_field('site',context.data.site._id,item_to_add);
+	'click .add-item a': function(event,context) {
+		var item_to_add = event.target.className.split(/\s+/)[0];
+		console.log('adding item',item_to_add);
+		add_to_field('site',context.data.site._id,item_to_add,function(){
+			var ulToWatch = $(event.target).parents('.cp-collection').find('ul');
+			ulToWatch.on('DOMNodeInserted',function(event){
+				if(event.target.nodeName == 'LI') {
+					$(event.target).find('.input-field:first-of-type .live-field').focus();
+					ulToWatch.off('DOMNodeInserted','**');
+				}
+			});
+		});
 	},
 	'click button.remove': function(event,context) {
-		var index_to_remove = $(event.target.parentElement).attr('data-index');
-		remove_field('sites',context.data.site._id,$(event.target.parentElement).attr('data-field'),index_to_remove);
+		var parent = 'parentIndex' in this ? $(event.target).parents('.cp-collection').attr('id')+'.'+this.parentIndex+'.'+$(event.target).parents('section').attr('class') : $(event.target).parents('.cp-collection').attr('id');
+		var index = getElIndex($(event.target).parents('li').get()[0]);
+		setTimeout(function(){
+			remove_field('site',context.data.site._id,parent,index);
+		},200);
+	},
+
+	'click ul.tabs li a': function(event,context) {
+		if(event.target.nodeTupe !== 1)
+			var target = event.target.parentNode;
+		else
+			var target = event.target;
+
+		window.history.pushState({},"",target.href);
 	}
 });
 Template.site.helpers({
@@ -140,10 +179,14 @@ Template.site.helpers({
 	collectionType: function() {
 		return 'site';
 	},
-	provided_services: function() {
+	provided_services: function(){
 		var schemaAllowedValues = Sites._c2._simpleSchema._schema['service_provided.$'].allowedValues,//get all allowed values
-				siteProvidedServices = Template.parentData(1).service_provided,//get the currently provided services
-				services = $(schemaAllowedValues).not(siteProvidedServices).get();//remove the provided services from the list
+				servicesAlreadyProvided = Template.parentData(1).site.service_provided,//get the currently provided services
+				services = $(schemaAllowedValues).not(servicesAlreadyProvided).get(),//remove the provided services from the list
+				html = '',
+				i = services.indexOf(this.value);//get the location of the current service
+
+		services.splice(i,1);//remove the current service from where it is
 
 		services.unshift(this.value);//add the current service to the beginning of the array
 
@@ -152,7 +195,13 @@ Template.site.helpers({
 		if(blankIndex !== 0)
 			services.splice(blankIndex,1);
 
-		return services;
+		console.log('services',services);
+
+		for (var i = services.length - 1; i >= 0; i--) {
+			html += "<option value="+services[i]+" "+(this.value == services[i] ? 'selected' : '')+">"+services[i]+"</option>";
+		};
+
+		return html;
 	},
 	is_provided_service: function() {
 		return (this == Template.parentData().value);

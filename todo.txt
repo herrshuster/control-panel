@@ -17,3 +17,9 @@ after that, regular checklists (are created?) have different items
 https://github.com/CollectionFS/Meteor-CollectionFS
 
 DRY out .live-field helpers
+
+Keep comments, just tidy them into large helpful blocks, not inline
+
+live update url with hash
+
+DRY out remove button

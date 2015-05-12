@@ -20,12 +20,14 @@ Router.route('/', function(){
 
 Router.route('/site/new', function() {
 	this.render('newSite');
+	Session.set({documentName:'New Site'});
 },{
 	name: 'site.new'
 });
 
 Router.route('/sites', function(){
 	this.render('allSites');
+	Session.set({documentName:'All Sites'});
 },{
 	name: 'site.all'
 });
@@ -61,6 +63,8 @@ Router.route('/site/:_slug', function(){
 						}];
 					};
 
+					Session.set({documentName:site.url});
+
 					return {
 						site: site,
 						client: client,
@@ -78,12 +82,14 @@ Router.route('/site/:_slug', function(){
 
 Router.route('/client/new', function(){
 	this.render('newClient');
+	Session.set({documentName:'New Client'});
 },{
 	name: 'client.new'
 })
 
 Router.route('/clients', function(){
 	this.render('allClients');
+	Session.set({documentName:'All Clients'});
 },{
 	name: 'client.all'
 })
@@ -194,6 +200,24 @@ Router.route('/checklistitem/new', function() {
 },{
 	name: 'checklistitem.new'
 });
+
+Router.route('/credential/new',function(){
+	this.render('newCredential')
+},{
+	name: 'credential.new'
+});
+
+Router.route('/credential/:_id',function(){
+	this.render(
+		'credential',
+		{
+			data: function() {
+				var credential = Credentials.findOne({_id:this.params._id});
+				console.log('credential',credential);
+			}
+		}
+	)
+})
 
 Router.route('/user/:_id', function(){
 	this.render(

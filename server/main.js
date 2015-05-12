@@ -14,6 +14,10 @@ Meteor.publish('checklistItems',function(){
 	return ChecklistItems.find({});
 });
 
+Meteor.publish('userGroups',function(){
+	return UserGroups.find({});
+});
+
 capitalize = function(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
@@ -32,7 +36,7 @@ Accounts.onCreateUser(function(options,user){
 
 	if(options.profile)
 		user.profile = options.profile;
-		user.profile.restrictions = '0';
+		// user.profile.groups = [AllUsersGroupID];
 
 	return user;
 });
@@ -68,7 +72,7 @@ Meteor.methods({
 				newObject[key] = value;
 				Schema.push(newObject);
 			});
-			console.log('schema',Schema);
+			// console.log('schema',Schema);
 			Array.prototype.forEach.call(Schema, function(schemoid, i){//loop through all the schema field definitions, calling them 'schemoids'
 				if(schemoid[xField]) {//if a schemoid matches the field we are looking for,
 					var fieldToMatch = '';
@@ -79,9 +83,9 @@ Meteor.methods({
 						schemaKey = key;//schemakey is the unindexed key
 						fieldToAppend = fieldIndex ? key.replace(/\.\$\./,'.'+fieldIndex+'.') : key;//fieldtoAppend is the indexed key
 					}
-					objectToInsert[fieldToAppend] = {};
 					fieldToMatch = new RegExp(fieldToMatch);
 					var fieldsToInsert = [];
+
 					Array.prototype.forEach.call(Schema, function(nestedSchemoid,i){
 						for (var i in nestedSchemoid) {
 							var matches = i.match(fieldToMatch);
@@ -93,6 +97,16 @@ Meteor.methods({
 						  break;
 						}
 					});
+
+					//if not matches, it's just an array at top-level
+					console.log('inserting',fieldsToInsert);
+
+					if(fieldsToInsert.length == 0) {
+						objectToInsert[fieldToAppend] = '';
+					} else {
+						objectToInsert[fieldToAppend] = {};
+					}
+
 					Array.prototype.forEach.call(fieldsToInsert,function(nestedField,i) {
 						var fieldSchema = schema[schemaKey+'.$.'+nestedField];
 						if(fieldSchema.type.name == 'String' && !fieldSchema.optional) {

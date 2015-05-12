@@ -9,23 +9,25 @@
 
 <template name='body_nav'>
 	<div class="navbar-fixed">
-		<ul id="client-menu" class="dropdown-content">
-			<li><a href="{{pathFor route='client.all'}}">(all clients)</a></li>
-			<li><a href="{{pathFor route='client.new'}}">(new client)</a></li>
+		<ul id="client-menu" class="dropdown-content white">
+			<li><a href="{{pathFor route='client.all'}}" class='blue-text text-darken-2'>(all clients)</a></li>
+			<li class="divider"></li>
+			<li><a href="{{pathFor route='client.new'}}" class='blue-text text-darken-2'>(new client)</a></li>
 		  <li class="divider"></li>
 			{{#each allClients}}
-				<li><a href='/client/{{slug}}'>{{name}}</a></li>
+				<li><a href='/client/{{slug}}' class='blue-text text-darken-2'>{{name}}</a></li>
 			{{/each}}
 		</ul>
-		<ul id="site-menu" class="dropdown-content">
-			<li><a href="{{pathFor route='site.all'}}">(all sites)</a></li>
-			<li><a href="{{pathFor route='site.new'}}">(new site)</a></li>
+		<ul id="site-menu" class="dropdown-content white blue-text text-darken-2">
+			<li><a href="{{pathFor route='site.all'}}" class='blue-text text-darken-2'>(all sites)</a></li>
+			<li class="divider"></li>
+			<li><a href="{{pathFor route='site.new'}}" class='blue-text text-darken-2'>(new site)</a></li>
 			{{#each allSites}}
-				<li><a href='/site/{{slug}}'>{{url}}</a></li>
+				<li><a href='/site/{{slug}}' class='blue-text text-darken-2'>{{url}}</a></li>
 			{{/each}}
 		</ul>
 		<nav>
-			<div class="nav-wrapper grey darken-4">
+			<div class="nav-wrapper blue darken-2">
 				<a href='#' class='brand-logo center'>{{documentName}}</a>
 				<a href="#" data-activates="mobile-menu" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
 				<ul class="left hide-on-med-and-down">
@@ -100,9 +102,14 @@
 			{{#if address}}<a class='col s12 m2 l2' href="mailto:{{address}}"><i class='mdi-content-send'></i></a>{{/if}}
 		</div>
 
-		<div class='input-field col s12 m12 l12'>
-			<input type=text class='live-field validate' name=login value={{login}} placeholder="add login">
-		</div>
+		{{#if credential}}
+			<a class='col s12' href='{{pathFor route="credential.show" data=credential}}'>View Credential</a>
+		{{else}}
+			<a class='add-credential col s12' href='{{pathFor route="credential.new"}}'>Add Credential</a>
+		{{/if}}
+<!-- 		<div class='input-field col s12 m12 l12'>
+			<input type=text class='live-field validate' name=credential value={{credential}} placeholder="add credential">
+		</div> -->
 		<div class='col s12 m12 l12' style='display: {{#if note}}block{{else}}none{{/if}}'>
 			<div class='input-field'>
 				<textarea class='live-field materialize-textarea' name=note value={{note}}></textarea>
@@ -131,12 +138,4 @@
 		<a class='add-note card-action col s12 m12 l12'>Add Note</a>
 	{{/if}}
 </template>
-<!-- instead of full values, example:
-<section class=phone_number data-index={{index}}>
-<input type=text name=number value={{number}}>
-placeholder gotten from:
-var field = this.name
-Collection.label(field)
 
-Or really, index could be gotten from :nth-of-type
- -->

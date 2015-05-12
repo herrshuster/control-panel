@@ -45,17 +45,15 @@ Template.allClients.helpers({
 	}
 });
 Template.clientInfo.onRendered(function(){
-	// fitLiveFields(this);
 	$('ul.tabs').tabs();
-	// $('.tabs').pushpin({ top: 64 });
-})
+});
+
 Template.client__person.onRendered(function(){
 	// fitLiveFields(this);
 	$('.collapsible').collapsible();
 })
 Template.clientInfo.events({
 	'keydown .live-field, keyup .live-field': function(event,context) {
-		// fitText(event.target);
 		if((event.key == 'Enter' && event.target.type !== 'textarea')) {
 			$(event.target).blur();
 		} else {
@@ -63,7 +61,7 @@ Template.clientInfo.events({
 					index = this.index,
 					field = event.target.name,
 					value = event.target.type == 'checkbox' ? $(event.target).prop('checked') : event.target.value,
-					reference = 'parentIndex' in this ? parent+'.'+this.parentIndex+'.'+$(event.target).parents('section').attr('class')+'.'+index+'.'+field : parent+'.'+index+'.'+field;
+					reference = 'parentIndex' in this ? parent+'.'+this.parentIndex+'.'+$(event.target).parents('section').attr('class')+'.'+index+'.'+field : field ? parent+'.'+index+'.'+field : parent+'.'+index;
 			delay(function(){
 				console.log('should be delaying')
 				update_field('client',context.data.client._id,reference,value);
@@ -79,7 +77,7 @@ Template.clientInfo.events({
 					index = this.index,
 					field = event.target.name,
 					value = event.target.type == 'checkbox' ? $(event.target).prop('checked') : event.target.value,
-					reference = 'parentIndex' in this ? parent+'.'+this.parentIndex+'.'+$(event.target).parents('section').attr('class')+'.'+index+'.'+field : parent+'.'+index+'.'+field;
+					reference = 'parentIndex' in this ? parent+'.'+this.parentIndex+'.'+$(event.target).parents('section').attr('class')+'.'+index+'.'+field : field ? parent+'.'+index+'.'+field : parent+'.'+index;
 
 			update_field('client',context.data.client._id,reference,value);
 			if(!$(event.target).val())
@@ -95,7 +93,6 @@ Template.clientInfo.events({
 				if(event.target.nodeName == 'LI') {
 					$(event.target).find('.input-field:first-of-type .live-field').focus();
 					ulToWatch.off('DOMNodeInserted','**');
-					//needs to expand accordion by adding active, and then focus
 				}
 			});
 		});
@@ -106,6 +103,15 @@ Template.clientInfo.events({
 		setTimeout(function(){
 			remove_field('client',context.data.client._id,parent,index);
 		},200);
+	},
+
+	'click ul.tabs li a': function(event,context) {
+		if(event.target.nodeTupe !== 1)
+			var target = event.target.parentNode;
+		else
+			var target = event.target;
+
+		window.history.pushState({},"",target.href);
 	}
 });
 

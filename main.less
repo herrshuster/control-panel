@@ -13,7 +13,7 @@ h1,h2,h3,h4,h5 {
 }
 
 body {
-	background: black;
+	background: #fafafa;
 	.flex-container;
 	// font-family: 'Gentium Basic', serif;
 	margin: 0;
@@ -43,6 +43,11 @@ body {
 	}
 	.navbar-fixed {
 		width: 100%;
+	}
+	>nav {
+		.button-collapse {
+			padding-left: 0.75em;
+		}
 	}
 	// >nav {
 	// 	width: 100%;
@@ -103,6 +108,11 @@ h1,h2,h3,h4,h5,h6 {
 	input {
 		font: inherit;
 	}
+	.add-item {
+		a {
+			padding: 0;
+		}
+	}
 }
 .card {
 	// box-shadow: 0 0 1px gray;
@@ -121,6 +131,12 @@ h1,h2,h3,h4,h5,h6 {
 		>li {
 			// list-style-type: none;
 		}
+	}
+}
+
+.card-title {
+	.live-field {
+		font-size: inherit;
 	}
 }
 
@@ -173,4 +189,10 @@ h1,h2,h3,h4,h5,h6 {
 }
 .card .card-content {
 	overflow: hidden;
+}
+.document-navigation.col.s12 {
+	padding: 0;
+	~ .col.s12 {
+		padding: 0;
+	}
 }

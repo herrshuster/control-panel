@@ -3,6 +3,8 @@ Meteor.subscribe('sites');
 Meteor.subscribe('checklists');
 Meteor.subscribe('checklistItems');
 
+Meteor.subscribe('userGroups');
+
 var lastScrollTop = 0,
 	currentScrollTop,
 	navTop,
@@ -83,6 +85,25 @@ Template.registerHelper(
 	}
 );
 
+Template.registerHelper(
+	'billingCycles', function() {
+		var cycles = Sites._c2._simpleSchema._schema.billing_cycle.allowedValues;
+		var re = /([0-9]+)([a-z]+)([0-9]+)/;
+		var html = '';
+		for (var i = cycles.length - 1; i >= 0; i--) {
+			var cycle = cycles[i].match(re),
+					interval = '';
+			if(cycle[2] == 'm') {
+				interval = 'monthly';
+			} else if(cycle[2] == 'w') {
+				interval = 'weekly';
+			}
+			html += '<option value='+cycles[i]+'>'+cycle[1]+'x '+interval+' on day '+cycle[3]+'</option>';
+		};
+		return html;
+	}
+);
+
 
 Template.phone_number.helpers({
 	'mobileNumber': function() {
@@ -141,6 +162,11 @@ Template.email_address.onRendered(function(){
 Template.email_address.events({
 	'click .add-note': function(event,context) {
 		appendNote(event,context);
+	},
+	'click .add-credential': function(event,context) {
+		event.preventDefault();
+		console.log('context',context,'data',Template.parentData());
+		//should generate a new credential with the creating user as owner, return the ID and the card should update. then it should then authorize access and display the update form for the credential
 	}
 });
 
@@ -155,6 +181,7 @@ Template.phone_number.events({
 		appendNote(event,context);
 	}
 });
+
 
 getElIndex = function(el) {
     var k = 0;
